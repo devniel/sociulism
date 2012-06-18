@@ -33,11 +33,16 @@ public class Users extends Controller {
 
     	// Iniciar sesión
 	    String uuid = session("uuid");
+
 	    if(uuid==null){
-	      uuid=java.util.UUID.randomUUID().toString();
+
+	      uuid = java.util.UUID.randomUUID().toString();
 	      session("uuid",uuid);
-	      session(session("uuid") + ":codigo",user.getCodigo());
+	      session("codigo",user.getCodigo());
+	      session("password",user.getPassword());
+
 	    }
+
     }else{
     	System.out.println("Contraseña inválida");
     }
@@ -80,9 +85,6 @@ public class Users extends Controller {
       return true;
     }
   }
-
-  // COMPROBAR SI ESTÁ LOGUEADO
-  
   
   public static Result find(Long id){
 	  return TODO;
@@ -92,6 +94,37 @@ public class Users extends Controller {
     return TODO;
   }
   
+  /*
+   * Comprobar si usuario está logueado
+   */
   
+  public static void isLogged(){
+    if((session.contains("usuario") && 
+      session.contains("password") && 
+      session.contains("uuid")) && validUserInf() ){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  /*
+   * Validar usuario y password, si existen y son válidos
+   */
+
+  public static boolean validUserInfo(){
+    String codigo = session("codigo");
+    String password = session("password");
+    User user = User.getUserByCodigo(codigo);
+    if(user == null){
+      return false;
+    }else{
+      if(user.getPassword().equals(password)){
+        return true;
+      }else{
+        return false;
+      }
+    }
+  }
   
 }
