@@ -2,22 +2,5 @@
 
 @import helper._
 @main("Welcome to Play 2.0") {
-    <h1>@users.size() user(s)</h1>
-	<ul>
-		@for(user <- users){
-			<li>
-				@user.codigo
-				@form(routes.Users.delete(user.uid)){
-					<input type="submit" value="Delete">
-				}
-			</li>
-		}
-	</ul>
-	
-	<h2> Add a new user</h2>
-	@form(routes.Users.create()){
-		@inputText(userForm("codigo"))
-		@inputPassword(userForm("password"))
-		<input type="submit" value="Entrar">
-	}
+    <h1>Hola @session.get("codigo")</h1>
 }

@@ -8,7 +8,7 @@ import views.html.*;
 public class Application extends Controller {
   
   public static Result index() {
-    return redirect(routes.Users.all());
+    return redirect(routes.Users.index());
   }
   
 }
