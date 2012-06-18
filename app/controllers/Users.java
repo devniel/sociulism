@@ -1,8 +1,13 @@
 package controllers;
 
+import java.util.List;
+
+import org.h2.expression.ExpressionList;
+
 import play.*;
 import play.data.*;
 import play.mvc.*;
+import play.mvc.Http.Session;
 import views.html.index;
 import models.User;
 
@@ -18,25 +23,75 @@ public class Users extends Controller {
   	return ok(views.html.index.render(User.all(), userForm));
   }
 
+  public static Result login(){
+    Form<User> filledForm = userForm.bindFromRequest();
+    User user = User.getUserByCodigo(filledForm.get().codigo);
+    
+    // Comprobar contraseña
+    if(filledForm.get().password.equals(user.getPassword())){
+    	System.out.println("Válido, entrar");
+
+    	// Iniciar sesión
+	    String uuid = session("uuid");
+	    if(uuid==null){
+	      uuid=java.util.UUID.randomUUID().toString();
+	      session("uuid",uuid);
+	      session(session("uuid") + ":codigo",user.getCodigo());
+	    }
+    }else{
+    	System.out.println("Contraseña inválida");
+    }
+    
+    return TODO;
+
+  }
+
+
   public static Result create(){
+
   	Form<User> filledForm = userForm.bindFromRequest();
+
+    // Determinar si los datos del formulario tienen errores
   	if(filledForm.hasErrors()){
   		return badRequest(
   			views.html.index.render(User.all(), filledForm)
   		);
   	}else{
-  		User.create(filledForm.get());
-  		return redirect(routes.Users.all());
+
+      // Determinar si es usuario o no
+
+      // Es usuario --> Loguear
+      if(isUser(filledForm.get().codigo)){
+        return login();
+      // No es usuario --> Registrar
+      }else{
+        User.create(filledForm.get());
+        return redirect(routes.Users.all()); 
+      }
   	}
   }
 
+  public static boolean isUser(String codigo){
+    User user = User.getUserByCodigo(codigo);
+    
+    if(user == null){
+      return false;
+    }else{
+      return true;
+    }
+  }
+
+  // COMPROBAR SI ESTÁ LOGUEADO
+  
+  
   public static Result find(Long id){
-  	//User user = find.ref(id);
-    return TODO;
+	  return TODO;
   }
 
   public static Result delete(Long id){
     return TODO;
   }
+  
+  
   
 }

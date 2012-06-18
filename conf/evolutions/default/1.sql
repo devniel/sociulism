@@ -7,6 +7,7 @@ create table user (
   uid                       bigint auto_increment not null,
   codigo                    varchar(255),
   password                  varchar(255),
+  constraint uq_user_codigo unique (codigo),
   constraint pk_user primary key (uid))
 ;
 
