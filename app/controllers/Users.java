@@ -46,6 +46,7 @@ public class Users extends Controller {
   public static void loadSession(User user){
     String uuid = java.util.UUID.randomUUID().toString();
     session("uuid",uuid);
+    session("cuuid",uuid);
     session("codigo",user.getCodigo());
     session("password",user.getPassword());
   }
@@ -142,10 +143,10 @@ public class Users extends Controller {
    */
   
   public static boolean isLogged(){
-    System.out.println("SESIÓN : " + session("usuario"));
-    if((session("usuario") == null && session("password")== null && session("uuid")==null) && validSessionInfo()){
+    if(validSessionInfo()){
       return true;
     }else{
+      session().clear();
       return false;
     }
   }
@@ -157,8 +158,12 @@ public class Users extends Controller {
   public static boolean validSessionInfo(){
     String codigo = session("codigo");
     String password = session("password");
+
+    System.out.println(codigo + " " + password + " " + session("uuid") + " " + session("cuuid"));
     User user = User.getUserByCodigo(codigo);
     if(user == null){
+      return false;
+    }else if(!session("uuid").toString().equals(session("cuuid").toString())){
       return false;
     }else{
       if(user.getPassword().equals(password)){
