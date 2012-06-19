@@ -1,0 +1,23 @@
+CREATE  TABLE `sociul`.`mensajes` (
+  `idmensajes` INT NOT NULL ,
+  `uid` BIGINT(20) NULL ,
+  `mensaje` VARCHAR(45) NULL ,
+  `fecha` DATE NULL ,
+  `hora` TIME NULL ,
+  PRIMARY KEY (`idmensajes`),
+  FOREIGN KEY (`uid` )
+  REFERENCES `sociul`.`user` (`uid` )
+ );
+
+
+
+------tabla cursos----------------
+
+CREATE  TABLE `sociul`.`cursos` (
+  `idcurso` INT NOT NULL ,
+  `uid` BIGINT(20) NULL ,
+  `curso` VARCHAR(45) NULL ,
+  PRIMARY KEY (`idcurso`), 
+  FOREIGN KEY (`uid` )
+  REFERENCES `sociul`.`user` (`uid` )
+);
