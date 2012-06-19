@@ -1,0 +1,214 @@
+Empezar request ...
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
+
+
+
+
+<html>
+<title>MiULima - Intranet</title>
+<head>
+	<link rel="stylesheet" href="ul/stylesheets/login.css" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<style type="text/css" >
+@import url(stylesheets/style.css);
+</style>
+
+<script type="text/javascript" src="http://www.ulima.edu.pe/mmrollovers.js"></script>
+<script src="JavaScript/AC_RunActiveContent.js" type="text/javascript"></script>
+<script language="JavaScript" src="JavaScript/abrirav.js"></script>
+<script language="JavaScript" src="JavaScript/portal_utilities.js"></script>
+<script language="JavaScript" src="JavaScript/portal_diseno.js"></script>
+<script language="JavaScript1.2" type="text/javascript">
+function submitform()
+{
+	if (!(window.location.href.indexOf('s1.')>=0)) {
+		document.login.action='https'+window.location.href.substring(window.location.href.indexOf('://'),window.location.href.lastIndexOf('/')+1)+'j_security_check'; 
+	}	 
+	var t=new Date(); 
+	document.login.ac.value=t.getTime();
+	document.login.submit();
+}
+
+
+function openWin(url, title, width, height)
+{
+   var ventana = window.open(url, title, 'width=' + width + ',dependent=yes, height=' + height +', resizable=yes, scrollbars=yes');
+}	
+
+</script>
+</head>
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="MM_preloadImages('images/login/contactop.gif','images/login/inicioup.gif','images/login/btn_registratep.gif','images/login/btn-ingresarp.gif')">
+<script language="JavaScript">
+	document.onkeydown=disableRefresh;
+</script>
+<form name=login action="j_security_check" method=post onSubmit="submitform();">
+<input type="hidden" name="ac">
+<div class="header">
+    <img style="vertical-align:bottom;" src="images/login/cab.gif" width="768" height="21" />
+   		<a href="http://www.ulima.edu.pe/" target="_blank">	<img class="logo" src="images/login/logoulima.gif" alt="Universidad de Lima, Scientia et Praxis" border="0"/> </a> 
+    <div class="inicio">
+    	<a href="mailto:helpdesk@ulima.edu.pe?subject=MiULima" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('contacto','','images/login/contactop.gif',1)"><img src="images/login/contacto.gif" name="contacto" width="163" height="18" border="0" id="contacto" /></a><a href="http://www.ulima.edu.pe/" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('iniciou','','images/login/inicioup.gif',1)"><img name="iniciou" id="iniciou" style="margin-left:8px;" src="images/login/iniciou.gif" border="0" /></a>
+    </div>
+</div>
+<div class="outer-wrapper">
+<!-- xxxxxxxxxxxxxxxxxxxxxxx  -->
+
+
+
+	<div class="flash">
+  		<script type="text/javascript">
+			AC_FL_RunContent( 'codebase','http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,28,0','width','422','height','362','hspace','0','vspace','0','src','Flash/foto','quality','high','pluginspage','http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash','movie','Flash/foto' ); //end AC code
+		</script>
+		<noscript>
+			<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,28,0" width="422" height="362" hspace="0" vspace="0">
+			    <param name="movie" value="Flash/foto.swf" />
+			    <param name="quality" value="high" />
+			    <embed src="Flash/foto.swf" width="422" height="362" hspace="0" vspace="0" quality="high" pluginspage="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash"></embed>
+		  	</object>
+		</noscript>
+	</div>
+
+
+
+	<div class="content-wrapper">
+		<img style="vertical-align:bottom;" src="images/login/base1.gif" />
+		<div class="content">
+		<!-- <img src="images/login/nuevosusuarios.gif" /><br /><br />
+		<span>Si a&uacute;n no cuenta con un usuario, haga clic en el bot&oacute;n.</span><br /><br />  -->
+			<div style="width:100%; text-align:center;"> <!-- <a href="#" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('btnreg','','images/login/btn_registratep.gif',1)"><img name="btnreg" id="btnreg" border="0" src="images/login/btn-registrate.gif" /></a> --> </div><br /><br /><br />
+			<img src="images/login/usuariosregistrados.gif" /><br /><br />
+			<div class="formline"><span style="font-weight:bold; float: left;">Usuario</span><input type="text" class="inputs" name="j_username" value="" />
+				<div class="spacer"></div>
+			</div>
+			<div class="formline"><span style="font-weight:bold; float: left;">Contrase�a</span><input type="password" class="inputs" name="j_password" onKeyPress="checkEnterSsl(event,form)"  value="" />
+				<div class="spacer"></div>
+			</div>
+			<!-- xxxxxxx TOKEN xxxxxxxxxx  -->	
+
+			<!-- xxxxxxx TOKEN xxxxxxxxxx  -->	
+    		<div style="width:100%; text-align:center;"><a href="javascript:submitform();" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('btning','','images/login/btn-ingresarp.gif',1)"><img name="btning" id="btning" border="0" src="images/login/btn-ingresar.gif" /></a></div><br /><br />
+    		<a href="javascript:openWin('html/PortalGuia.htm#CONTRASEA', 'Acerca_de_', 850, 670)">Olvid&oacute; su contrasea? clic aqu&iacute;.</a>
+		</div>
+		<div class="spacer"></div>
+	</div>
+	<img style="float:right;" src="images/login/base2.gif" />
+	<div class="spacer"></div>
+
+</div>
+<div class="footer">Av. Javier Prado Este s/n, Monterrico, Lima 33 - Per�.<br />
+Telf: (511) 437-6767 Fax: (511) 437-8066<br />
+Ulima todos los derechos reservados  2008</div>
+</body>
+</html>
+
+Set-Cookie
+LEER COOKIES
+errorLogin=inicio.jsp; Path=/; Domain=.ulima.edu.pe
+Empezar request ...
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
+
+
+
+
+<html>
+<title>MiULima - Intranet</title>
+<head>
+	<link rel="stylesheet" href="ul/stylesheets/login.css" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<style type="text/css" >
+@import url(stylesheets/style.css);
+</style>
+
+<script type="text/javascript" src="http://www.ulima.edu.pe/mmrollovers.js"></script>
+<script src="JavaScript/AC_RunActiveContent.js" type="text/javascript"></script>
+<script language="JavaScript" src="JavaScript/abrirav.js"></script>
+<script language="JavaScript" src="JavaScript/portal_utilities.js"></script>
+<script language="JavaScript" src="JavaScript/portal_diseno.js"></script>
+<script language="JavaScript1.2" type="text/javascript">
+function submitform()
+{
+	if (!(window.location.href.indexOf('s1.')>=0)) {
+		document.login.action='https'+window.location.href.substring(window.location.href.indexOf('://'),window.location.href.lastIndexOf('/')+1)+'j_security_check'; 
+	}	 
+	var t=new Date(); 
+	document.login.ac.value=t.getTime();
+	document.login.submit();
+}
+
+
+function openWin(url, title, width, height)
+{
+   var ventana = window.open(url, title, 'width=' + width + ',dependent=yes, height=' + height +', resizable=yes, scrollbars=yes');
+}	
+
+</script>
+</head>
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="MM_preloadImages('images/login/contactop.gif','images/login/inicioup.gif','images/login/btn_registratep.gif','images/login/btn-ingresarp.gif')">
+<script language="JavaScript">
+	document.onkeydown=disableRefresh;
+</script>
+<form name=login action="j_security_check" method=post onSubmit="submitform();">
+<input type="hidden" name="ac">
+<div class="header">
+    <img style="vertical-align:bottom;" src="images/login/cab.gif" width="768" height="21" />
+   		<a href="http://www.ulima.edu.pe/" target="_blank">	<img class="logo" src="images/login/logoulima.gif" alt="Universidad de Lima, Scientia et Praxis" border="0"/> </a> 
+    <div class="inicio">
+    	<a href="mailto:helpdesk@ulima.edu.pe?subject=MiULima" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('contacto','','images/login/contactop.gif',1)"><img src="images/login/contacto.gif" name="contacto" width="163" height="18" border="0" id="contacto" /></a><a href="http://www.ulima.edu.pe/" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('iniciou','','images/login/inicioup.gif',1)"><img name="iniciou" id="iniciou" style="margin-left:8px;" src="images/login/iniciou.gif" border="0" /></a>
+    </div>
+</div>
+<div class="outer-wrapper">
+<!-- xxxxxxxxxxxxxxxxxxxxxxx  -->
+
+
+
+	<div class="flash">
+  		<script type="text/javascript">
+			AC_FL_RunContent( 'codebase','http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,28,0','width','422','height','362','hspace','0','vspace','0','src','Flash/foto','quality','high','pluginspage','http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash','movie','Flash/foto' ); //end AC code
+		</script>
+		<noscript>
+			<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,28,0" width="422" height="362" hspace="0" vspace="0">
+			    <param name="movie" value="Flash/foto.swf" />
+			    <param name="quality" value="high" />
+			    <embed src="Flash/foto.swf" width="422" height="362" hspace="0" vspace="0" quality="high" pluginspage="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash"></embed>
+		  	</object>
+		</noscript>
+	</div>
+
+
+
+	<div class="content-wrapper">
+		<img style="vertical-align:bottom;" src="images/login/base1.gif" />
+		<div class="content">
+		<!-- <img src="images/login/nuevosusuarios.gif" /><br /><br />
+		<span>Si a&uacute;n no cuenta con un usuario, haga clic en el bot&oacute;n.</span><br /><br />  -->
+			<div style="width:100%; text-align:center;"> <!-- <a href="#" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('btnreg','','images/login/btn_registratep.gif',1)"><img name="btnreg" id="btnreg" border="0" src="images/login/btn-registrate.gif" /></a> --> </div><br /><br /><br />
+			<img src="images/login/usuariosregistrados.gif" /><br /><br />
+			<div class="formline"><span style="font-weight:bold; float: left;">Usuario</span><input type="text" class="inputs" name="j_username" value="" />
+				<div class="spacer"></div>
+			</div>
+			<div class="formline"><span style="font-weight:bold; float: left;">Contrase�a</span><input type="password" class="inputs" name="j_password" onKeyPress="checkEnterSsl(event,form)"  value="" />
+				<div class="spacer"></div>
+			</div>
+			<!-- xxxxxxx TOKEN xxxxxxxxxx  -->	
+
+			<!-- xxxxxxx TOKEN xxxxxxxxxx  -->	
+    		<div style="width:100%; text-align:center;"><a href="javascript:submitform();" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('btning','','images/login/btn-ingresarp.gif',1)"><img name="btning" id="btning" border="0" src="images/login/btn-ingresar.gif" /></a></div><br /><br />
+    		<a href="javascript:openWin('html/PortalGuia.htm#CONTRASEA', 'Acerca_de_', 850, 670)">Olvid&oacute; su contrasea? clic aqu&iacute;.</a>
+		</div>
+		<div class="spacer"></div>
+	</div>
+	<img style="float:right;" src="images/login/base2.gif" />
+	<div class="spacer"></div>
+
+</div>
+<div class="footer">Av. Javier Prado Este s/n, Monterrico, Lima 33 - Per�.<br />
+Telf: (511) 437-6767 Fax: (511) 437-8066<br />
+Ulima todos los derechos reservados  2008</div>
+</body>
+</html>
+
+Set-Cookie
+LEER COOKIES
+errorLogin=inicio.jsp; Path=/; Domain=.ulima.edu.pe
