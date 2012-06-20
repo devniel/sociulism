@@ -1,0 +1,14 @@
+@(user : Usuario)
+
+@import helper._
+@main("Welcome to Play 2.0") {
+    <h1>Hola @session.get("codigo")</h1>
+   
+    <ul>
+    @for(curso <- user.getCursos()) {
+	  <li>@curso.getCurso().getNombre()</li>
+	}
+	</ul>
+	
+	<a href="@{routes.Users.logout}">Logout</a>
+}
