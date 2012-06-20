@@ -88,11 +88,11 @@ public class ChatCurso extends UntypedActor {
             
             // Check if this username is free.
             if(members.containsKey(join.username)) {
-                getSender().tell("Por ahora solo puedes usar una sala a la vez");
+                getSender().tell("This username is already used");
             } else {
                 members.put(join.username, join.channel);
                 usuariosPorCurso.put(join.channel,join.curso);
-                notifyAll("join", join.username, "ha ingresado al chat.");
+                notifyAll("join", join.username, "has entered the room");
                 getSender().tell("OK");
             }
             
@@ -108,11 +108,10 @@ public class ChatCurso extends UntypedActor {
             // Received a Quit message
             Quit quit = (Quit)message;
             
-            notifyAll("quit", quit.username, "ha dejado el chat.");
-            
-            usuariosPorCurso.remove(members.get(quit.username));
             members.remove(quit.username);
             
+            notifyAll("quit", quit.username, "has leaved the room");
+        
         } else {
             unhandled(message);
         }
@@ -136,8 +135,6 @@ public class ChatCurso extends UntypedActor {
             ArrayNode m = event.putArray("members");
             for(String u: members.keySet()) {
             	
-            	System.out.println("###############");
-            	System.out.println(usuariosPorCurso.get(members.get(u)) + " == " + curso + " --> " + (usuariosPorCurso.get(members.get(u)).equals(curso)));
             	if(usuariosPorCurso.get(members.get(u)).equals(curso)) m.add(u);
             }
             
