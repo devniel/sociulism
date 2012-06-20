@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.h2.expression.ExpressionList;
 
@@ -58,16 +59,28 @@ public class Users extends Controller {
 
   public static Result login(){
     Form<Usuario> filledForm = userForm.bindFromRequest();
-    Usuario user = Usuario.getUserByCodigo(filledForm.get().codigo);
+    Map<String, String[]> formData = request().body().asFormUrlEncoded();
+    String code = "";
+    String password = "";
+
+    if(code == null || password == null){
+      code = filledForm.get().codigo;
+      password = filledForm.get().password;
+    }else{
+      code = formData.get("codigo")[0];
+      password = formData.get("password")[0];
+    }
+
+    Usuario user = Usuario.getUserByCodigo(code);
     
     // Comprobar password y cargar sesión.
-    if(filledForm.get().password.equals(user.getPassword())){
+    if(password.equals(user.getPassword())){
     	System.out.println("Válido, entrar");
     	loadSession(user);
     }
     
     // Redireccionar a página inicial (con o sin carga de sesión)
-    return redirect(routes.Users.index());
+    return redirect(routes.Application.index());
   }
 
   /*
@@ -172,6 +185,13 @@ public class Users extends Controller {
         return false;
       }
     }
+  }
+
+  public static Usuario getUserSession(){
+    String codigo = session("codigo");
+    String password = session("password");
+    Usuario user = Usuario.getUserByCodigo(codigo);
+    return user;
   }
   
   public static Result logout(){

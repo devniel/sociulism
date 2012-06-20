@@ -1,9 +1,10 @@
 @(users : List[Usuario], userForm : Form[Usuario])
 
+@import helper.twitterBootstrap._
 @import helper._
-@main("Welcome to Play 2.0") {
+@main(null) {
     <h1>@users.size() user(s)</h1>
-	<ul>
+	<!--<ul>
 		@for(user <- users){
 			<li>
 				@user.codigo
@@ -12,14 +13,38 @@
 				}
 			</li>
 		}
-	</ul>
+	</ul>-->
 	
-	<h2> Add a new user</h2>
+	<h2>Registrarse</h2>
+
+
 	@form(routes.Users.create()){
-		@inputText(userForm("nombres"))
-		@inputText(userForm("apellidos"))
-		@inputText(userForm("codigo"))
-		@inputPassword(userForm("password"))
+
+		@inputText(userForm("nombres"),
+			'_label -> "Nombres: ",
+			'_id -> "idForTheTopDlElement",
+			'_showConstraints -> false,
+			'_showErrors -> false,
+			'autocomplete -> "off")
+
+		@inputText(userForm("apellidos"),
+			'_label -> "Apellidos: ")
+
+		@inputText(userForm("codigo"),
+			'_label -> "Código: ")
+
+		@inputPassword(userForm("password"),
+			'_label -> "Contraseña: ")
+
 		<input type="submit" value="Entrar">
 	}
+
+
+	<!--<form method="POST" action="@routes.Users.create()" class="pull-right">
+		<input id="nombres" name="nombres" autocomplete="off" class="input-small" type="text" placeholder="Nombres">
+		<input id="apellidos" name="apellidos" autocomplete="off" class="input-small" type="text" placeholder="Apellidos">
+	    <input id="codigo" name="codigo" autocomplete="off" class="input-small" type="text" placeholder="Código">
+	    <input id="password" name="password" autocomplete="off" class="input-small" type="password" placeholder="Contraseña">
+	    <button class="btn" type="submit">Entrar</button>
+	</form>-->
 }
