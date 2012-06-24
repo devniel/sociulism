@@ -155,12 +155,14 @@ public class Ulima {
 	}
 
 
+	/**
 	public static void main(String[] args){
 
-		String html = login("20082219","DFYAPL");
+		String html = login("CODIGO","CLAVE");
 		List<CursoInfo> cursos = getCourses(html);
 
 	}
+	**/
 
 	// java -cp .;C:/jsoup-1.6.3.jar controllers.Ulima
 	
