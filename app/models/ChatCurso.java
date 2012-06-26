@@ -1,6 +1,8 @@
 package models;
 
 import play.mvc.*;
+import play.mvc.Http.Session;
+import play.mvc.Controller;
 import play.libs.*;
 import play.libs.F.*;
 
@@ -11,6 +13,7 @@ import static akka.pattern.Patterns.ask;
 
 import org.codehaus.jackson.*;
 import org.codehaus.jackson.node.*;
+
 
 import java.util.*;
 
@@ -28,7 +31,7 @@ public class ChatCurso extends UntypedActor {
     static {
         new Robot(defaultRoom);
     }
-    
+   
     /**
      * Join the default room.
      */
@@ -45,11 +48,14 @@ public class ChatCurso extends UntypedActor {
             	   
             	   // This method receive the messages from users
             	   
-            	   System.out.println("MENSAJE --> " + event.get("text").asText() + " DE " + username);
-                   
+                   String message = event.get("text").asText();
+                   String code = username;
                    // Send a Talk message to the room.
             	   // event.get("text").asText()
-                   defaultRoom.tell(new Talk(username, event.get("text").asText()));
+                   
+                   Mensaje mensaje = new Mensaje(message, Usuario.getUserByCodigo(code), Curso.getCursoByCodigo(curso));
+                   defaultRoom.tell(mensaje);
+                   
                    
                } 
             });
@@ -101,12 +107,12 @@ public class ChatCurso extends UntypedActor {
                 getSender().tell("OK");
             }
             
-        } else if(message instanceof Talk)  {
+        } else if(message instanceof Mensaje)  {
             
             // Received a Talk message
-            Talk talk = (Talk)message;
+            Mensaje msg = (Mensaje)message;
             
-            notifyAll("talk", talk.username, talk.text);
+            notifyAll("talk",msg.getEmisor().getCodigo() , msg.getContenido());
             
         } else if(message instanceof Quit)  {
             
