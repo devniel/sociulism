@@ -17,6 +17,15 @@ create table Curso_Usuario (
   curso_cid                 bigint)
 ;
 
+create table Mensaje (
+  mid                       bigint auto_increment not null,
+  contenido                 varchar(255),
+  fecha                     datetime,
+  emisor_uid                bigint,
+  curso_cid                 bigint,
+  constraint pk_Mensaje primary key (mid))
+;
+
 create table Usuario (
   uid                       bigint auto_increment not null,
   codigo                    varchar(255),
@@ -31,6 +40,10 @@ alter table Curso_Usuario add constraint fk_Curso_Usuario_usuario_1 foreign key 
 create index ix_Curso_Usuario_usuario_1 on Curso_Usuario (usuario_uid);
 alter table Curso_Usuario add constraint fk_Curso_Usuario_curso_2 foreign key (curso_cid) references Curso (cid) on delete restrict on update restrict;
 create index ix_Curso_Usuario_curso_2 on Curso_Usuario (curso_cid);
+alter table Mensaje add constraint fk_Mensaje_emisor_3 foreign key (emisor_uid) references Usuario (uid) on delete restrict on update restrict;
+create index ix_Mensaje_emisor_3 on Mensaje (emisor_uid);
+alter table Mensaje add constraint fk_Mensaje_curso_4 foreign key (curso_cid) references Curso (cid) on delete restrict on update restrict;
+create index ix_Mensaje_curso_4 on Mensaje (curso_cid);
 
 
 
@@ -41,6 +54,8 @@ SET FOREIGN_KEY_CHECKS=0;
 drop table Curso;
 
 drop table Curso_Usuario;
+
+drop table Mensaje;
 
 drop table Usuario;
 

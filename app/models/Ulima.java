@@ -28,7 +28,7 @@ import org.jsoup.select.Elements;
 
 public class Ulima {
 	
-	public static String login(String codigo, String password){
+	public static String login(String codigo, String password) throws Exception{
 		String response = "";
 		try {
 			
@@ -57,6 +57,8 @@ public class Ulima {
 			connection.setRequestProperty("Content-Type","application/x-www-form-urlencoded;charset=" + charset);
 			OutputStream output = null;
 			
+			//System.out.println("RESPONSE --> : " + connection.getResponseCode());
+			
 			try{
 				output = connection.getOutputStream();
 				output.write(query.getBytes(charset));
@@ -68,17 +70,16 @@ public class Ulima {
 			
 			// Make request
 			connection.connect();
-			
-			//System.out.println("LEEROY JENCKINS");
-			
+
 			// THIS LINE OF CODE IS SO IMPORTANT FOR SAVE THE COOKIES IN THE COOKIESTORE [*]
 			connection.getHeaderFields().get("Set-Cookie");
 
+			// Detect if the user and password are correct
 			CookieStore cookieStore = manager.getCookieStore();
 			List<HttpCookie> cookies = cookieStore.getCookies();
 			
 			for(HttpCookie cookie: cookies){
-				System.out.println(cookie.getName() + " --> " + cookie.getValue());
+				//System.out.println(cookie.getName() + " --> " + cookie.getValue());
 			}
 
 			connection.disconnect();
@@ -87,7 +88,7 @@ public class Ulima {
 			// Now the application make a request to another URL ["Consolidado de Matrícula"]
 			String url1 = "http://webaloe.ulima.edu.pe/portalUL/layout.jsp";
 			String url2 = "http://webaloe.ulima.edu.pe/portalUL/gama/servlets/ComandoMostrarConsMatr?COCICLO=20121&Fg=1";
-			URLConnection connection2 = new URL(url1).openConnection();
+			URLConnection connection2 = new URL(url2).openConnection();
 			connection2.setRequestProperty("Accept-Charset", charset);
 			connection2.setDoInput(true);
 			connection2.setDoOutput(true);
@@ -105,11 +106,19 @@ public class Ulima {
 		        if (reader != null) try { reader.close(); } catch (IOException logOrIgnore) {}
 		    }
 		    
+		    System.out.println("RESPONSE --> : " + connection.getResponseCode());
+			
+		    
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return response;
+		if(response.length() < 500){
+			// Not user
+			throw new Exception("No es usuario");
+		}else{
+			return response;
+		}
 	}
 
 	
@@ -168,8 +177,15 @@ public class Ulima {
 
 
 	public static void main(String[] args){
-		String html = login("20082219","XXXXX");
-		//System.out.println(html);
+		String html;
+		try {
+			html = login("20082219","XXXXX");
+			System.out.println(html.length());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}		
 		//List<CursoInfo> cursos = getCourses(html);
 	}
 

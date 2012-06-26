@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -31,6 +32,25 @@ public class Mensaje extends Model{
 
 	@OneToOne(cascade = {CascadeType.ALL})
 	private Usuario emisor;
+	
+	@OneToOne
+	private Curso curso;
+	
+	public Usuario getEmisor() {
+		return emisor;
+	}
+
+	public void setEmisor(Usuario emisor) {
+		this.emisor = emisor;
+	}
+
+	public Curso getCurso() {
+		return curso;
+	}
+
+	public void setCurso(Curso curso) {
+		this.curso = curso;
+	}
 
 	public Long getMid() {
 		return mid;
@@ -55,15 +75,4 @@ public class Mensaje extends Model{
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
-
-	public Usuario getUsuario() {
-		return emisor;
-	}
-
-	public void setUsuario(Usuario emisor) {
-		this.emisor = emisor;
-	}
-	
-	
-
 }
