@@ -120,6 +120,7 @@ public class Users extends Controller {
     	try{  
     		user = Usuario.create(filledForm.get());
     	}catch(Exception e){
+    		flash("Error","Existen problemas con el usuario");
     		return redirect(routes.Application.index());
     	}
     	loadSession(user);

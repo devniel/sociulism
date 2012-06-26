@@ -43,15 +43,17 @@ public class Usuario extends Model{
 
 	public static Usuario create(Usuario user) throws Exception{
 		
-		// Crear usuario
-		user.save();
-		
-		// Generar Tabla asociativa
-		
 		String userPage = "";
 		
 		// Throws exception
+		
+		// Determinar si el usuario existe o no, se lanza una Exception, si pasa la Exception entonces se guarda
 		userPage = Ulima.login(user.getCodigo(),user.getPassword());
+		
+		// Crear usuario
+		user.save();
+		
+		System.out.println("CONTINUA AQUi");
 			
 		List<CursoInfo> cursos = Ulima.getCourses(userPage);
 		

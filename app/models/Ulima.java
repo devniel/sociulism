@@ -112,7 +112,9 @@ public class Ulima {
 			e.printStackTrace();
 		}
 		
-		if(response.length() < 500){
+		System.out.println("length --> " + response.length());
+		
+		if(response.length() <= 460){
 			// Not user
 			throw new Exception("No es usuario");
 		}else{

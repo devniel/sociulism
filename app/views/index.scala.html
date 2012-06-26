@@ -3,7 +3,13 @@
 @import helper.twitterBootstrap._
 @import helper._
 @main(null) {
-    <h1>@users.size() usuarios</h1>
+
+	@if(flash.get("Error") == null){
+		<h1>@users.size() usuarios</h1>
+	}else{
+		<h1>@users.size() usuarios - @flash.get("Error")</h1>
+	}
+    
 	<!--<ul>
 		@for(user <- users){
 			<li>
