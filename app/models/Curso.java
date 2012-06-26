@@ -33,7 +33,7 @@ public class Curso extends Model{
 	private List<CursoHasUsuario> usuarios;
 	
 	@OneToMany
-	private List<Curso> mensajes;
+	private List<Mensaje> mensajes;
 
 	
 	
@@ -75,11 +75,11 @@ public class Curso extends Model{
 
 	/** GETTERS AND SETTERS **/
 	
-	public List<Curso> getMensajes() {
+	public List<Mensaje> getMensajes() {
 		return mensajes;
 	}
 
-	public void setMensajes(List<Curso> mensajes) {
+	public void setMensajes(List<Mensaje> mensajes) {
 		this.mensajes = mensajes;
 	}
 	
