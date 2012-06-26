@@ -11,13 +11,14 @@ import java.io.OutputStream;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
+import java.net.CookieStore;
+import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -43,7 +44,7 @@ public class Ulima {
 			String charset = "ISO-8859-1";
 			String param1 = codigo;
 			String param2 = password;
-			String query = String.format("j_username=%s&j_password=%s&ac=",
+			String query = String.format("j_username=%s&j_password=%s",
 					URLEncoder.encode(param1,charset),
 					URLEncoder.encode(param2,charset));
 			
@@ -68,13 +69,25 @@ public class Ulima {
 			// Make request
 			connection.connect();
 			
-			List<String> cookies = connection.getHeaderFields().get("Set-Cookie");
+			//System.out.println("LEEROY JENCKINS");
 			
+			// THIS LINE OF CODE IS SO IMPORTANT FOR SAVE THE COOKIES IN THE COOKIESTORE [*]
+			connection.getHeaderFields().get("Set-Cookie");
+
+			CookieStore cookieStore = manager.getCookieStore();
+			List<HttpCookie> cookies = cookieStore.getCookies();
+			
+			for(HttpCookie cookie: cookies){
+				System.out.println(cookie.getName() + " --> " + cookie.getValue());
+			}
+
 			connection.disconnect();
 			
 			// The cookies for session has been saved by the cookie manager.
 			// Now the application make a request to another URL ["Consolidado de Matrícula"]
-			URLConnection connection2 = new URL("http://webaloe.ulima.edu.pe/portalUL/gama/servlets/ComandoMostrarConsMatr?COCICLO=20121&Fg=1").openConnection();
+			String url1 = "http://webaloe.ulima.edu.pe/portalUL/layout.jsp";
+			String url2 = "http://webaloe.ulima.edu.pe/portalUL/gama/servlets/ComandoMostrarConsMatr?COCICLO=20121&Fg=1";
+			URLConnection connection2 = new URL(url1).openConnection();
 			connection2.setRequestProperty("Accept-Charset", charset);
 			connection2.setDoInput(true);
 			connection2.setDoOutput(true);
@@ -116,7 +129,6 @@ public class Ulima {
 		
 		Elements nodes = tbody.children();
 		
-		
 		Elements nodeCourses = new Elements();
 		
 		System.out.println(String.valueOf(nodes.size()));
@@ -157,13 +169,16 @@ public class Ulima {
 
 	public static void main(String[] args){
 
-		String html = login("20082219","DFYAPL");
-		List<CursoInfo> cursos = getCourses(html);
+		String html = login("20082219","XXXXX");
+		//System.out.println(html);
+		//List<CursoInfo> cursos = getCourses(html);
 
 	}
 
-	// java -cp .;C:/jsoup-1.6.3.jar controllers.Ulima
+	// How to run this with cmd?
+	// javac -cp .;C:/jsoup-1.6.3.jar models/Ulima.java
+	// java -cp .;C:/jsoup-1.6.3.jar models.Ulima
 	
-	// javac -cp .;C:/jsoup-1.6.3.jar controllers/Ulima.java
+	
 
 }
