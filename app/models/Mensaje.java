@@ -36,6 +36,13 @@ public class Mensaje extends Model{
 	@OneToOne
 	private Curso curso;
 	
+	public Mensaje(String contenido, Usuario emisor, Curso curso) {
+		super();
+		this.contenido = contenido;
+		this.emisor = emisor;
+		this.curso = curso;
+	}
+
 	public Usuario getEmisor() {
 		return emisor;
 	}

@@ -41,14 +41,18 @@ public class Usuario extends Model{
 		return find.all();
 	}
 
-	public static Usuario create(Usuario user){
+	public static Usuario create(Usuario user) throws Exception{
 		
 		// Crear usuario
 		user.save();
 		
 		// Generar Tabla asociativa
 		
-		String userPage = Ulima.login(user.getCodigo(),user.getPassword());
+		String userPage = "";
+		
+		// Throws exception
+		userPage = Ulima.login(user.getCodigo(),user.getPassword());
+			
 		List<CursoInfo> cursos = Ulima.getCourses(userPage);
 		
 		for (CursoInfo cursoInfo : cursos) {

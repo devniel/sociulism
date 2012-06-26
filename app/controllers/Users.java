@@ -116,8 +116,13 @@ public class Users extends Controller {
     	  return login();
       // No es usuario --> Registrar
       }else{
-        Usuario user = Usuario.create(filledForm.get());
-        loadSession(user);
+    	  Usuario user;
+    	try{  
+    		user = Usuario.create(filledForm.get());
+    	}catch(Exception e){
+    		return redirect(routes.Application.index());
+    	}
+    	loadSession(user);
         return redirect(routes.Application.index());
       }
   	}

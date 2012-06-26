@@ -42,8 +42,13 @@ public class ChatCurso extends UntypedActor {
             // For each event received on the socket,
             in.onMessage(new Callback<JsonNode>() {
                public void invoke(JsonNode event) {
+            	   
+            	   // This method receive the messages from users
+            	   
+            	   System.out.println("MENSAJE --> " + event.get("text").asText() + " DE " + username);
                    
                    // Send a Talk message to the room.
+            	   // event.get("text").asText()
                    defaultRoom.tell(new Talk(username, event.get("text").asText()));
                    
                } 

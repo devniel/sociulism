@@ -23,7 +23,6 @@ import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 public class Ulima {
@@ -128,6 +127,10 @@ public class Ulima {
 		Document doc = Jsoup.parse(html);
 		
 		Elements tables = doc.getElementsByTag("table");
+		
+		// For information about the user, the number of table is 4
+		Element tableInfo = tables.get(4);
+		System.out.println(tableInfo.child(0).toString());
 
 		// FOR ["CONSOLIDAD DE MATRICULA"] the number of table is 5, whereas for miulima is 87
 		Element table = tables.get(5);
@@ -179,8 +182,8 @@ public class Ulima {
 	public static void main(String[] args){
 		String html;
 		try {
-			html = login("20082219","XXXXX");
-			System.out.println(html.length());
+			html = login("20082219","XXXXXX");
+			List<CursoInfo> cursos = getCourses(html);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
