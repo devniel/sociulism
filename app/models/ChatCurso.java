@@ -2,9 +2,9 @@ package models;
 
 import play.mvc.*;
 import play.mvc.Http.Session;
-import play.mvc.Controller;
 import play.libs.*;
 import play.libs.F.*;
+import utils.Diccionario;
 
 import akka.util.*;
 import akka.actor.*;
@@ -15,6 +15,7 @@ import org.codehaus.jackson.*;
 import org.codehaus.jackson.node.*;
 
 
+import java.io.File;
 import java.util.*;
 
 import static java.util.concurrent.TimeUnit.*;
@@ -27,7 +28,15 @@ public class ChatCurso extends UntypedActor {
     // Default room.
     static ActorRef defaultRoom = Akka.system().actorOf(new Props(ChatCurso.class));
     
-    // Create a Robot, just for fun.
+    // Cargar diccionarios
+    static Diccionario malasPalabras;
+    
+    public ChatCurso() {
+		super();
+		malasPalabras = new Diccionario(new File(".").getAbsolutePath() + "/app/resources/lisuras.txt");
+	}
+
+	// Create a Robot, just for fun.
     static {
         new Robot(defaultRoom);
     }
@@ -52,11 +61,18 @@ public class ChatCurso extends UntypedActor {
                    String code = username;
                    // Send a Talk message to the room.
             	   // event.get("text").asText()
-                   
+                       
+                   System.out.println(malasPalabras.esMalaPalabra(message));
                    Mensaje mensaje = new Mensaje(message, Usuario.getUserByCodigo(code), Curso.getCursoByCodigo(curso));
+                   
+                   if(malasPalabras.esMalaPalabra(message)){
+                	   mensaje.setContenido("******");
+                   }else{
+                	   mensaje.save(); 
+                   }
+                   
                    defaultRoom.tell(mensaje);
-                   
-                   
+                	  
                } 
             });
             

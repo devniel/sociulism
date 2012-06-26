@@ -36,12 +36,37 @@ public class Mensaje extends Model{
 	@OneToOne
 	private Curso curso;
 	
+	public static Finder<Long,Mensaje> find = new Finder(Long.class, Mensaje.class);
+	
 	public Mensaje(String contenido, Usuario emisor, Curso curso) {
 		super();
 		this.contenido = contenido;
 		this.emisor = emisor;
 		this.curso = curso;
 	}
+	
+	/* CRUD */
+	
+	public static List<Mensaje> all(){
+		//return TODO;
+		return find.all();
+	}
+
+	public static Mensaje create(Mensaje mensaje){
+		mensaje.save();
+		return mensaje;
+	}
+
+	public static void delete(Long id){
+		find.ref(id).delete();
+	}
+
+	public static Mensaje getMensaje(Long id){
+		Mensaje msg = find.ref(id);
+		return msg;
+	}
+	
+	/* */
 
 	public Usuario getEmisor() {
 		return emisor;
