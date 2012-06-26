@@ -45,7 +45,7 @@
         $(function() {
             var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket
 	        var chatSocket = new WS("@routes.Cursos.chat(curso.getCodigo(),user.getCodigo()).webSocketURL(request)")
-            
+            var getMessage= "@curso.getMensajes()"
             var sendMessage = function() {
                 chatSocket.send(JSON.stringify(
                     {text: $("#talk").val()}
@@ -87,7 +87,7 @@
                     sendMessage()
                 } 
             }
-            
+    
             $("#talk").keypress(handleReturnKey)  
             
             chatSocket.onmessage = receiveEvent

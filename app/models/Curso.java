@@ -32,6 +32,11 @@ public class Curso extends Model{
 	@OneToMany
 	private List<CursoHasUsuario> usuarios;
 	
+	@OneToMany
+	private List<Curso> mensajes;
+
+	
+	
 	public String nombre;
 
 	public static Finder<Long,Curso> find = new Finder(Long.class, Curso.class);
@@ -70,7 +75,13 @@ public class Curso extends Model{
 
 	/** GETTERS AND SETTERS **/
 	
-	
+	public List<Curso> getMensajes() {
+		return mensajes;
+	}
+
+	public void setMensajes(List<Curso> mensajes) {
+		this.mensajes = mensajes;
+	}
 	
 	public Long getCid() {
 		return cid;
