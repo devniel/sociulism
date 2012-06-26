@@ -167,20 +167,11 @@ public class Ulima {
 	}
 
 
-	/**
 	public static void main(String[] args){
-
-<<<<<<< HEAD
 		String html = login("20082219","XXXXX");
 		//System.out.println(html);
 		//List<CursoInfo> cursos = getCourses(html);
-=======
-		String html = login("CODIGO","CLAVE");
-		List<CursoInfo> cursos = getCourses(html);
->>>>>>> bf0b24696725277bc3360cee11410bce3855368b
-
 	}
-	**/
 
 	// How to run this with cmd?
 	// javac -cp .;C:/jsoup-1.6.3.jar models/Ulima.java
