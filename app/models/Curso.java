@@ -34,6 +34,9 @@ public class Curso extends Model{
 	
 	@OneToMany
 	private List<Mensaje> mensajes;
+	
+	@OneToMany
+	private List<Enlace> enlaces;
 
 	
 	
@@ -114,6 +117,16 @@ public class Curso extends Model{
 	public void setUsuarios(List<CursoHasUsuario> usuarios) {
 		this.usuarios = usuarios;
 	}
+
+	public List<Enlace> getEnlaces() {
+		return enlaces;
+	}
+
+	public void setEnlaces(List<Enlace> enlaces) {
+		this.enlaces = enlaces;
+	}
+	
+	
 
 	
 

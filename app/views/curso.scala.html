@@ -3,7 +3,7 @@
 
 @import helper._
 @main(user) {
-    <h1>@curso.getNombre()</h1>
+    <!--<h1></h1>
 
     <h3>Estudiantes</h3>
 
@@ -11,14 +11,14 @@
     @for(usuario <- curso.getUsuarios()) {
     	<li>@usuario.getUsuario().getNombres() @usuario.getUsuario().getApellidos()</li>
 	}
-	</ul>
+	</ul>-->
 
 
 
 	<!-- CHAT -->
 
 	<div class="page-header">
-        <h1>Bienvenido al cubículo ! <small>Estás chateando como @user.getNombres()</small></h1>
+        <h1>@curso.getNombre() <small>- @curso.getUsuarios().size() matriculado(s)</small></h1>
     </div>
     
     <div id="onError" class="alert-message error">
@@ -41,9 +41,28 @@
             </div>
             <textarea id="talk"></textarea>
         </div>
-        <div class="span4">
+        <div class="span4" style="height:auto !important;min-height:50px !important;">
             <h2>Miembros</h2>
             <ul id="members">
+            </ul>
+        </div>
+
+        <div class="links">
+            <h2>Enlaces</h2>
+            <ul id="list-links">
+                @for(enlace <- curso.getEnlaces()){
+                    <li>
+                        <div class="link">
+                            <div class="link-picture">
+                                <img src="@enlace.getImagen()" height="50px" width="50px" style="float:right"/>
+                            </div>
+                            <div class="link-information">
+                                <a href="@enlace.getUrl()">@if(enlace.getTitulo().length() > 100){@enlace.getTitulo().substring(0,100)}else{@enlace.getTitulo()}</a>
+                            </div>
+                            <div class="cut"></div>
+                        </div>
+                    </li>
+                }
             </ul>
         </div>
     </div>
@@ -63,6 +82,8 @@
             
             var receiveEvent = function(event) {
                 var data = JSON.parse(event.data)
+
+                console.log(data);
                 
                 // Handle errors
                 if(data.error) {

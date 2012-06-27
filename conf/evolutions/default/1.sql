@@ -18,12 +18,14 @@ create table Curso_Usuario (
 ;
 
 create table Enlace (
+  eid                       bigint auto_increment not null,
   url                       varchar(255),
   descripcion               varchar(255),
   imagen                    varchar(255),
   titulo                    varchar(255),
   emisor_uid                bigint,
-  curso_cid                 bigint)
+  curso_cid                 bigint,
+  constraint pk_Enlace primary key (eid))
 ;
 
 create table Mensaje (

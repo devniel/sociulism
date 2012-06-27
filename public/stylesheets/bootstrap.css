@@ -294,7 +294,8 @@ a:hover {
   width: 520px;
 }
 .span10 {
-  width: 580px;
+ /* width: 580px;*/
+ width:660px;
 }
 .span11 {
   width: 640px;

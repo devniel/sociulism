@@ -16,6 +16,7 @@ import org.codehaus.jackson.node.*;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
@@ -47,11 +48,19 @@ public class ChatCurso extends UntypedActor {
    
     /**
      * Join the default room.
+     * @throws Exception 
      */
-    public static void join(final String username, final String curso, WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out) throws Exception{
+    public static void join(final String username, final String curso, WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out){
         
         // Send the Join message to the room
-        String result = (String)Await.result(ask(defaultRoom,new Join(username,curso,out), 1000),Duration.create(200, SECONDS));
+        String result = null;
+        
+		try {
+			result = (String)Await.result(ask(defaultRoom,new Join(username,curso,out), 1000),Duration.create(200, SECONDS));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
         if("OK".equals(result)) {
             
@@ -64,46 +73,44 @@ public class ChatCurso extends UntypedActor {
                    String message = event.get("text").asText();
                    String code = username;
                    
+                   Usuario usuario = Usuario.getUserByCodigo(code);
+                   Curso cursoChat = Curso.getCursoByCodigo(curso.toString());
+                   
                    // Send a Talk message to the room.
-            	   // event.get("text").asText()
-                   
-                       
-                   System.out.println(malasPalabras.esMalaPalabra(message));
-                   Mensaje mensaje = new Mensaje(message, Usuario.getUserByCodigo(code), Curso.getCursoByCodigo(curso));
-                   
-                   /* DETECTAR URL */
-           		  /* From STACKOVERFLOW */
-                   
-                   // separete input by spaces ( URLs don't have spaces )
-                   String [] parts = mensaje.getContenido().split("\\s");
-                   
-                   String _url = "";
-
-                   // Attempt to convert each item into an URL.   
-                   for( String item : parts ) try {
-                       URL url = new URL(item);
-                       // If possible then replace with anchor...
-                       _url = item;
-                       System.out.print("<a href=\"" + _url + "\">"+ _url + "</a> " ); 
-                       break;
-                   } catch (MalformedURLException e) {
-                       // If there was an URL that was not it!...
-                       System.out.print( item + " " );
-                   }
-                   
-                   
-                   if(_url != ""){
-                	   
-                   }
-                   
-                   
-
-                   
+                   Mensaje mensaje = new Mensaje(message, usuario, cursoChat);
                   
                    if(malasPalabras.esMalaPalabra(message)){
                 	   mensaje.setContenido("******");
                    }else{
-                	   mensaje.save(); 
+                	   System.out.println("NO ES MALA PALABRA");
+                	   System.out.println(mensaje.getContenido());
+                	   // GET URLS
+	                	String regex = "(http://|https://|ftp://|file://|www)[-a-z-A-Z0-9+&@#/%?=~_|!:,.;]*[-a-z-A-Z0-9+&@#/%=~_|]";
+	
+		               	Pattern pattern = Pattern.compile(regex);
+		               	Matcher matcher = pattern.matcher(mensaje.getContenido());
+		               		
+	               		if(matcher.find()){
+	               			String url = matcher.group();
+	               			
+	               			if(url.indexOf("www") == 0){
+	               				url = "http://" + url;
+	               			}
+	               			
+	               			Enlace enlace;
+	               			
+							try {
+								enlace = Enlace.createFromURL(url);
+								enlace.setEmisor(usuario);
+								enlace.setCurso(cursoChat);
+								enlace.save();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+	               		}
+
+	                	mensaje.save();
                    }
                    
                    defaultRoom.tell(mensaje);
@@ -150,11 +157,11 @@ public class ChatCurso extends UntypedActor {
             
             // Check if this username is free.
             if(members.containsKey(join.username)) {
-                getSender().tell("This username is already used");
+                getSender().tell("Este nombre de usuario ya está siendo usado en una sala de chat");
             } else {
                 members.put(join.username, join.channel);
                 usuariosPorCurso.put(join.channel,join.curso);
-                notifyAll("join", join.username, "has entered the room");
+                notifyAll("join", join.username, "ha entrado al cubículo.");
                 getSender().tell("OK");
             }
             
@@ -172,7 +179,7 @@ public class ChatCurso extends UntypedActor {
             
             members.remove(quit.username);
             
-            notifyAll("quit", quit.username, "has leaved the room");
+            notifyAll("quit", quit.username, "ha dejado el cubículo.");
         
         } else {
             unhandled(message);
@@ -189,12 +196,17 @@ public class ChatCurso extends UntypedActor {
         for(WebSocket.Out<JsonNode> channel: members.values()) {
             
             ObjectNode event = Json.newObject();
-            event.put("kind", kind);
+            event.put("kind", kind); // Tipo de Evento
             event.put("user", user);
+
+            Usuario _user = Usuario.getUserByCodigo(user);
+            event.put("nombres",_user.getNombres());
             event.put("message", text);
+
             
             
             ArrayNode m = event.putArray("members");
+
             for(String u: members.keySet()) {
             	
             	if(usuariosPorCurso.get(members.get(u)).equals(curso)) m.add(u);

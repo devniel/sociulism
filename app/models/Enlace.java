@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -13,24 +14,43 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import play.db.ebean.Model;
-import play.db.ebean.Model.Finder;
+
+import play.db.ebean.*;
 
 @Entity
 @Table(name="Enlace")
 public class Enlace extends Model{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	public Long eid;
 	
-	private String url;
-	private String descripcion;
-	private String imagen;
-	private String titulo;
+	public String url;
+	public String descripcion;
+	public String imagen;
+	public String titulo;
 	
+
 	@OneToOne(cascade = {CascadeType.ALL})
-	private Usuario emisor;
+	public Usuario emisor;
 	
 	@OneToOne
-	private Curso curso;
+	public Curso curso;
 	
 	public static Finder<Long,Enlace> find = new Finder(Long.class, Enlace.class);
+	
+	
+	public Long getEid() {
+		return eid;
+	}
+
+	public void setEid(Long eid) {
+		this.eid = eid;
+	}
 	
 	public static List<Enlace> all(){
 		//return TODO;
@@ -54,32 +74,58 @@ public class Enlace extends Model{
 	public static Enlace createFromURL(String url) throws IOException{
 		Enlace link = new Enlace();
 		Document doc = Jsoup.connect(url).get();
+		link.setUrl(url);
+		
+		//System.out.println(doc.toString());
 		List<Element> metas = doc.getElementsByTag("meta");
-		String desc = doc.select("meta[name=description]").first().attr("content");
+
+		String desc = doc.select("meta[property=og:description").first().attr("content");
+		if(desc == "") desc = doc.select("meta[name=description]").first().attr("content");
+		
+		if(desc.length() > 255){
+			desc = desc.substring(0,250);
+		}
 		
 		link.setDescripcion(desc);
 		
-		List<Element> images = doc.body().getElementsByTag("img");
 		String src_image = "";
-		for(Element image: images){
+		src_image = doc.select("meta[property=og:image").first().attr("content");
+
+		if(src_image == ""){
+			List<Element> images = doc.body().getElementsByTag("img");
 			
-			Integer width = (image.attr("width").equals(""))? 0:Integer.parseInt(image.attr("width"));
-			Integer height = (image.attr("height").equals(""))? 0 : Integer.parseInt(image.attr("height"));
-			System.out.println(width.toString() + " " + height.toString());
 			
-			if(width < 30 || height < 30){
-				continue;
-			}else{
-				src_image = image.attr("src");
-				break;
+			for(Element image: images){
+				
+				Integer width = (image.attr("width").equals(""))? 0:Integer.parseInt(image.attr("width"));
+				Integer height = (image.attr("height").equals(""))? 0 : Integer.parseInt(image.attr("height"));
+				//System.out.println(width.toString() + " " + height.toString());
+				
+				if(width < 30 || height < 30){
+					continue;
+				}else{
+					src_image = image.attr("src");
+					break;
+				}
 			}
 		}
 		
 		link.setImagen(src_image);
 		
-		String title = doc.select("title").first().text();
-
+		String title = doc.select("meta[property=og:title").first().attr("content");
+		if(title == "")doc.select("title").first().text();
+		
+		if(title.length() > 255){
+			title = title.substring(0,250);
+		}
+		
 		link.setTitulo(title);
+		
+		System.out.println("LLEGO HASTA AQUÍ");
+		System.out.println(link.getDescripcion());
+		System.out.println(link.getImagen());
+		System.out.println(link.getTitulo());
+		
 		return link;
 	}
 
@@ -130,6 +176,7 @@ public class Enlace extends Model{
 	public void setCurso(Curso curso) {
 		this.curso = curso;
 	}
+
 	
 	
 }
