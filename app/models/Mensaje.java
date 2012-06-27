@@ -16,7 +16,6 @@ import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
 import play.db.ebean.Model.Finder;
 
-//Task.java
 @Entity
 @Table(name="Mensaje")
 public class Mensaje extends Model{

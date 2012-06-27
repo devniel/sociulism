@@ -40,7 +40,7 @@ public class Diccionario {
     		System.out.println(palabras[i] +  " : " + mensaje + " <----> " + Pattern.matches(mensaje, palabras[i]));
     		
     		//boolean malaPalabra = Pattern.matches(palabras[i], mensaje );
-    		boolean malaPalabra = (mensaje.indexOf(palabras[i]) > -1)?true:false;
+    		boolean malaPalabra = (mensaje.toLowerCase().indexOf(palabras[i]) > -1)?true:false;
     		if(malaPalabra){
     			exists = true;
     			break;

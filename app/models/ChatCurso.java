@@ -16,7 +16,11 @@ import org.codehaus.jackson.node.*;
 
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.util.concurrent.TimeUnit.*;
 
@@ -47,7 +51,7 @@ public class ChatCurso extends UntypedActor {
     public static void join(final String username, final String curso, WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out) throws Exception{
         
         // Send the Join message to the room
-        String result = (String)Await.result(ask(defaultRoom,new Join(username,curso,out), 1000),Duration.create(1, SECONDS));
+        String result = (String)Await.result(ask(defaultRoom,new Join(username,curso,out), 1000),Duration.create(200, SECONDS));
         
         if("OK".equals(result)) {
             
@@ -59,12 +63,43 @@ public class ChatCurso extends UntypedActor {
             	   
                    String message = event.get("text").asText();
                    String code = username;
+                   
                    // Send a Talk message to the room.
             	   // event.get("text").asText()
+                   
                        
                    System.out.println(malasPalabras.esMalaPalabra(message));
                    Mensaje mensaje = new Mensaje(message, Usuario.getUserByCodigo(code), Curso.getCursoByCodigo(curso));
                    
+                   /* DETECTAR URL */
+           		  /* From STACKOVERFLOW */
+                   
+                   // separete input by spaces ( URLs don't have spaces )
+                   String [] parts = mensaje.getContenido().split("\\s");
+                   
+                   String _url = "";
+
+                   // Attempt to convert each item into an URL.   
+                   for( String item : parts ) try {
+                       URL url = new URL(item);
+                       // If possible then replace with anchor...
+                       _url = item;
+                       System.out.print("<a href=\"" + _url + "\">"+ _url + "</a> " ); 
+                       break;
+                   } catch (MalformedURLException e) {
+                       // If there was an URL that was not it!...
+                       System.out.print( item + " " );
+                   }
+                   
+                   
+                   if(_url != ""){
+                	   
+                   }
+                   
+                   
+
+                   
+                  
                    if(malasPalabras.esMalaPalabra(message)){
                 	   mensaje.setContenido("******");
                    }else{
