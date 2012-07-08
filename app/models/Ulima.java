@@ -96,9 +96,11 @@ public class Ulima {
 
 
 			String cookiess = "";
+			String cook = "";
 
 			for(HttpCookie cookie: cookies){
-				cookiess += cookie.getName() + "=" + cookie.getValue() + "; ");
+				cook = cookie.getName() + "=" + cookie.getValue() + "; ";
+				cookiess += cook;
 			}
 
 			System.out.println(cookiess);
