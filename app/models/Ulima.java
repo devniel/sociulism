@@ -87,7 +87,7 @@ public class Ulima {
 			// Now the application make a request to another URL ["Consolidado de Matrícula"]
 			String url1 = "http://webaloe.ulima.edu.pe/portalUL/layout.jsp";
 			String url2 = "http://webaloe.ulima.edu.pe/portalUL/gama/servlets/ComandoMostrarConsMatr?COCICLO=20121&Fg=1";
-			URLConnection connection2 = new URL(url1).openConnection();
+			URLConnection connection2 = new URL(url2).openConnection();
 			//connection2.setRequestMethod("GET");
 			connection2.setRequestProperty("Accept-Charset", charset);
 			connection2.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.3) Gecko/20100401");
@@ -107,9 +107,7 @@ public class Ulima {
 		        if (reader != null) try { reader.close(); } catch (IOException logOrIgnore) {}
 		    }
 		    
-		    System.out.println("RESPONSE --> : " + connection.getResponseCode());
-		    System.out.println(response);
-			
+		    System.out.println("RESPONSE --> : " + connection.getResponseCode());			
 		    
 		}catch (Exception e) {
 			e.printStackTrace();
