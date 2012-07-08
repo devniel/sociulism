@@ -93,12 +93,19 @@ public class Ulima {
 			connection2.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.3) Gecko/20100401");
 			connection2.setDoInput(true);
 			connection2.setDoOutput(true);
-			connection2.connect();
 
+
+			String cookiess = "";
 
 			for(HttpCookie cookie: cookies){
-				System.out.println(cookie.getName() + " --> " + cookie.getValue());
+				cookiess += cookie.getName() + "=" + cookie.getValue() + "; ");
 			}
+
+			System.out.println(cookiess);
+
+			connection2.setRequestProperty("Cookie",cookiess);
+
+			connection2.connect();
 			
 			// Read and show response
 			
