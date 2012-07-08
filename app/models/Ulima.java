@@ -78,7 +78,7 @@ public class Ulima {
 			List<HttpCookie> cookies = cookieStore.getCookies();
 			
 			for(HttpCookie cookie: cookies){
-				//System.out.println(cookie.getName() + " --> " + cookie.getValue());
+				System.out.println(cookie.getName() + " --> " + cookie.getValue());
 			}
 
 			connection.disconnect();
