@@ -106,6 +106,7 @@ public class Ulima {
 		    }
 		    
 		    System.out.println("RESPONSE --> : " + connection.getResponseCode());
+		    System.out.println(response);
 			
 		    
 		}catch (Exception e) {
