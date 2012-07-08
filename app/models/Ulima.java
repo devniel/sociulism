@@ -76,12 +76,12 @@ public class Ulima {
 			// Detect if the user and password are correct
 			CookieStore cookieStore = manager.getCookieStore();
 			List<HttpCookie> cookies = cookieStore.getCookies();
-			
+
+			connection.disconnect();
+
 			for(HttpCookie cookie: cookies){
 				System.out.println(cookie.getName() + " --> " + cookie.getValue());
 			}
-
-			connection.disconnect();
 			
 			// The cookies for session has been saved by the cookie manager.
 			// Now the application make a request to another URL ["Consolidado de Matrícula"]
