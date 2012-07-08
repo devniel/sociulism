@@ -88,12 +88,14 @@ public class Ulima {
 			String url1 = "http://webaloe.ulima.edu.pe/portalUL/layout.jsp";
 			String url2 = "http://webaloe.ulima.edu.pe/portalUL/gama/servlets/ComandoMostrarConsMatr?COCICLO=20121&Fg=1";
 			URLConnection connection2 = new URL(url2).openConnection();
-			//connection2.setRequestMethod("GET");
+
 			connection2.setRequestProperty("Accept-Charset", charset);
 			connection2.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.3) Gecko/20100401");
 			connection2.setDoInput(true);
 			connection2.setDoOutput(true);
 
+
+			// SET COOKIES IN CASE THAT COOKIEMANAGER DOESN´T WORK
 
 			String cookiess = "";
 			String cook = "";
@@ -102,8 +104,6 @@ public class Ulima {
 				cook = cookie.getName() + "=" + cookie.getValue() + "; ";
 				cookiess += cook;
 			}
-
-			System.out.println(cookiess);
 
 			connection2.setRequestProperty("Cookie",cookiess);
 
