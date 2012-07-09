@@ -25,6 +25,7 @@ create table Enlace (
   titulo                    varchar(255),
   emisor_uid                bigint,
   curso_cid                 bigint,
+  mensaje_mid               bigint,
   constraint pk_Enlace primary key (eid))
 ;
 
@@ -32,8 +33,10 @@ create table Mensaje (
   mid                       bigint auto_increment not null,
   contenido                 varchar(255),
   fecha                     datetime,
+  fecha_formato             varchar(255),
   emisor_uid                bigint,
   curso_cid                 bigint,
+  enlace_eid                bigint,
   constraint pk_Mensaje primary key (mid))
 ;
 
@@ -55,10 +58,14 @@ alter table Enlace add constraint fk_Enlace_emisor_3 foreign key (emisor_uid) re
 create index ix_Enlace_emisor_3 on Enlace (emisor_uid);
 alter table Enlace add constraint fk_Enlace_curso_4 foreign key (curso_cid) references Curso (cid) on delete restrict on update restrict;
 create index ix_Enlace_curso_4 on Enlace (curso_cid);
-alter table Mensaje add constraint fk_Mensaje_emisor_5 foreign key (emisor_uid) references Usuario (uid) on delete restrict on update restrict;
-create index ix_Mensaje_emisor_5 on Mensaje (emisor_uid);
-alter table Mensaje add constraint fk_Mensaje_curso_6 foreign key (curso_cid) references Curso (cid) on delete restrict on update restrict;
-create index ix_Mensaje_curso_6 on Mensaje (curso_cid);
+alter table Enlace add constraint fk_Enlace_mensaje_5 foreign key (mensaje_mid) references Mensaje (mid) on delete restrict on update restrict;
+create index ix_Enlace_mensaje_5 on Enlace (mensaje_mid);
+alter table Mensaje add constraint fk_Mensaje_emisor_6 foreign key (emisor_uid) references Usuario (uid) on delete restrict on update restrict;
+create index ix_Mensaje_emisor_6 on Mensaje (emisor_uid);
+alter table Mensaje add constraint fk_Mensaje_curso_7 foreign key (curso_cid) references Curso (cid) on delete restrict on update restrict;
+create index ix_Mensaje_curso_7 on Mensaje (curso_cid);
+alter table Mensaje add constraint fk_Mensaje_enlace_8 foreign key (enlace_eid) references Enlace (eid) on delete restrict on update restrict;
+create index ix_Mensaje_enlace_8 on Mensaje (enlace_eid);
 
 
 

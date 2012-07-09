@@ -22,6 +22,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import com.google.gson.Gson;
 
 import static java.util.concurrent.TimeUnit.*;
 
@@ -56,7 +57,7 @@ public class ChatCurso extends UntypedActor {
         String result = null;
         
 		try {
-			result = (String)Await.result(ask(defaultRoom,new Join(username,curso,out), 1000),Duration.create(200, SECONDS));
+			result = (String)Await.result(ask(defaultRoom,new Join(username,curso,out), 5000),Duration.create(200, SECONDS));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -89,7 +90,8 @@ public class ChatCurso extends UntypedActor {
 	
 		               	Pattern pattern = Pattern.compile(regex);
 		               	Matcher matcher = pattern.matcher(mensaje.getContenido());
-		               		
+		               	Enlace enlace = null;
+		               	
 	               		if(matcher.find()){
 	               			String url = matcher.group();
 	               			
@@ -97,13 +99,14 @@ public class ChatCurso extends UntypedActor {
 	               				url = "http://" + url;
 	               			}
 	               			
-	               			Enlace enlace;
+	               			
 	               			
 							try {
 								enlace = Enlace.createFromURL(url);
 								enlace.setEmisor(usuario);
 								enlace.setCurso(cursoChat);
 								enlace.save();
+                                mensaje.setEnlace(enlace); 
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -111,6 +114,8 @@ public class ChatCurso extends UntypedActor {
 	               		}
 
 	                	mensaje.save();
+	                	
+	                	if(enlace != null) enlace.setMensaje(mensaje);
                    }
                    
                    defaultRoom.tell(mensaje);
@@ -156,13 +161,19 @@ public class ChatCurso extends UntypedActor {
             Join join = (Join)message;
             
             // Check if this username is free.
-            if(members.containsKey(join.username)) {
+            if(members.containsKey(join.usuario.getCodigo())) {
+
                 getSender().tell("Este nombre de usuario ya está siendo usado en una sala de chat");
+
             } else {
-                members.put(join.username, join.channel);
-                usuariosPorCurso.put(join.channel,join.curso);
-                notifyAll("join", join.username, "ha entrado al cubículo.");
+                
+                members.put(join.usuario.getCodigo(), join.channel);
+                usuariosPorCurso.put(join.channel,join.curso.getCodigo());
+
+                notifyJoin(join.usuario, join.curso);
+
                 getSender().tell("OK");
+
             }
             
         } else if(message instanceof Mensaje)  {
@@ -170,7 +181,9 @@ public class ChatCurso extends UntypedActor {
             // Received a Talk message
             Mensaje msg = (Mensaje)message;
             
-            notifyAll("talk",msg.getEmisor().getCodigo() , msg.getContenido());
+            //notifyAll("talk",msg.getEmisor().getCodigo() , msg.getContenido());
+
+            notifyMessage(msg);
             
         } else if(message instanceof Quit)  {
             
@@ -187,7 +200,88 @@ public class ChatCurso extends UntypedActor {
         
     }
     
-    // Send a Json event to all members
+    // Send a Json event to all members WHEN a new user enters to the room
+
+    public void notifyJoin(Usuario user,Curso curso){
+
+        WebSocket.Out<JsonNode> wsUser = members.get(user.getCodigo());
+        String cid = curso.getCodigo();
+        Gson gson = new Gson();
+
+         for(WebSocket.Out<JsonNode> channel: members.values()) {
+            
+            ObjectNode event = Json.newObject();
+            event.put("kind", "join"); // Tipo de Evento
+            event.put("user.code",user.getCodigo());
+            event.put("user.name",user.getNombres());
+            event.put("message",user.getNombres() + " ha ingresado al cubículo");
+
+            ArrayNode m = event.putArray("members");
+
+            for(String usercode: members.keySet()) {
+                if(usuariosPorCurso.get(members.get(usercode)).equals(cid)){
+                    // TODO
+                    Usuario anotherUser = Usuario.getUserByCodigo(usercode);
+                    m.add("{\"nombres\":\"" + anotherUser.getNombres() + 
+                        "\",\"apellidos\":\"" + anotherUser.getApellidos() + 
+                        "\",\"codigo\":\"" + anotherUser.getCodigo() + "\"}");
+                }
+            }
+            
+            if(usuariosPorCurso.get(channel).equals(cid))
+                channel.write(event);
+        }
+    }
+
+    public void notifyMessage(Mensaje message){
+
+         WebSocket.Out<JsonNode> wsUser = members.get(message.getEmisor().getCodigo());
+         String cid = message.getCurso().getCodigo();
+         Gson gson = new Gson();
+
+         for(WebSocket.Out<JsonNode> channel: members.values()) {
+            
+            ObjectNode event = Json.newObject();
+            event.put("kind", "talk"); // Tipo de Evento
+            event.put("user","{\"nombres\":\"" + message.getEmisor().getNombres() + 
+                        "\",\"apellidos\":\"" + message.getEmisor().getApellidos() + 
+                        "\",\"codigo\":\"" + message.getEmisor().getCodigo() + "\"}");
+            event.put("message",message.getContenido());
+
+            try{
+                System.out.println("ENLACE : " + message.getEnlace().getUrl()); 
+            }catch(Exception e){
+
+            }
+            
+
+            if(message.getEnlace() != null){
+            
+                event.put("enlace","{\"url\":\"" + message.getEnlace().getUrl() + 
+                            "\",\"titulo\":\"" + message.getEnlace().getTitulo() + 
+                            "\",\"imagen\":\"" + message.getEnlace().getImagen() + 
+                            "\",\"descripcion\":\"" + message.getEnlace().getDescripcion() + "\"}");
+            }
+
+            ArrayNode m = event.putArray("members");
+
+            for(String usercode: members.keySet()) {
+                if(usuariosPorCurso.get(members.get(usercode)).equals(cid)){
+                    // TODO
+                    Usuario anotherUser = Usuario.getUserByCodigo(usercode);
+                    m.add("{\"nombres\":\"" + anotherUser.getNombres() + 
+                        "\",\"apellidos\":\"" + anotherUser.getApellidos() + 
+                        "\",\"codigo\":\"" + anotherUser.getCodigo() + "\"}");
+                }
+            }
+            
+            if(usuariosPorCurso.get(channel).equals(cid))
+                channel.write(event);
+        }
+
+
+    }
+
     public void notifyAll(String kind,String user, String text) {
     	
     	WebSocket.Out<JsonNode> chan = members.get(user);
@@ -218,7 +312,8 @@ public class ChatCurso extends UntypedActor {
             
             System.out.println(cid + " == " + curso + " --> " + (cid.equals(curso)));
             
-            if(cid.equals(curso))channel.write(event);
+            if(cid.equals(curso))
+                channel.write(event);
         }
     }
     
@@ -226,13 +321,13 @@ public class ChatCurso extends UntypedActor {
     
     public static class Join {
         
-        final String username;
-        final String curso;
+        Usuario usuario;
+        Curso curso;
         final WebSocket.Out<JsonNode> channel;
         
         public Join(String username, String curso, WebSocket.Out<JsonNode> channel) {
-            this.username = username;
-            this.curso = curso;
+            this.usuario = Usuario.getUserByCodigo(username);
+            this.curso = Curso.getCursoByCodigo(curso);
             this.channel = channel;
         }
         

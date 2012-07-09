@@ -4,6 +4,7 @@ import org.codehaus.jackson.JsonNode;
 
 import play.*;
 import play.mvc.*;
+import play.libs.Comet;
 
 import views.html.*;
 import models.ChatCurso;
@@ -11,10 +12,23 @@ import models.Curso;
 import models.Usuario;
 
 public class Cursos extends Controller {
+	
+  /**
+   * COMET
+   */
+  
+  public static Comet comet = new Comet("parent.cometMessage") {
+	  public void onConnected() {
+	    }
+	 };
   
   public static Result index() {
     return ok(views.html.curso.render(null,null));
   }
+
+  /**
+   *  Show the content of the Course
+   */
 
   public static Result show(Long id){
 
@@ -46,5 +60,79 @@ public class Cursos extends Controller {
           }
       };
   }
+
+
+
+  public static Result comet(String id) {    
+    return ok(comet);
+  };
+  
+
+  public static Result cometMessage(String id) {
+
+    // MESSAGE
+    String message = request().body().asFormUrlEncoded().get("message")[0];
+    // USER UID
+    String uid = request().body().asFormUrlEncoded().get("uid")[0];
+    // COURSE CID
+    String cid = request().body().asFormUrlEncoded().get("cid")[0];
+
+    JsonNode json = request().body().asJson();
+
+    System.out.println("MENSAJE --> " + message);
+    
+    System.out.println(json.asText());
+    
+    comet.sendMessage("sd");
+    
+	  return ok("{message:'" + message + "',uid:'" + uid + "'}");
+
+     
+     /*Usuario usuario = Usuario.getUserByCodigo(uid);
+     Curso curso = Curso.getCursoByCodigo(cid);
+     
+     // Send a Talk message to the room.
+     Mensaje mensaje = new Mensaje(message, usuario, curso);
+    
+     if(malasPalabras.esMalaPalabra(message)){
+       mensaje.setContenido("******");
+     }else{
+       System.out.println("NO ES MALA PALABRA");
+       System.out.println(mensaje.getContenido());
+       // GET URLS
+       String regex = "(http://|https://|ftp://|file://|www)[-a-z-A-Z0-9+&@#/%?=~_|!:,.;]*[-a-z-A-Z0-9+&@#/%=~_|]";
+
+       Pattern pattern = Pattern.compile(regex);
+       Matcher matcher = pattern.matcher(mensaje.getContenido());
+        
+       if(matcher.find()){
+        String url = matcher.group();
+        
+        if(url.indexOf("www") == 0){
+          url = "http://" + url;
+        }
+        
+        Enlace enlace;
+        
+        try {
+          enlace = Enlace.createFromURL(url);
+          enlace.setEmisor(usuario);
+          enlace.setCurso(cursoChat);
+          enlace.save();
+        } catch (IOException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+       }
+       mensaje.save();
+      }
+           
+      defaultRoom.tell(mensaje);*/
+
+
+
+
+
+  };
   
 }

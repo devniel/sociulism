@@ -2,7 +2,42 @@
 
 
 @import helper._
-@main(user) {
+
+@chat(user) {
+    <!-- AGREGAR ESTO -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.miniColors.js")"></script>
+    <link type="text/css" rel="stylesheet" href="@routes.Assets.at("stylesheets/jquery.miniColors.css")" />  
+        
+    <script type="text/javascript">
+
+        
+        $(document).ready( function() {
+            
+            //
+            // Enabling miniColors
+            //
+            
+            $(".color-picker").miniColors({
+                change: refreshGradient
+            });         
+                
+                    
+                    function refreshGradient() {
+                      var gradientBody = 'linear-gradient(top, ' + $("#color1").val() + ', ' + $("#color2").val() + ')';
+                      var gradientBody1 = 'linear-gradient(top, ' + $("#color3").val() + ', ' + $("#color4").val() + ')';
+                      var gradientBody2 = 'linear-gradient(top, ' + $("#color5").val() + ', ' + $("#color6").val() + ')';
+                      // we need to use vendor prefixes
+                      $.each(['', '-o-', '-moz-', '-webkit-', '-ms-'], function() {
+                        $("#main").css({ 'background-image': this + gradientBody })
+                        $("#cuerpo1").css({ 'background-image': this + gradientBody1})
+                        $("#cabecera").css({ 'background-image': this + gradientBody2});
+                      });
+                    }                   
+        });     
+        </script>    
+    <!-- AGREGAR ESTO --> 
+}{
     <!--<h1></h1>
 
     <h3>Estudiantes</h3>
@@ -17,7 +52,7 @@
 
 	<!-- CHAT -->
 
-	<div class="page-header">
+	<div id="cabecera" class="page-header">
         <h1>@curso.getNombre() <small>- @curso.getUsuarios().size() matriculado(s)</small></h1>
     </div>
     
@@ -33,19 +68,30 @@
 
                 @for(mensaje <- curso.getMensajes()){
                    <div class="message talk me">
-                    <span>@mensaje.getEmisor().getCodigo()</span><p>@mensaje.getContenido()</p>
+                        <div class="message-information">
+                            <span class="message-author">@mensaje.getEmisor().getNombres() @mensaje.getEmisor().getApellidos()</span>
+                            <span class="message-date">@mensaje.getFechaFormato()</span>
+                        </div>
+                        <p class="message-content">@mensaje.getContenido()</p>
+                        <div class="cut"></div>
                    </div> 
                 }
                 
 
             </div>
             <textarea id="talk"></textarea>
+            <div id="notebook">
+                <canvas id="notebook-canvas" width="660" height="100"></canvas>
+            </div>
         </div>
         <div class="span4" style="height:auto !important;min-height:50px !important;">
             <h2>Miembros</h2>
             <ul id="members">
             </ul>
         </div>
+
+        
+        <!-- LINKS -->
 
         <div class="links">
             <h2>Enlaces</h2>
@@ -58,6 +104,7 @@
                             </div>
                             <div class="link-information">
                                 <a href="@enlace.getUrl()">@if(enlace.getTitulo().length() > 100){@enlace.getTitulo().substring(0,100)}else{@enlace.getTitulo()}</a>
+                                <p class="link-description">@if(enlace.getDescripcion().length() > 130){@enlace.getDescripcion().substring(0,130)}else{@enlace.getDescripcion()}</p>
                             </div>
                             <div class="cut"></div>
                         </div>
@@ -65,63 +112,147 @@
                 }
             </ul>
         </div>
+        <!-- /LINKS -->
+
+        <!-- COLORES -->                          
+        <div class="span4" style="height:auto !important;min-height:50px !important;">
+            <h2>Apariencia</h2>            
+            <p> 
+            <h5>Chat</h5>
+            <input type="hidden" name="color1" class="color-picker miniColors" id="color1" size="6" maxlength="7" autocomplete="off" value="#FFFFFF"><a class="miniColors-trigger" style="background-color: #ffffff" href="#"></a>
+            <input type="hidden" name="color2" class="color-picker miniColors" id="color2" size="6" maxlength="7" autocomplete="off" value="#FFFFFF"><a class="miniColors-trigger" style="background-color: #ffffff" href="#"></a>          
+            </p>
+            <p> 
+            <h5>Sala</h5>
+            <input type="hidden" name="color5" class="color-picker miniColors" id="color5" size="6" maxlength="7" autocomplete="off" value="#FFFFFF"><a class="miniColors-trigger" style="background-color: #ffffff" href="#"></a>
+            <input type="hidden" name="color6" class="color-picker miniColors" id="color6" size="6" maxlength="7" autocomplete="off" value="#FFFFFF"><a class="miniColors-trigger" style="background-color: #ffffff" href="#"></a>      
+            </p>
+        </div>
+        <!--/COLORES -->
+
+
+
     </div>
+
+    <script>
+        var cometMessage = function(data) {
+            console.log('Received event: ' , JSON.parse(data));
+            var el = $('<div class="message"><span></span><p></p></div>');
+            $("span", el).text(data.uid);
+            $("p", el).text(data.message);
+            if(data.uid == '@user.getCodigo()') $(el).addClass('me');
+            $('#messages').append(el)
+        }
+    </script>
+
+    <!--<iframe src="/curso/@curso.getCodigo()/comet"></iframe>-->
     
     <script type="text/javascript" charset="utf-8">
-    
-        $(function() {
-            var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket
-	        var chatSocket = new WS("@routes.Cursos.chat(curso.getCodigo(),user.getCodigo()).webSocketURL(request)")
-            var getMessage= "@curso.getMensajes()"
-            var sendMessage = function() {
-                chatSocket.send(JSON.stringify(
-                    {text: $("#talk").val()}
-                ))
-                $("#talk").val('')
-            }
-            
-            var receiveEvent = function(event) {
-                var data = JSON.parse(event.data)
 
-                console.log(data);
-                
-                // Handle errors
-                if(data.error) {
-                    chatSocket.close()
-                    $("#onError span").text(data.error)
-                    $("#onError").show()
-                    return
-                } else {
-                    $("#onChat").show()
+        $(function() {
+
+            var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket;
+	       
+            var chatSocket = new WS("@routes.Cursos.chat(curso.getCodigo(),user.getCodigo()).webSocketURL(request)");
+
+            // If the connection has been closed or could not be opened
+            // then dont use websockets.
+
+                var sendMessage = function() {
+
+                    var message = JSON.stringify({
+                            text: $("#talk").val()
+                    });
+
+                    chatSocket.send(message);
+
+                    /*$.ajax({
+                      type: "POST",
+                      url: "/curso/@curso.getCodigo()/comet",
+                      dataType : "json",
+                      data: { 
+                        uid: "@user.getCodigo()", 
+                        message: $("#talk").val(),
+                        cid : "@curso.getCodigo()"
+                        }
+                    }).done(function( msg ) {
+                      console.log( "Message: " + msg );
+                    });*/
+
+                    $("#talk").val('');
                 }
                 
-                // Create the message element
-                var el = $('<div class="message"><span></span><p></p></div>')
-                $("span", el).text(data.user)
-                $("p", el).text(data.message)
-                $(el).addClass(data.kind)
-                if(data.user == '@user.getCodigo()') $(el).addClass('me')
-                $('#messages').append(el)
+                var receiveEvent = function(event) {
+
+                    var data = JSON.parse(event.data)
+                    
+                    // Handle errors
+                    if(data.error) {
+                        chatSocket.close()
+                        $("#onError span").text(data.error)
+                        $("#onError").show()
+                        return
+                    } else {
+                        $("#onChat").show()
+                    }
+                    
+                    // Create the message element
+
+                    var el = $('<div class="message"><span></span><p></p></div>')
+                    
+                    if(data.kind == "talk"){
+                        console.log("TALK : ",data);
+                        data.user = JSON.parse(data.user);
+                         $("span", el).text(data.user.nombres + " " + data.user.apellidos);
+                     }else{
+                        $("span", el).text(data.user);
+                     }
+
+                    $("p", el).text(data.message);
+                    $(el).addClass(data.kind);
+                    if(data.user == '@user.getCodigo()') $(el).addClass('me')
+                    $('#messages').append(el)
+
+
+                    // GET URL
+                    if(data.enlace != null){
+                        data.enlace = JSON.parse(data.enlace);
+                        if(data.enlace.titulo.length > 100) data.enlace.titulo = data.enlace.titulo.substring(0,100);
+                        if(data.enlace.descripcion.length > 130) data.enlace.descripcion = data.enlace.descripcion.substring(0,130);
+                        var link = $('<li><div class="link">'+
+                            '<div class="link-picture">'+
+                                '<img src="' + data.enlace.imagen + '" height="50px" width="50px" style="float:right"/>'+
+                            '</div>'+
+                            '<div class="link-information">'+
+                                '<a href="' + data.enlace.url + '">' + data.enlace.titulo + '</a>'+
+                                '<p class="link-description">' + data.enlace.descripcion + '</p>'+
+                            '</div>'+
+                            '<div class="cut"></div>'+
+                        '</div></li>').prependTo($("#list-links").hide().fadeIn('slow'));
+                    }
+                    
+                    // Update the members list
+                    $("#members").html('') 
+                    $(data.members).each(function() {
+                        var anotherUser = JSON.parse(this);
+                        $("#members").append('<li>' +
+                            anotherUser.nombres + ' ' + anotherUser.apellidos + " (" + anotherUser.codigo + ")" +
+                            '</li>')
+                    })
+                }
                 
-                // Update the members list
-                $("#members").html('') 
-                $(data.members).each(function() {
-                    $("#members").append('<li>' + this + '</li>')
-                })
-            }
-            
-            var handleReturnKey = function(e) {
-                if(e.charCode == 13 || e.keyCode == 13) {
-                    e.preventDefault()
-                    sendMessage()
-                } 
-            }
-    
-            $("#talk").keypress(handleReturnKey)  
-            
-            chatSocket.onmessage = receiveEvent
-            
-        })
+                var handleReturnKey = function(e) {
+                    if(e.charCode == 13 || e.keyCode == 13) {
+                        e.preventDefault();
+                        sendMessage();
+                    } 
+                }
+        
+                $("#talk").keypress(handleReturnKey)  
+                
+                chatSocket.onmessage = receiveEvent;
+                
+        });
     
     </script>
 

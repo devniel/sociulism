@@ -40,6 +40,9 @@ public class Enlace extends Model{
 	
 	@OneToOne
 	public Curso curso;
+
+	@OneToOne
+	public Mensaje mensaje;
 	
 	public static Finder<Long,Enlace> find = new Finder(Long.class, Enlace.class);
 	
@@ -73,58 +76,74 @@ public class Enlace extends Model{
 	
 	public static Enlace createFromURL(String url) throws IOException{
 		Enlace link = new Enlace();
-		Document doc = Jsoup.connect(url).get();
+		Document doc = Jsoup.connect(url).followRedirects(true).get();
 		link.setUrl(url);
+			
+		System.out.println(doc.toString());
 		
-		//System.out.println(doc.toString());
 		List<Element> metas = doc.getElementsByTag("meta");
+		System.out.println(":::::::::::zxczxcz");
 
-		String desc = doc.select("meta[property=og:description").first().attr("content");
-		if(desc == "") desc = doc.select("meta[name=description]").first().attr("content");
+		String desc = null;
 		
-		if(desc.length() > 255){
-			desc = desc.substring(0,250);
+		try{
+			desc = doc.select("meta[property=og:description").first().attr("content");
+			if(desc == "") desc = doc.select("meta[name=description]").first().attr("content");
+			if(desc.length() > 255)	desc = desc.substring(0,250);
+			link.setDescripcion(desc);
+		}catch(NullPointerException e ){
+			e.printStackTrace();
+			if(doc.select("meta[name=description]") != null){
+				System.out.println("DESCRIPCIÓN --> " + doc.select("meta[name=description]").first().attr("content"));
+				link.setDescripcion(doc.select("meta[name=description]").first().attr("content"));
+			}else{
+				link.setDescripcion("");
+			}
+			
 		}
 		
-		link.setDescripcion(desc);
-		
-		String src_image = "";
-		src_image = doc.select("meta[property=og:image").first().attr("content");
+		System.out.println("IMAGENES");
 
-		if(src_image == ""){
-			List<Element> images = doc.body().getElementsByTag("img");
-			
-			
-			for(Element image: images){
+		try{
+			String src_image = "";
+			src_image = doc.select("meta[property=og:image").first().attr("content");
+			if(src_image == ""){
+				List<Element> images = doc.body().getElementsByTag("img");
 				
-				Integer width = (image.attr("width").equals(""))? 0:Integer.parseInt(image.attr("width"));
-				Integer height = (image.attr("height").equals(""))? 0 : Integer.parseInt(image.attr("height"));
-				//System.out.println(width.toString() + " " + height.toString());
 				
-				if(width < 30 || height < 30){
-					continue;
-				}else{
-					src_image = image.attr("src");
-					break;
+				for(Element image: images){
+					
+					Integer width = (image.attr("width").equals(""))? 0:Integer.parseInt(image.attr("width"));
+					Integer height = (image.attr("height").equals(""))? 0 : Integer.parseInt(image.attr("height"));
+					//System.out.println(width.toString() + " " + height.toString());
+					
+					if(width < 30 || height < 30){
+						continue;
+					}else{
+						src_image = image.attr("src");
+						break;
+					}
 				}
 			}
+			
+			link.setImagen(src_image);
+		}catch(NullPointerException e){
+			link.setImagen("#");
 		}
 		
-		link.setImagen(src_image);
-		
-		String title = doc.select("meta[property=og:title").first().attr("content");
-		if(title == "")doc.select("title").first().text();
-		
-		if(title.length() > 255){
-			title = title.substring(0,250);
+		try{
+			String title = doc.select("meta[property=og:title").first().attr("content");
+			if(title == "")doc.select("title").first().text();
+			
+			if(title.length() > 255){
+				title = title.substring(0,250);
+			}
+			
+			link.setTitulo(title);
+		}catch(NullPointerException e){
+			link.setTitulo(url);
 		}
 		
-		link.setTitulo(title);
-		
-		System.out.println("LLEGO HASTA AQUÍ");
-		System.out.println(link.getDescripcion());
-		System.out.println(link.getImagen());
-		System.out.println(link.getTitulo());
 		
 		return link;
 	}
@@ -177,6 +196,14 @@ public class Enlace extends Model{
 		this.curso = curso;
 	}
 
+	public Mensaje getMensaje() {
+		return mensaje;
+	}
+
+	public void setMensaje(Mensaje mensaje) {
+		this.mensaje = mensaje;
+	}
+	
 	
 	
 }

@@ -87,7 +87,7 @@ body {
 }
 
 .message span {
-    width: 70px;
+    width: 100px;
     overflow: hidden;
     text-align: right;
     font-weight: bold;
@@ -101,7 +101,7 @@ body {
 .message p {
     display: inline-block;
     margin: 0;
-    width: 585px;
+    width: 555px;
 }
 
 .message.me {

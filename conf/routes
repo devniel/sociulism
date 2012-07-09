@@ -24,4 +24,9 @@ POST 	/login						controllers.Users.login()
 
 
 GET		/cursos/:id  				controllers.Cursos.show(id: Long)
+
 GET		/curso/:id/chat				controllers.Cursos.chat(id: String,codigo: String)
+
+GET		/curso/:id/comet			controllers.Cursos.comet(id: String)
+
+POST	/curso/:id/comet			controllers.Cursos.cometMessage(id: String)

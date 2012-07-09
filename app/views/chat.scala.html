@@ -1,4 +1,4 @@
-@(user: Usuario)(content: Html)
+@(user: Usuario)(scripts: Html)(content: Html)
 
 <!DOCTYPE html>
 
@@ -13,9 +13,11 @@
         <style type="text/css">
             .links {
                 float:left;
-                width:200px;
+                width:270px;
                 margin-left:10px;
-                padding-left:9px
+                padding-left:9px;
+                height:210px;
+                overflow:hidden;
             }
 
             ul#list-links {
@@ -46,15 +48,42 @@
                 float:left;
             }
 
-            .link .link-description {
+            .link p.link-description {
                 font-size:11px;
+                line-height:13px;
             }
 
             .cut {
                 clear:both;
             }
 
+
+            .message-information {
+                width:100px;
+                float:left;
+                margin-right:5px;
+            }
+
+            .message-author {
+                width:100px !important;
+                float:left;
+            }
+
+            .message-content {
+                width:400px;
+                float:left;
+            }
+
+            .message-date {
+                float:left;
+                font-size:10px;
+                color:#CCC;
+            }
+
         </style>
+
+        @scripts
+
     </head>
     <body>
         

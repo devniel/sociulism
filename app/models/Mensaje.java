@@ -1,5 +1,6 @@
 package models;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -28,6 +29,7 @@ public class Mensaje extends Model{
 	public String contenido;
 
 	public Date fecha;
+	public String fechaFormato;
 
 	@OneToOne(cascade = {CascadeType.ALL})
 	private Usuario emisor;
@@ -35,10 +37,16 @@ public class Mensaje extends Model{
 	@OneToOne
 	private Curso curso;
 	
+	@OneToOne
+	private Enlace enlace;
+	
 	public static Finder<Long,Mensaje> find = new Finder(Long.class, Mensaje.class);
 	
 	public Mensaje(String contenido, Usuario emisor, Curso curso) {
 		super();
+		this.fecha = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy 'at' HH:mm:ss");
+		this.fechaFormato= sdf.format(fecha);
 		this.contenido = contenido;
 		this.emisor = emisor;
 		this.curso = curso;
@@ -66,9 +74,26 @@ public class Mensaje extends Model{
 	}
 	
 	/* */
-
+	
+	
 	public Usuario getEmisor() {
 		return emisor;
+	}
+
+	public String getFechaFormato() {
+		return fechaFormato;
+	}
+
+	public void setFechaFormato(String fechaFormato) {
+		this.fechaFormato = fechaFormato;
+	}
+
+	public Enlace getEnlace() {
+		return enlace;
+	}
+
+	public void setEnlace(Enlace enlace) {
+		this.enlace = enlace;
 	}
 
 	public void setEmisor(Usuario emisor) {
