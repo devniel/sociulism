@@ -36,6 +36,7 @@
                     }                   
         });     
         </script>    
+
     <!-- AGREGAR ESTO --> 
 }{
     <!--<h1></h1>
@@ -114,24 +115,6 @@
         </div>
         <!-- /LINKS -->
 
-        <!-- COLORES -->                          
-        <div class="span4" style="height:auto !important;min-height:50px !important;">
-            <h2>Apariencia</h2>            
-            <p> 
-            <h5>Chat</h5>
-            <input type="hidden" name="color1" class="color-picker miniColors" id="color1" size="6" maxlength="7" autocomplete="off" value="#FFFFFF"><a class="miniColors-trigger" style="background-color: #ffffff" href="#"></a>
-            <input type="hidden" name="color2" class="color-picker miniColors" id="color2" size="6" maxlength="7" autocomplete="off" value="#FFFFFF"><a class="miniColors-trigger" style="background-color: #ffffff" href="#"></a>          
-            </p>
-            <p> 
-            <h5>Sala</h5>
-            <input type="hidden" name="color5" class="color-picker miniColors" id="color5" size="6" maxlength="7" autocomplete="off" value="#FFFFFF"><a class="miniColors-trigger" style="background-color: #ffffff" href="#"></a>
-            <input type="hidden" name="color6" class="color-picker miniColors" id="color6" size="6" maxlength="7" autocomplete="off" value="#FFFFFF"><a class="miniColors-trigger" style="background-color: #ffffff" href="#"></a>      
-            </p>
-        </div>
-        <!--/COLORES -->
-
-
-
     </div>
 
     <script>
@@ -145,11 +128,11 @@
         }
     </script>
 
-    <!--<iframe src="/curso/@curso.getCodigo()/comet"></iframe>-->
+    <iframe src="/curso/@curso.getCodigo()/comet"></iframe>
     
     <script type="text/javascript" charset="utf-8">
 
-        $(function() {
+        /*$(function() {
 
             var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket;
 	       
@@ -166,7 +149,7 @@
 
                     chatSocket.send(message);
 
-                    /*$.ajax({
+                    /$.ajax({
                       type: "POST",
                       url: "/curso/@curso.getCodigo()/comet",
                       dataType : "json",
@@ -177,7 +160,7 @@
                         }
                     }).done(function( msg ) {
                       console.log( "Message: " + msg );
-                    });*/
+                    });*
 
                     $("#talk").val('');
                 }
@@ -252,7 +235,7 @@
                 
                 chatSocket.onmessage = receiveEvent;
                 
-        });
+        });*/
     
     </script>
 
