@@ -1,9 +1,15 @@
 package controllers;
 
+import java.rmi.server.SocketSecurityException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.codehaus.jackson.JsonNode;
 
 import play.*;
 import play.mvc.*;
+import play.mvc.BodyParser.Json;
+import play.mvc.Http.RequestBody;
 import play.libs.Comet;
 
 import views.html.*;
@@ -13,14 +19,7 @@ import models.Usuario;
 
 public class Cursos extends Controller {
 	
-  /**
-   * COMET
-   */
-  
-  public static Comet comet = new Comet("parent.cometMessage") {
-	  public void onConnected() {
-	    }
-	 };
+ public static List<Comet> sockets = new ArrayList<Comet>();
   
   public static Result index() {
     return ok(views.html.curso.render(null,null));
@@ -37,7 +36,8 @@ public class Cursos extends Controller {
   	Curso curso = Curso.getCurso(id);
 
     System.out.println("# MENSAJES --> " + curso.getMensajes().size());
-
+    
+	
   	return ok(views.html.curso.render(usuario,curso));
   }
   
@@ -63,29 +63,38 @@ public class Cursos extends Controller {
 
 
 
-  public static Result comet(String id) {    
+  public static Result comet(String id) {	  
+  	Comet comet = new Comet("parent.cometMessage"){
+  		public void onConnected() {}
+  	};
+  	sockets.add(comet);
+    
     return ok(comet);
   };
   
-
+  @BodyParser.Of(play.mvc.BodyParser.Json.class)
   public static Result cometMessage(String id) {
 
     // MESSAGE
-    String message = request().body().asFormUrlEncoded().get("message")[0];
+    //String message = request().body().asFormUrlEncoded().get("message")[0];
     // USER UID
-    String uid = request().body().asFormUrlEncoded().get("uid")[0];
+    //String uid = request().body().asFormUrlEncoded().get("uid")[0];
     // COURSE CID
-    String cid = request().body().asFormUrlEncoded().get("cid")[0];
+   // String cid = request().body().asFormUrlEncoded().get("cid")[0];
 
-    JsonNode json = request().body().asJson();
+    RequestBody body = request().body();
+    
+    JsonNode json = body.asJson();
 
-    System.out.println("MENSAJE --> " + message);
-    
-    System.out.println(json.asText());
-    
-    comet.sendMessage("sd");
-    
-	  return ok("{message:'" + message + "',uid:'" + uid + "'}");
+    System.out.println(json.toString());
+
+   // System.out.println("MENSAJE --> " + message);
+    System.out.println("HOLA");
+    System.out.println("TAMAnho : " + sockets.size());
+    for (Comet socket : sockets) {
+      socket.sendMessage(json.toString());
+    }
+	  return ok();
 
      
      /*Usuario usuario = Usuario.getUserByCodigo(uid);
@@ -128,11 +137,5 @@ public class Cursos extends Controller {
       }
            
       defaultRoom.tell(mensaje);*/
-
-
-
-
-
   };
-  
 }

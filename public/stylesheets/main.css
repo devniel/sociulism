@@ -62,7 +62,15 @@ body {
     overflow: hidden;
 }
 
-#onError, #onChat {
+#onError{
+    display: none;
+}
+
+#onChat {
+    display : block;
+}
+
+iframe {
     display: none;
 }
 

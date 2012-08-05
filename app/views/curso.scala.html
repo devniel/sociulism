@@ -5,39 +5,7 @@
 
 @chat(user) {
     <!-- AGREGAR ESTO -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.miniColors.js")"></script>
-    <link type="text/css" rel="stylesheet" href="@routes.Assets.at("stylesheets/jquery.miniColors.css")" />  
-        
-    <script type="text/javascript">
-
-        
-        $(document).ready( function() {
-            
-            //
-            // Enabling miniColors
-            //
-            
-            $(".color-picker").miniColors({
-                change: refreshGradient
-            });         
-                
-                    
-                    function refreshGradient() {
-                      var gradientBody = 'linear-gradient(top, ' + $("#color1").val() + ', ' + $("#color2").val() + ')';
-                      var gradientBody1 = 'linear-gradient(top, ' + $("#color3").val() + ', ' + $("#color4").val() + ')';
-                      var gradientBody2 = 'linear-gradient(top, ' + $("#color5").val() + ', ' + $("#color6").val() + ')';
-                      // we need to use vendor prefixes
-                      $.each(['', '-o-', '-moz-', '-webkit-', '-ms-'], function() {
-                        $("#main").css({ 'background-image': this + gradientBody })
-                        $("#cuerpo1").css({ 'background-image': this + gradientBody1})
-                        $("#cabecera").css({ 'background-image': this + gradientBody2});
-                      });
-                    }                   
-        });     
-        </script>    
-
-    <!-- AGREGAR ESTO --> 
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
 }{
     <!--<h1></h1>
 
@@ -66,7 +34,7 @@
     <div id="onChat" class="row">
         <div class="span10" id="main">
             <div id="messages">
-
+                asds
                 @for(mensaje <- curso.getMensajes()){
                    <div class="message talk me">
                         <div class="message-information">
@@ -81,9 +49,6 @@
 
             </div>
             <textarea id="talk"></textarea>
-            <div id="notebook">
-                <canvas id="notebook-canvas" width="660" height="100"></canvas>
-            </div>
         </div>
         <div class="span4" style="height:auto !important;min-height:50px !important;">
             <h2>Miembros</h2>
@@ -119,7 +84,8 @@
 
     <script>
         var cometMessage = function(data) {
-            console.log('Received event: ' , JSON.parse(data));
+            data = JSON.parse(data);
+            console.log(data);
             var el = $('<div class="message"><span></span><p></p></div>');
             $("span", el).text(data.uid);
             $("p", el).text(data.message);
@@ -131,6 +97,40 @@
     <iframe src="/curso/@curso.getCodigo()/comet"></iframe>
     
     <script type="text/javascript" charset="utf-8">
+
+    $(function(){
+
+        var handleReturnKey = function(e) {
+                    if(e.charCode == 13 || e.keyCode == 13) {
+                        e.preventDefault();
+                        sendMessage();
+                    } 
+                }
+
+        $("#talk").keypress(handleReturnKey)  
+
+        var sendMessage = function(){
+            var message = JSON.stringify({
+                    text: $("#talk").val()
+            });
+
+            $.ajax({
+              type: "POST",
+              url: "/curso/@curso.getCodigo()/comet",
+              contentType : "application/json;charset=utf-8",
+              dataType : "json",
+              data: JSON.stringify({ 
+                uid: "@user.getCodigo()", 
+                message: $("#talk").val(),
+                cid : "@curso.getCodigo()"
+                })
+            }).done(function( msg ) {
+              //console.log( "Message: " + msg );
+            });
+
+            $("#talk").val('');
+        }
+    });
 
         /*$(function() {
 
