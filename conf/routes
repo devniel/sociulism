@@ -8,19 +8,19 @@ GET     /                           controllers.Application.index()
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
-GET 	/users/all					controllers.Users.all()
+GET 	/users/all					controllers.Usuarios.all()
 
-GET 	/users						controllers.Users.index()
+GET 	/users						controllers.Usuarios.index()
 
-GET 	/user/:id 					controllers.Users.find(id: Long)
+GET 	/user/:id 					controllers.Usuarios.find(id: Long)
 
-POST 	/users/new					controllers.Users.create()
+POST 	/users/new					controllers.Usuarios.create()
 
-POST 	/users/:id/delete 			controllers.Users.delete(id: Long)
+POST 	/users/:id/delete 			controllers.Usuarios.delete(id: Long)
 
-GET     /logout						controllers.Users.logout()
+GET     /logout						controllers.Usuarios.logout()
 
-POST 	/login						controllers.Users.login()
+POST 	/login						controllers.Usuarios.login()
 
 
 GET		/cursos/:id  				controllers.Cursos.show(id: Long)

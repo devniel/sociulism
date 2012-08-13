@@ -1,56 +1,228 @@
-@(users : List[Usuario], userForm : Form[Usuario])
+@(userForm : Form[Usuario])
 
 @import helper.twitterBootstrap._
 @import helper._
-@main(null) {
 
-	@if(flash.get("Error") == null){
-		<h1>@users.size() usuarios</h1>
-	}else{
-		<h1>@users.size() usuarios - @flash.get("Error")</h1>
-	}
+@********************************
+* USUARIO, MENU, CONTENIDO      *
+********************************@
+
+@main(user=null){
+  <li class="active"><a href="#">Inicio</a></li>
+  <li><a href="#about">Acerca de</a></li>
+}{
+
+	<!--
+		SLIDER
+	-->
+	<div class="hero-unit">
+
+        <div id="myCarousel" class="carousel slide">
+            <div class="carousel-inner">
+              <div class="item active">
+                <img src="/assets/img/bootstrap-mdo-sfmoma-01.jpg" alt="" height="300" width="940">
+                <div class="carousel-caption">
+                  <h4>First Thumbnail label</h4>
+                  <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+                </div>
+              </div>
+              <div class="item">
+                <img src="/assets/img/bootstrap-mdo-sfmoma-02.jpg" alt="" height="300" width="940">
+                <div class="carousel-caption">
+                  <h4>Second Thumbnail label</h4>
+                  <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+                </div>
+              </div>
+              <div class="item">
+                <img src="/assets/img/bootstrap-mdo-sfmoma-03.jpg" alt="" height="300" width="940">
+                <div class="carousel-caption">
+                  <h4>Third Thumbnail label</h4>
+                  <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+                </div>
+              </div>
+            </div>
+            <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
+            <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+          </div>
+
+      </div> <!-- / END OF SLIDER HERO -->
+
+      <!-- Example row of columns -->
+      <div class="row"  style="margin-top:20px;margin-bottom:20px">
+
+        <div class="span6" style="margin-top:60px">
+          <div class="row titilium">
+            <div class="span2">
+              <div class="thumbail"></div>
+            </div>
+            <div class="span4">
+              <h2 class="ulima-color">EdUL</h2>
+               <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+              <!--<p><a class="btn" href="#">View details &raquo;</a></p>-->
+            </div>
+          </div>
+        </div>
+
+       
+        <div class="span6">
+
+            <div class="row titilium">
+              <div class="span1">
+                <div class="thumbail-mini"></div>
+              </div>
+              <div class="span5">
+                <h4 class="ulima-color">Asesorías online</h4>
+                 <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh</p>
+                 <p><a class="btn btn-mini" href="#">Ver detalles &raquo;</a></p>
+              </div>
+            </div>
+
+            <div class="row titilium">
+              <div class="span1">
+                <div class="thumbail-mini"></div>
+              </div>
+              <div class="span5">
+                <h4 class="ulima-color">Asesorías online</h4>
+                 <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh</p>
+                 <p><a class="btn btn-mini" href="#">Ver detalles &raquo;</a></p>
+              </div>
+            </div>
+
+            <div class="row titilium">
+              <div class="span1">
+                <div class="thumbail-mini"></div>
+              </div>
+              <div class="span5">
+                <h4 class="ulima-color">Asesorías online</h4>
+                 <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh</p>
+                 <p><a class="btn btn-mini" href="#">Ver detalles &raquo;</a></p>
+              </div>
+            </div>
+
+       </div> 
+
+     </div>
+
     
-	<!--<ul>
-		@for(user <- users){
-			<li>
-				@user.codigo
-				@form(routes.Users.delete(user.uid)){
-					<input type="submit" value="Delete">
-				}
-			</li>
-		}
-	</ul>-->
-	
-	<h2>Registrarse</h2>
+     <div class="row">
+
+       <!-- / CAJA - NOTICIAS -->
+       <div class="span6">
+
+        <div class="row titilium">
+
+          <div class="span6">
+            <h2 class="ulima-color">Noticias</h2>
+            <hr style="margin-top:0px;margin-bottom:10px"/>
+          </div>
+
+          <!-- NOTICIA -->
+          <div class="span6">
+            <div class="row">
+              
+              <div class="span2">
+                <div class="new-picture"></div>
+              </div>
+
+              <div class="span4">
+                <h4>Asesorías online</h4>
+                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh <span class="label label-info">Leer más</span> </p>
+              </div>
+
+           </div>
+          </div> <!-- /NOTICIA -->
+
+          <!-- NOTICIA -->
+          <div class="span6">
+            <div class="row">
+              
+              <div class="span2">
+                <div class="new-picture"></div>
+              </div>
+
+              <div class="span4">
+                <h4>Asesorías online</h4>
+                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh <span class="label label-info">Leer más</span> </p>
+              </div>
+
+           </div>
+          </div> <!-- /NOTICIA -->
+
+          <!-- NOTICIA -->
+          <div class="span6">
+            <div class="row">
+              
+              <div class="span2">
+                <div class="new-picture"></div>
+              </div>
+
+              <div class="span4">
+                <h4>Asesorías online</h4>
+                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh <span class="label label-info">Leer más</span> </p>
+
+              </div>
+
+           </div>
+          </div> <!-- /NOTICIA -->
+
+          <!-- NOTICIA -->
+          <div class="span6">
+            <div class="row">
+              
+              <div class="span2">
+                <div class="new-picture"></div>
+              </div>
+
+              <div class="span4">
+                <h4>Asesorías online</h4>
+                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh <span class="label label-info">Leer más</span> </p>
+
+              </div>
+
+           </div>
+          </div> <!-- /NOTICIA -->
+
+          <!-- NOTICIA -->
+          <div class="span6">
+            <div class="row">
+              
+              <div class="span2">
+                <div class="new-picture"></div>
+              </div>
+
+              <div class="span4">
+                <h4>Asesorías online</h4>
+                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh <span class="label label-info">Leer más</span> </p>
+
+              </div>
+
+           </div>
+          </div> <!-- /NOTICIA -->
 
 
-	@form(routes.Users.create()){
 
-		@inputText(userForm("nombres"),
-			'_label -> "Nombres: ",
-			'_id -> "idForTheTopDlElement",
-			'_showConstraints -> false,
-			'_showErrors -> false,
-			'autocomplete -> "off")
+        </div>
+      </div> <!-- / CAJA - NOTICIAS -->
 
-		@inputText(userForm("apellidos"),
-			'_label -> "Apellidos: ")
+      <!-- / CAJA - MEDIA -->
+       <div class="span6" style="float:right">
+        <div class="row titilium">
 
-		@inputText(userForm("codigo"),
-			'_label -> "Código: ")
+          <div class="span6">
+            <h2 class="ulima-color">Media</h2>
+            <hr style="margin-top:0px;margin-bottom:10px"/>
+          </div>
 
-		@inputPassword(userForm("password"),
-			'_label -> "Contraseña: ")
+          <!-- NOTICIA -->
+          <div class="span6">
+            <iframe width="460" height="360" src="http://www.youtube.com/embed/h9sDPtiwxMo?rel=0" frameborder="0" allowfullscreen></iframe>
+          </div>
+            
 
-		<input type="submit" value="Entrar">
-	}
+        </div>
+      </div> <!-- / CAJA - NOTICIAS -->
+
+     </div>
 
 
-	<!--<form method="POST" action="@routes.Users.create()" class="pull-right">
-		<input id="nombres" name="nombres" autocomplete="off" class="input-small" type="text" placeholder="Nombres">
-		<input id="apellidos" name="apellidos" autocomplete="off" class="input-small" type="text" placeholder="Apellidos">
-	    <input id="codigo" name="codigo" autocomplete="off" class="input-small" type="text" placeholder="Código">
-	    <input id="password" name="password" autocomplete="off" class="input-small" type="password" placeholder="Contraseña">
-	    <button class="btn" type="submit">Entrar</button>
-	</form>-->
 }

@@ -31,66 +31,67 @@ public class Usuario extends Model{
 	
 	public static Finder<Long,Usuario> find = new Finder(Long.class, Usuario.class);
 
-	
 	@OneToMany
     private List<CursoHasUsuario> cursos;
-	
 	
 	public static List<Usuario> all(){
 		//return TODO;
 		return find.all();
 	}
 
-	public static Usuario create(Usuario user) throws Exception{
+	public String validate() {
+        if(codigo == "" || password == "") {
+            return "Invalid email or password";
+        }
+        return null;
+    }
+	
+	/*
+	 * Método para crear un usuario a partir de un objeto
+	 * Usuario que debe contener el usuario y la contraseña
+	 * del mismo - desde un formulario, por ejemplo.
+	 * 
+	 * Parámetros : [Usuario]
+	 * Retorna : [Usuario]
+	 */
+
+	public static Usuario create(Usuario user) throws Exception
+	{
 		
 		String userPage = "";
-		
-		// Throws exception
-		
+				
 		// Determinar si el usuario existe o no, se lanza una Exception, si pasa la Exception entonces se guarda
 		userPage = Ulima.login(user.getCodigo(),user.getPassword());
 		
 		// Crear usuario
 		user.save();
-		
-		System.out.println("CONTINUA AQUi");
-			
+					
 		List<CursoInfo> cursos = Ulima.getCourses(userPage);
 		
-		for (CursoInfo cursoInfo : cursos) {
-			System.out.println("CODIGO --> " + cursoInfo.getCodigo());
-			System.out.println("NOMBRE --> " + cursoInfo.getNombre());
-			System.out.println("SECCION --> " + cursoInfo.getSeccion());
+		for (CursoInfo cursoInfo : cursos)
+		{
 			
 			Curso curso = new Curso();
 			curso.setCodigo(cursoInfo.getCodigo());
 			curso.setNombre(cursoInfo.getNombre());
 			
 			// Se crea curso o se obtiene el ya existente
+			
 			curso= Curso.create(curso);
 			
 			// Agregar a tabla asociativa
+			
 			CursoHasUsuario asoc = new CursoHasUsuario();
 			asoc.setUsuario(user);
 			asoc.setCurso(curso);
 			asoc.setSeccion(cursoInfo.getSeccion());
 			asoc.save();
+			
 			// Actualizar usuario
 			user.getCursos().add(asoc);
 		}
 		
-		user.save();
-		
-		/*
-		ProjectAssociation association = new ProjectAssociation();
-	    association.setEmployee(employee);
-	    association.setProject(this);
-	    association.setEmployeeId(employee.getId());
-	    association.setProjectId(this.getId());
-	    association.setIsTeamLead(teamLead);
-	    employees.add(association);*/
-		
-		
+		user.save();	
 		
 		// Crear usuario
 		return user;

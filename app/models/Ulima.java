@@ -86,7 +86,7 @@ public class Ulima {
 			// The cookies for session has been saved by the cookie manager.
 			// Now the application make a request to another URL ["Consolidado de Matrícula"]
 			String url1 = "http://webaloe.ulima.edu.pe/portalUL/layout.jsp";
-			String url2 = "http://webaloe.ulima.edu.pe/portalUL/gama/servlets/ComandoMostrarConsMatr?COCICLO=20121&Fg=1";
+			String url2 = "http://webaloe.ulima.edu.pe/portalUL/gama/servlets/ComandoMostrarConsMatr?COCICLO=20122&Fg=1";
 			URLConnection connection2 = new URL(url2).openConnection();
 
 			connection2.setRequestProperty("Accept-Charset", charset);

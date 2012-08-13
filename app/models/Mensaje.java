@@ -19,6 +19,20 @@ import play.db.ebean.Model.Finder;
 @Entity
 @Table(name="Mensaje")
 public class Mensaje extends Model{
+
+	/*
+	Mensaje 
+	-----------------------		
+		+id			
+		+Usuario_id		
+		~Usuario_Destino	
+		~Curso_Destino		
+		~Facultad_Destino	
+		~Universidad_Destino	
+		-contenido				
+		-fecha				
+	------------------------
+	*/
 	
 	private static final long serialVersionUID = 1L;
 
@@ -27,26 +41,78 @@ public class Mensaje extends Model{
 	
 	public String contenido;
 
+	/*
+	 * Fecha de envío del mensaje
+	 */
+
 	public Date fecha;
+
+	/*
+	 * USUARIO emisor, quien envía el mensaje
+	 */
 
 	@OneToOne(cascade = {CascadeType.ALL})
 	private Usuario emisor;
+
+	/*
+	 * USUARIO receptor, quien recibe el mensaje - NULL
+	 */
+
+	@OneToOne
+	private Usuario receptor;
 	
+	/*
+	 * CURSO a donde se envía el mensaje - chat - NULL
+	 */
+
 	@OneToOne
 	private Curso curso;
+
+	/*
+	 * FACULTAD a donde se envía el mensaje - intranet - NULL
+	 */
+
+	@OneToOne
+	private Facultad facultad;
+
+	/*
+	 * UNIVERSIDAD a donde se envía el mensaje - portal - NULL
+	 */
+
+	@OneToOne
+	private Universidad universidad;
+	
+	/*
+	 * CARRERA a donde se envía el mensaje - intranet también
+	 */
+
+	@OneToOne
+	private Carrera carrera;
+	
+	/*
+	 * FINDER
+	 */
 	
 	public static Finder<Long,Mensaje> find = new Finder(Long.class, Mensaje.class);
+
+	/*
+	 * CONSTRUCTOR
+	 */
 	
-	public Mensaje(String contenido, Usuario emisor, Curso curso) {
+	public Mensaje(String contenido, Usuario emisor, Curso curso)
+	{
 		super();
 		this.contenido = contenido;
 		this.emisor = emisor;
 		this.curso = curso;
 	}
 	
-	/* CRUD */
+	/*
+	 * CURSO
+	 */
 	
-	public static List<Mensaje> all(){
+	public static List<Mensaje> all()
+	{
 		//return TODO;
 		return find.all();
 	}
@@ -65,10 +131,46 @@ public class Mensaje extends Model{
 		return msg;
 	}
 	
-	/* */
+	/* 
+		GETTERS AND SETTERS
+	*/
+	
+	
 
 	public Usuario getEmisor() {
 		return emisor;
+	}
+
+	public Usuario getReceptor() {
+		return receptor;
+	}
+
+	public void setReceptor(Usuario receptor) {
+		this.receptor = receptor;
+	}
+
+	public Facultad getFacultad() {
+		return facultad;
+	}
+
+	public void setFacultad(Facultad facultad) {
+		this.facultad = facultad;
+	}
+
+	public Universidad getUniversidad() {
+		return universidad;
+	}
+
+	public void setUniversidad(Universidad universidad) {
+		this.universidad = universidad;
+	}
+
+	public Carrera getCarrera() {
+		return carrera;
+	}
+
+	public void setCarrera(Carrera carrera) {
+		this.carrera = carrera;
 	}
 
 	public void setEmisor(Usuario emisor) {

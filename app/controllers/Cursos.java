@@ -18,7 +18,7 @@ public class Cursos extends Controller {
 
   public static Result show(Long id){
 
-  	Usuario usuario = Users.getUserSession();
+  	Usuario usuario = Usuarios.getUserSession();
 
   	Curso curso = Curso.getCurso(id);
 
