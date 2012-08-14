@@ -65,7 +65,6 @@ public class Usuarios extends Controller {
 	@SuppressWarnings("finally")
 	public static Result login()
 	{
-		Form<Usuario> filledForm = userForm.bindFromRequest();
 		Map<String, String[]> formData = request().body().asFormUrlEncoded();
 		String code = formData.get("codigo")[0];
 		String password = formData.get("password")[0];

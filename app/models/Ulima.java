@@ -196,24 +196,4 @@ public class Ulima {
 		return cursos;
 	}
 
-
-	public static void main(String[] args){
-		String html;
-		try {
-			html = login("20082219","XXXXXX");
-			List<CursoInfo> cursos = getCourses(html);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.out.println(e.getMessage());
-		}		
-		//List<CursoInfo> cursos = getCourses(html);
-	}
-
-	// How to run this with cmd?
-	// javac -cp .;C:/jsoup-1.6.3.jar models/Ulima.java
-	// java -cp .;C:/jsoup-1.6.3.jar models.Ulima
-	
-	
-
 }

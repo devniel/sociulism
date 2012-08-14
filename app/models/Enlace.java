@@ -27,7 +27,7 @@ public class Enlace extends Model{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	public Long eid;
+	public Long Id;
 	
 	public String url;
 	public String descripcion;
@@ -43,15 +43,14 @@ public class Enlace extends Model{
 	
 	public static Finder<Long,Enlace> find = new Finder(Long.class, Enlace.class);
 	
-	
-	public Long getEid() {
-		return eid;
+	public Long getId() {
+		return Id;
 	}
 
-	public void setEid(Long eid) {
-		this.eid = eid;
+	public void setId(Long id) {
+		Id = id;
 	}
-	
+
 	public static List<Enlace> all(){
 		//return TODO;
 		return find.all();

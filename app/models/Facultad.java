@@ -12,12 +12,12 @@ import javax.persistence.*;
 @Entity
 @Table(name="Facultad")
 
-public class Facultad {
+public class Facultad extends Model{
 	
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	public Long id;
+	public Long Id;
 	
 	public String nombre;
 	
@@ -39,7 +39,7 @@ public class Facultad {
 	 */
 		
 	public Long getId() {
-		return id;
+		return Id;
 	}
 
 	public Universidad getUniversidad() {
@@ -59,7 +59,7 @@ public class Facultad {
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.Id = id;
 	}
 
 	public String getNombre() {
@@ -76,14 +76,6 @@ public class Facultad {
 
 	public void setFecha_registro(Date fecha_registro) {
 		this.fecha_registro = fecha_registro;
-	}
-
-	public static Finder<Long, Facultad> getFind() {
-		return find;
-	}
-
-	public static void setFind(Finder<Long, Facultad> find) {
-		Facultad.find = find;
 	}
 
 	public List<Mensaje> getMensajes() {

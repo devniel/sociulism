@@ -22,6 +22,8 @@ GET     /logout						controllers.Usuarios.logout()
 
 POST 	/login						controllers.Usuarios.login()
 
+POST 	/facultad/:id/nuevoMensaje	controllers.Facultades.nuevoMensaje(id: String)
 
-GET		/cursos/:id  				controllers.Cursos.show(id: Long)
+GET		/cursos/:id  				controllers.Cursos.show(id: String)
+
 GET		/curso/:id/chat				controllers.Cursos.chat(id: String,codigo: String)

@@ -16,11 +16,11 @@ public class Cursos extends Controller {
     return ok(views.html.curso.render(null,null));
   }
 
-  public static Result show(Long id){
+  public static Result show(String id){
 
   	Usuario usuario = Usuarios.getUserSession();
 
-  	Curso curso = Curso.getCurso(id);
+  	Curso curso = Curso.getCurso(Long.parseLong(id));
 
     System.out.println("# MENSAJES --> " + curso.getMensajes().size());
 

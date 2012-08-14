@@ -2,58 +2,7 @@
 @import helper.twitterBootstrap._
 @import helper._
 
-@scripts = {
-
-  // SCRIPT
-
-  /*
-   * ENVIO DE MENSAJE DE FORMULARIO FACULTY_MESSAGE
-   */
-
-  $($("#faculty_message")).submit(function(){
-    console.log("QUIERN ENVIAR");
-    return false;
-  })
-
-  $($("#faculty_message").find("input[type='submit']")[0]).click(function(){
-    
-    var _mensaje = $($("#faculty_message").find("textarea")[0]).val();
-    var _id = "@usuario.getId()";
-
-      $.ajax({
-        type: "POST",
-        url: "/facultad/@usuario.getFacultad().getId()/nuevoMensaje",
-        contentType : "application/json;charset=utf-8",
-        dataType : "json",
-        data: JSON.stringify({ 
-          id: _id, 
-          mensaje: _mensaje
-        })
-      }).done(function( msg ) {
-        console.log( "Message: ", msg );
-
-        /*
-         *  CREAR MENSAJE
-         */
-
-         $('<div class="span5 post">'+
-            '<div class="post-author"></div>'+
-            '<div class="post-content">' + msg.mensaje + '' + msg.id + '</div>' +
-            '<div class="cut"></div>'+
-          '</div>').prependTo($("#facultad_mensajes"));
-
-        // Limpiar Textarea
-        $($("#faculty_message").find("textarea")[0]).val("");
-
-      });
-
-  });
-
-
-
-} 
-
-@main(usuario, scripts){
+@main(usuario){
   <li class="active"><a href="/">Inicio</a></li>
 }{
 
@@ -87,7 +36,7 @@
                     <ul class="nav nav-list list-courses-user">
 
                       @for(UsuarioCurso <- usuario.getCursos()) {
-                        <li><a href="@routes.Cursos.show(UsuarioCurso.getCurso().getId().toString())">@UsuarioCurso.getCurso().getNombre()</a></li>
+                        <li><a href="#">@UsuarioCurso.getCurso().getNombre()</a></li>
                       }
 
                     </ul>
@@ -133,17 +82,11 @@
             <!-- / SIDEBAR -->
             <div class="span9 content-right">
               
-              @*********************
-               * FACULTAD           *
-               *********************@
-
               <div class="row row-header">
                 <div class="span9 course-image">
-                  <h1>@usuario.getFacultad().getNombre()</h1>
                 </div>
               </div>
 
-            
               <div class="row">
 
                 <div class="span5">
@@ -152,36 +95,39 @@
 
                     <hr style="margin-top:0px;margin-bottom:10px"/>
 
-                    @*********************
-                     * MENSAJES --> FACULTAD *
-                     *********************@
-
-                     @**
-                        FORMULARIO DE ENVIO DE MENSAJE
-                        FACULTY_MESSAGE
-                      **@
-
                     <div class="span5">
-                      <form id="faculty_message" method="post" action="@routes.Facultades.nuevoMensaje(usuario.getFacultad().getId().toString())">
-                        <textarea class="input-xlarge titilium smart" onfocus="autoTextArea(this)" placeholder="Compartir"></textarea>
-                        <input type="submit" class="btn btn-success" value="Publicar"/>
+                      <form>
+                        <textarea class="input-xlarge titilium smart" id="textarea" onfocus="autoTextArea(this)" placeholder="Compartir"></textarea>
                       </form>
                     </div>
 
-                    @**
-                        LISTA DE MENSAJES
-                        MURO DE FACULTAD
-                      **@
-                    <div id="facultad_mensajes">
 
-                    @for(mensaje <- usuario.getFacultad().getMensajes()) {
-                      <div class="span5 post">
-                        <div class="post-author">@mensaje.getEmisor().getId()</div>
-                        <div class="post-content">@mensaje.getContenido()</div>
-                      </div>
-                    } 
-
+                    <div class="span5 post">
+                      <div class="post-author"></div>
+                      <div class="post-content">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+                      <div class="cut"></div>
                     </div>
+
+                   <div class="span5 post">
+                      <div class="post-author"></div>
+                      <div class="post-content">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+                    </div>
+
+                    <div class="span5 post">
+                      <div class="post-author"></div>
+                      <div class="post-content">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+                    </div>
+
+                    <div class="span5 post">
+                      <div class="post-author"></div>
+                      <div class="post-content">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+                    </div>
+
+                    <div class="span5 post">
+                      <div class="post-author"></div>
+                      <div class="post-content">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+                    </div>
+
 
                   </div>
                 </div>

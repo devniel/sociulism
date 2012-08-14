@@ -5,6 +5,8 @@ import play.db.ebean.*;
 import play.data.validation.Constraints.*;
 import javax.persistence.*;
 
+import com.avaje.ebean.*;
+
 // Task.java
 @Entity
 @Table(name="Usuario")
@@ -16,7 +18,7 @@ public class Usuario extends Model{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	public Long uid;
+	public Long Id;
 	
 	@Column(unique=true) 
 	@Required
@@ -32,7 +34,16 @@ public class Usuario extends Model{
 	public static Finder<Long,Usuario> find = new Finder(Long.class, Usuario.class);
 
 	@OneToMany
-    private List<CursoHasUsuario> cursos;
+	public List<CursoHasUsuario> cursos;
+	
+	@ManyToOne
+	public Universidad universidad;
+	
+	@ManyToOne
+	public Carrera carrera;
+	
+	@ManyToOne
+	public Facultad facultad;
 	
 	public static List<Usuario> all(){
 		//return TODO;
@@ -113,12 +124,37 @@ public class Usuario extends Model{
 
 	/** GETTERS AND SETTERS **/
 	
-	public Long getUid() {
-		return uid;
+	
+	public Universidad getUniversidad() {
+		return universidad;
 	}
 
-	public void setUid(Long uid) {
-		this.uid = uid;
+	public Long getId() {
+		return Id;
+	}
+
+	public void setId(Long id) {
+		Id = id;
+	}
+
+	public void setUniversidad(Universidad universidad) {
+		this.universidad = universidad;
+	}
+
+	public Carrera getCarrera() {
+		return carrera;
+	}
+
+	public void setCarrera(Carrera carrera) {
+		this.carrera = carrera;
+	}
+
+	public Facultad getFacultad() {
+		return facultad;
+	}
+
+	public void setFacultad(Facultad facultad) {
+		this.facultad = facultad;
 	}
 
 	public String getCodigo() {

@@ -8,37 +8,38 @@ create table Carrera (
   nombre                    varchar(255),
   fecha_registro            datetime,
   facultad_id               bigint,
+  universidad_id            bigint,
   constraint pk_Carrera primary key (id))
 ;
 
 create table Carrera_Curso (
   carrera_id                bigint,
-  curso_cid                 bigint)
+  curso_id                  bigint)
 ;
 
 create table Curso (
-  cid                       bigint auto_increment not null,
+  id                        bigint auto_increment not null,
   codigo                    varchar(255),
   nombre                    varchar(255),
   constraint uq_Curso_codigo unique (codigo),
-  constraint pk_Curso primary key (cid))
+  constraint pk_Curso primary key (id))
 ;
 
 create table Curso_Usuario (
   seccion                   integer,
-  usuario_uid               bigint,
-  curso_cid                 bigint)
+  usuario_id                bigint,
+  curso_id                  bigint)
 ;
 
 create table Enlace (
-  eid                       bigint auto_increment not null,
+  id                        bigint auto_increment not null,
   url                       varchar(255),
   descripcion               varchar(255),
   imagen                    varchar(255),
   titulo                    varchar(255),
-  emisor_uid                bigint,
-  curso_cid                 bigint,
-  constraint pk_Enlace primary key (eid))
+  emisor_id                 bigint,
+  curso_id                  bigint,
+  constraint pk_Enlace primary key (id))
 ;
 
 create table Facultad (
@@ -50,16 +51,16 @@ create table Facultad (
 ;
 
 create table Mensaje (
-  mid                       bigint auto_increment not null,
+  id                        bigint auto_increment not null,
   contenido                 varchar(255),
   fecha                     datetime,
-  emisor_uid                bigint,
-  receptor_uid              bigint,
-  curso_cid                 bigint,
+  emisor_id                 bigint,
+  receptor_id               bigint,
+  curso_id                  bigint,
   facultad_id               bigint,
   universidad_id            bigint,
   carrera_id                bigint,
-  constraint pk_Mensaje primary key (mid))
+  constraint pk_Mensaje primary key (id))
 ;
 
 create table Universidad (
@@ -70,43 +71,54 @@ create table Universidad (
 ;
 
 create table Usuario (
-  uid                       bigint auto_increment not null,
+  id                        bigint auto_increment not null,
   codigo                    varchar(255),
   password                  varchar(255),
   nombres                   varchar(255),
   apellidos                 varchar(255),
+  universidad_id            bigint,
+  carrera_id                bigint,
+  facultad_id               bigint,
   constraint uq_Usuario_codigo unique (codigo),
-  constraint pk_Usuario primary key (uid))
+  constraint pk_Usuario primary key (id))
 ;
 
 alter table Carrera add constraint fk_Carrera_facultad_1 foreign key (facultad_id) references Facultad (id) on delete restrict on update restrict;
 create index ix_Carrera_facultad_1 on Carrera (facultad_id);
-alter table Carrera_Curso add constraint fk_Carrera_Curso_carrera_2 foreign key (carrera_id) references Carrera (id) on delete restrict on update restrict;
-create index ix_Carrera_Curso_carrera_2 on Carrera_Curso (carrera_id);
-alter table Carrera_Curso add constraint fk_Carrera_Curso_curso_3 foreign key (curso_cid) references Curso (cid) on delete restrict on update restrict;
-create index ix_Carrera_Curso_curso_3 on Carrera_Curso (curso_cid);
-alter table Curso_Usuario add constraint fk_Curso_Usuario_usuario_4 foreign key (usuario_uid) references Usuario (uid) on delete restrict on update restrict;
-create index ix_Curso_Usuario_usuario_4 on Curso_Usuario (usuario_uid);
-alter table Curso_Usuario add constraint fk_Curso_Usuario_curso_5 foreign key (curso_cid) references Curso (cid) on delete restrict on update restrict;
-create index ix_Curso_Usuario_curso_5 on Curso_Usuario (curso_cid);
-alter table Enlace add constraint fk_Enlace_emisor_6 foreign key (emisor_uid) references Usuario (uid) on delete restrict on update restrict;
-create index ix_Enlace_emisor_6 on Enlace (emisor_uid);
-alter table Enlace add constraint fk_Enlace_curso_7 foreign key (curso_cid) references Curso (cid) on delete restrict on update restrict;
-create index ix_Enlace_curso_7 on Enlace (curso_cid);
-alter table Facultad add constraint fk_Facultad_universidad_8 foreign key (universidad_id) references Universidad (id) on delete restrict on update restrict;
-create index ix_Facultad_universidad_8 on Facultad (universidad_id);
-alter table Mensaje add constraint fk_Mensaje_emisor_9 foreign key (emisor_uid) references Usuario (uid) on delete restrict on update restrict;
-create index ix_Mensaje_emisor_9 on Mensaje (emisor_uid);
-alter table Mensaje add constraint fk_Mensaje_receptor_10 foreign key (receptor_uid) references Usuario (uid) on delete restrict on update restrict;
-create index ix_Mensaje_receptor_10 on Mensaje (receptor_uid);
-alter table Mensaje add constraint fk_Mensaje_curso_11 foreign key (curso_cid) references Curso (cid) on delete restrict on update restrict;
-create index ix_Mensaje_curso_11 on Mensaje (curso_cid);
-alter table Mensaje add constraint fk_Mensaje_facultad_12 foreign key (facultad_id) references Facultad (id) on delete restrict on update restrict;
-create index ix_Mensaje_facultad_12 on Mensaje (facultad_id);
-alter table Mensaje add constraint fk_Mensaje_universidad_13 foreign key (universidad_id) references Universidad (id) on delete restrict on update restrict;
-create index ix_Mensaje_universidad_13 on Mensaje (universidad_id);
-alter table Mensaje add constraint fk_Mensaje_carrera_14 foreign key (carrera_id) references Carrera (id) on delete restrict on update restrict;
-create index ix_Mensaje_carrera_14 on Mensaje (carrera_id);
+alter table Carrera add constraint fk_Carrera_universidad_2 foreign key (universidad_id) references Universidad (id) on delete restrict on update restrict;
+create index ix_Carrera_universidad_2 on Carrera (universidad_id);
+alter table Carrera_Curso add constraint fk_Carrera_Curso_carrera_3 foreign key (carrera_id) references Carrera (id) on delete restrict on update restrict;
+create index ix_Carrera_Curso_carrera_3 on Carrera_Curso (carrera_id);
+alter table Carrera_Curso add constraint fk_Carrera_Curso_curso_4 foreign key (curso_id) references Curso (id) on delete restrict on update restrict;
+create index ix_Carrera_Curso_curso_4 on Carrera_Curso (curso_id);
+alter table Curso_Usuario add constraint fk_Curso_Usuario_usuario_5 foreign key (usuario_id) references Usuario (id) on delete restrict on update restrict;
+create index ix_Curso_Usuario_usuario_5 on Curso_Usuario (usuario_id);
+alter table Curso_Usuario add constraint fk_Curso_Usuario_curso_6 foreign key (curso_id) references Curso (id) on delete restrict on update restrict;
+create index ix_Curso_Usuario_curso_6 on Curso_Usuario (curso_id);
+alter table Enlace add constraint fk_Enlace_emisor_7 foreign key (emisor_id) references Usuario (id) on delete restrict on update restrict;
+create index ix_Enlace_emisor_7 on Enlace (emisor_id);
+alter table Enlace add constraint fk_Enlace_curso_8 foreign key (curso_id) references Curso (id) on delete restrict on update restrict;
+create index ix_Enlace_curso_8 on Enlace (curso_id);
+alter table Facultad add constraint fk_Facultad_universidad_9 foreign key (universidad_id) references Universidad (id) on delete restrict on update restrict;
+create index ix_Facultad_universidad_9 on Facultad (universidad_id);
+alter table Mensaje add constraint fk_Mensaje_emisor_10 foreign key (emisor_id) references Usuario (id) on delete restrict on update restrict;
+create index ix_Mensaje_emisor_10 on Mensaje (emisor_id);
+alter table Mensaje add constraint fk_Mensaje_receptor_11 foreign key (receptor_id) references Usuario (id) on delete restrict on update restrict;
+create index ix_Mensaje_receptor_11 on Mensaje (receptor_id);
+alter table Mensaje add constraint fk_Mensaje_curso_12 foreign key (curso_id) references Curso (id) on delete restrict on update restrict;
+create index ix_Mensaje_curso_12 on Mensaje (curso_id);
+alter table Mensaje add constraint fk_Mensaje_facultad_13 foreign key (facultad_id) references Facultad (id) on delete restrict on update restrict;
+create index ix_Mensaje_facultad_13 on Mensaje (facultad_id);
+alter table Mensaje add constraint fk_Mensaje_universidad_14 foreign key (universidad_id) references Universidad (id) on delete restrict on update restrict;
+create index ix_Mensaje_universidad_14 on Mensaje (universidad_id);
+alter table Mensaje add constraint fk_Mensaje_carrera_15 foreign key (carrera_id) references Carrera (id) on delete restrict on update restrict;
+create index ix_Mensaje_carrera_15 on Mensaje (carrera_id);
+alter table Usuario add constraint fk_Usuario_universidad_16 foreign key (universidad_id) references Universidad (id) on delete restrict on update restrict;
+create index ix_Usuario_universidad_16 on Usuario (universidad_id);
+alter table Usuario add constraint fk_Usuario_carrera_17 foreign key (carrera_id) references Carrera (id) on delete restrict on update restrict;
+create index ix_Usuario_carrera_17 on Usuario (carrera_id);
+alter table Usuario add constraint fk_Usuario_facultad_18 foreign key (facultad_id) references Facultad (id) on delete restrict on update restrict;
+create index ix_Usuario_facultad_18 on Usuario (facultad_id);
 
 
 

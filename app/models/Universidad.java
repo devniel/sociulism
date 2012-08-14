@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="Universidad")
 
-public class Universidad {
+public class Universidad extends Model{
 	
 	/**
 	 * 
@@ -20,7 +20,7 @@ public class Universidad {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	public Long id;
+	public Long Id;
 	
 	public String nombre;
 	
@@ -30,13 +30,35 @@ public class Universidad {
 	
 	@OneToMany
 	private List<Facultad> facultades;
+
+	@OneToMany
+	public List<Carrera> carreras;
+
+	@OneToMany
+	public List<Usuario> usuarios;
 	
 	/*
 	 * GETTERS AND SETTERS
 	 */
-	
+
 	public Long getId() {
-		return id;
+		return Id;
+	}
+
+	public List<Carrera> getCarreras() {
+		return carreras;
+	}
+
+	public void setCarreras(List<Carrera> carreras) {
+		this.carreras = carreras;
+	}
+
+	public List<Usuario> getUsuarios() {
+		return usuarios;
+	}
+
+	public void setUsuarios(List<Usuario> usuarios) {
+		this.usuarios = usuarios;
 	}
 
 	public List<Facultad> getFacultades() {
@@ -47,8 +69,8 @@ public class Universidad {
 		this.facultades = facultades;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setId(Long Id) {
+		this.Id = Id;
 	}
 
 	public String getNombre() {
@@ -65,14 +87,6 @@ public class Universidad {
 
 	public void setFecha_registro(Date fecha_registro) {
 		this.fecha_registro = fecha_registro;
-	}
-
-	public static Finder<Long, Universidad> getFind() {
-		return find;
-	}
-
-	public static void setFind(Finder<Long, Universidad> find) {
-		Universidad.find = find;
 	}
 
 	public static long getSerialversionuid() {

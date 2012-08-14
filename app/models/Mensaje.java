@@ -37,7 +37,7 @@ public class Mensaje extends Model{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	public Long mid;
+	public Long Id;
 	
 	public String contenido;
 
@@ -111,6 +111,11 @@ public class Mensaje extends Model{
 	 * CURSO
 	 */
 	
+	public Mensaje() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public static List<Mensaje> all()
 	{
 		//return TODO;
@@ -185,12 +190,12 @@ public class Mensaje extends Model{
 		this.curso = curso;
 	}
 
-	public Long getMid() {
-		return mid;
+	public Long getId() {
+		return Id;
 	}
 
-	public void setMid(Long mid) {
-		this.mid = mid;
+	public void setId(Long Id) {
+		this.Id = Id;
 	}
 
 	public String getContenido() {

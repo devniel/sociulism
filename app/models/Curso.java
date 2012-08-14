@@ -24,7 +24,7 @@ public class Curso extends Model{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	public Long cid;
+	public Long Id;
 	
 	@Column(unique=true) 
 	public String codigo;
@@ -78,28 +78,30 @@ public class Curso extends Model{
 
 	/** GETTERS AND SETTERS **/
 	
+	
+	
 	public List<Mensaje> getMensajes() {
 		return mensajes;
+	}
+
+	public Long getId() {
+		return Id;
+	}
+
+	public void setId(Long id) {
+		Id = id;
 	}
 
 	public void setMensajes(List<Mensaje> mensajes) {
 		this.mensajes = mensajes;
 	}
 	
-	public Long getCid() {
-		return cid;
-	}
-
 	public String getNombre() {
 		return nombre;
 	}
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
-
-	public void setCid(Long cid) {
-		this.cid = cid;
 	}
 
 	public String getCodigo() {
