@@ -20,6 +20,13 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -138,6 +145,14 @@ public class Ulima {
 		}
 	}
 
+
+	public static String getJS(String html){
+		Document doc = Jsoup.parse(html);
+		Elements scripts = doc.getElementsByTag("script");
+		Element script = scripts.get(2);
+		String js = script.html();
+		return js;
+	}
 	
 	public static List<CursoInfo> getCourses(String html){
 		
@@ -195,5 +210,60 @@ public class Ulima {
 		
 		return cursos;
 	}
+
+	public static void main(String[] args){
+
+		String html = null;
+
+		ScriptEngine se = new ScriptEngineManager().getEngineByExtension("js");
+		
+		try {
+			html = login("20082219","DFYAPL");
+			List<CursoInfo> cursos = getCourses(html);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}		
+		//List<CursoInfo> cursos = getCourses(html);
+
+		String js = getJS(html);
+		//System.out.println(js);
+
+		// Eliminar espacios en blanco
+        //msg = msg.replace(/\n/g,"");
+        // Eliminar comentarios
+        //msg = msg.replace(/\/\/(\s|\S)*\/\//gim,"");
+        // Eval is evil, ejecutar el script extraído de miulima
+        //eval(msg);
+		
+		
+
+		try {
+			se.eval("var msg = '" + js + "';");
+			se.eval("msg = msg.replace(/\\n/g,'');");
+			se.eval("msg = msg.replace(/\\/\\/(\\s|\\S)*\\/\\//gim,'');");
+			se.eval("eval(msg)");
+			se.eval("print(cursosMat)");
+			se.eval("importClass(org.json.JSONArray);var courses=new JSONArray();for(var i in cursosMat){for(var j=0;j<cursosMat[i].oSeccion.nHorario.length;j++){if(cursosMat[i].oSeccion.nHorario[j].length>0){var course={code:cursosMat[i].sCoCurs,day:j+1,name:cursosMat[i].sNoAbrCurs,fullname:cursosMat[i].sNoCmpCurs,classroom:cursosMat[i].oSeccion.sAula[j][0],shour:cursosMat[i].oSeccion.nHorario[j][0],ehour:cursosMat[i].oSeccion.nHorario[j][cursosMat[i].oSeccion.nHorario[j].length-1]+1};courses.put(course)}}}");
+		
+			 JSONArray cursos = (JSONArray) se.get("courses");
+			 try {
+				 JSONObject obj = (JSONObject)cursos.get(0);
+				System.out.println( obj.get("code").toString());
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		} catch (ScriptException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+
+	// How to run this with cmd?
+	// javac -cp .;C:/jsoup-1.6.3.jar models/Ulima.java
+	// java -cp .;C:/jsoup-1.6.3.jar models.Ulima
 
 }
