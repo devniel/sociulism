@@ -17,7 +17,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.jsoup.Jsoup;
@@ -86,8 +88,27 @@ public class Ulima {
 			// The cookies for session has been saved by the cookie manager.
 			// Now the application make a request to another URL ["Consolidado de MatrÃ­cula"]
 			String url1 = "http://webaloe.ulima.edu.pe/portalUL/layout.jsp";
-			String url2 = "http://webaloe.ulima.edu.pe/portalUL/gama/servlets/ComandoMostrarConsMatr?COCICLO=20121&Fg=1";
+			
+			//obtener cilco y año
+			String ciclo = "";
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			java.util.Date date1 = new java.util.Date();
+			SimpleDateFormat rds = new SimpleDateFormat("yyyy");
+			String year = rds.format(date1);
+			Date date2 = sdf.parse("2012-08-01");	
+			if(date1.compareTo(date2)>0){
+			ciclo="2";
+			}else if(date1.compareTo(date2)<0){
+			ciclo="1";
+			}else if(date1.compareTo(date2)==0){
+			ciclo="2";
+			}else{
+			System.out.println("How to get here?");
+			}
+			String url2 = "http://webaloe.ulima.edu.pe/portalUL/gama/servlets/ComandoMostrarConsMatr?COCICLO="+year+ciclo+"&Fg=1";
 			URLConnection connection2 = new URL(url2).openConnection();
+			//ciclo año fin
+			
 
 			connection2.setRequestProperty("Accept-Charset", charset);
 			connection2.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.3) Gecko/20100401");
@@ -206,7 +227,9 @@ public class Ulima {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println(e.getMessage());
-		}		
+		}	
+		
+		System.out.println("HOLA MUNDO");
 		//List<CursoInfo> cursos = getCourses(html);
 	}
 
