@@ -26,7 +26,6 @@ import javax.script.ScriptException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -245,12 +244,19 @@ public class Ulima {
 			se.eval("msg = msg.replace(/\\/\\/(\\s|\\S)*\\/\\//gim,'');");
 			se.eval("eval(msg)");
 			se.eval("print(cursosMat)");
-			se.eval("importClass(org.json.JSONArray);var courses=new JSONArray();for(var i in cursosMat){for(var j=0;j<cursosMat[i].oSeccion.nHorario.length;j++){if(cursosMat[i].oSeccion.nHorario[j].length>0){var course={code:cursosMat[i].sCoCurs,day:j+1,name:cursosMat[i].sNoAbrCurs,fullname:cursosMat[i].sNoCmpCurs,classroom:cursosMat[i].oSeccion.sAula[j][0],shour:cursosMat[i].oSeccion.nHorario[j][0],ehour:cursosMat[i].oSeccion.nHorario[j][cursosMat[i].oSeccion.nHorario[j].length-1]+1};courses.put(course)}}}");
+			se.eval("importClass(org.json.JSONArray);var courses=new JSONArray();for(var i in cursosMat){for(var j=0;j<cursosMat[i].oSeccion.nHorario.length;j++){if(cursosMat[i].oSeccion.nHorario[j].length>0){var course={"+
+					"code:cursosMat[i].sCoCurs,"+
+					"day:j+1,"+
+					"name:cursosMat[i].sNoAbrCurs,"+
+					"fullname:cursosMat[i].sNoCmpCurs,"+
+					"classroom:cursosMat[i].oSeccion.sAula[j][0],"+
+					"shour:cursosMat[i].oSeccion.nHorario[j][0],"+
+					"ehour:cursosMat[i].oSeccion.nHorario[j][cursosMat[i].oSeccion.nHorario[j].length-1]+1"+
+				"};courses.put(course)}}}");
 		
 			 JSONArray cursos = (JSONArray) se.get("courses");
 			 try {
-				 JSONObject obj = (JSONObject)cursos.get(0);
-				System.out.println( obj.get("code").toString());
+				System.out.println(cursos.get(0).toString());
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
