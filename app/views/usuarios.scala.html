@@ -1,0 +1,161 @@
+@()
+@import helper.twitterBootstrap._
+@import helper._
+
+@scripts = {
+
+
+
+} 
+
+@main(null, scripts){
+  <li><a href="">Inicio</a></li>
+  <li><a href="/admin/facultades">Facultades</a></li>
+  <li><a href="/admin/profesores">Profesores</a></li>
+  <li><a href="/admin/cursos">Cursos</a></li>
+  <li class="active"><a href="/admin/usuarios">Usuarios</a></li>
+}{
+
+        @*********************
+         * CONTENIDO *
+         *********************@ 
+
+      <!-- Example row of columns -->
+      <div class="row">
+
+        <div class="span12">
+          <div class="row titilium">
+
+            <!-- / SIDEBAR -->
+            <div class="span9 content-right">
+              
+              <h1>Administración</h1>
+
+              <!-- ACA INICIA EL FORMULARIO -->
+
+                <div class="span9">
+                  <div class="well">
+                    
+                    <form class="form-horizontal" method="POST" action="/usuarios/new">
+                      <fieldset>
+                        <legend>Nuevo Ususario</legend>
+                       
+                        <div class="control-group">
+                          <label class="control-label" for="input01">Nombre de Usuario</label>
+                          <div class="controls">
+                            <input type="text" class="span6" name="nombre" id="input01">
+                          </div>
+                        </div>
+
+                        <div class="control-group">
+                          <label class="control-label" for="input01">Contraseña</label>
+                          <div class="controls">
+                            <input type="text" class="span6" name="nombre" id="input01">
+                          </div>
+                        </div>
+
+                        <div class="control-group">
+                          <label class="control-label" for="input01">Nombres</label>
+                          <div class="controls">
+                            <input type="text" class="span6" name="nombre" id="input01">
+                          </div>
+                        </div>
+
+
+                        <div class="control-group">
+                          <label class="control-label" for="input01">Apellidos</label>
+                          <div class="controls">
+                            <input type="text" class="span6" name="nombre" id="input01">
+                          </div>
+                        </div>
+
+                        <div class="control-group">
+                          <label class="control-label" for="input01">Universidad</label>
+                          <div class="controls">
+                            <input type="text" class="span6" name="nombre" id="input01">
+                          </div>
+                        </div>
+
+                        <div class="control-group">
+                          <label class="control-label" for="input01">Facultad</label>
+                          <div class="controls">
+                            <input type="text" class="span6" name="nombre" id="input01">
+                          </div>
+                        </div>
+
+                        <div class="control-group">
+                          <label class="control-label" for="input01">Carrera</label>
+                          <div class="controls">
+                            <input type="text" class="span6" name="nombre" id="input01">
+                          </div>
+                        </div>
+
+                         <div class="control-group">
+                          <label class="control-label">Privilegio</label>
+                          <div class="controls">
+                            <label class="radio">
+                              <input type="radio" name="optionsRadios2" id="optionsRadios1" value="option1" checked="">
+                              Bajo
+                            </label>
+                            <label class="radio">
+                              <input type="radio" name="optionsRadios2" id="optionsRadios2" value="option2">
+                              Medio 
+                            </label>
+                            <label class="radio">
+                              <input type="radio" name="optionsRadios2" id="optionsRadios2" value="option2">
+                              Alto
+                            </label>
+                          </div>
+                        </div>
+
+
+                       <div class="control-group">
+                          <label class="control-label">Rol</label>
+                          <div class="controls">
+                            <label class="radio">
+                              <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                              Estudiante
+                            </label>
+                            <label class="radio">
+                              <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                              Profesor
+                            </label>
+                            <label class="radio">
+                              <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                              Administrador
+                            </label>
+                          </div>
+                        </div>
+
+                       
+
+                        <!--<div class="control-group">
+                          <label class="control-label" for="input01">Detalles</label>
+                          <div class="controls">
+                            <textarea class="input-xlarge titilium span6" id="textarea" placeholder="Explica detalladamente tu consulta, por favor."></textarea>
+                          </div>
+                        </div>-->
+
+                        <div class="control-group">
+                          <div class="controls">
+                            <button class="btn  btn-primary" type="submit">Crear</button>
+                          </div>
+                        </div>
+
+                      </fieldset>
+                    </form>
+
+
+                  </div>
+                </div>
+
+              <!-- ACA TERMINA EL FORMULARIO -->
+
+
+            </div>
+          </div>
+        </div>
+
+     </div>
+
+}
