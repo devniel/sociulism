@@ -9,7 +9,7 @@
 @main(user,scripts){
 	<h1>sds</h1>
 }{
-    <h1>Hola @session.get("codigo")</h1>
+    <h1>Hola @session.get("username")</h1>
    
     <ul>
     @for(curso <- user.getCursos()) {

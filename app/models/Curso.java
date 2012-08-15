@@ -48,16 +48,25 @@ public class Curso extends Model{
 		//return TODO;
 		return find.all();
 	}
+	
+	/*
+	 * Agrega un nuevo curso a la base de datos
+	 * determinando si este existe o no.
+	 */
 
-	public static Curso create(Curso curso){
+	public static Curso create(Curso curso)
+	{
 		
 		Curso cursoAux = getCursoByCodigo(curso.getCodigo());
-		if(cursoAux == null){
+		
+		if(cursoAux == null)
+		{
 			curso.save();
-		}else{
+		}
+		else
+		{
 			curso = cursoAux;
 		}
-		
 		
 		return curso;
 	}

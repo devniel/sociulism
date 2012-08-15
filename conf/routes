@@ -27,3 +27,17 @@ POST 	/facultad/:id/nuevoMensaje	controllers.Facultades.nuevoMensaje(id: String)
 GET		/cursos/:id  				controllers.Cursos.show(id: String)
 
 GET		/curso/:id/chat				controllers.Cursos.chat(id: String,codigo: String)
+
+# ADMIN
+
+GET		/admin/facultades			controllers.Admin.facultades()
+
+#GET		/admin/carreras				controllers.Admin.carreras()
+
+#GET 	/admin/universidades		controllers.Admin.universidades()
+
+#GET 	/admin/Usuarios				controllers.Admin.usuarios()
+
+# FACULTADES
+
+POST 	/facultades/new					controllers.Facultades.create()

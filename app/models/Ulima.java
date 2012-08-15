@@ -5,9 +5,13 @@ package models;
  */
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
@@ -26,6 +30,7 @@ import javax.script.ScriptException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -33,25 +38,31 @@ import org.jsoup.select.Elements;
 
 public class Ulima {
 	
+	/*
+	 * Método que permite obtener la página html de perfil de usuario Ulima.
+	 */
+	
 	public static String login(String codigo, String password) throws Exception{
 		String response = "";
-		try {
+		
+		try 
+		{
 			
 			/*
 			 * This cookie manager is important for save cookies through the request
 			 */
+			
 			CookieManager manager = new CookieManager();
 			manager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
 			CookieHandler.setDefault(manager);
 			
 			System.setProperty("http.keepAlive", "false");
-			String url = "https://webaloe.ulima.edu.pe/portalUL/j_security_check";
-			String charset = "ISO-8859-1";
-			String param1 = codigo;
-			String param2 = password;
-			String query = String.format("j_username=%s&j_password=%s",
-					URLEncoder.encode(param1,charset),
-					URLEncoder.encode(param2,charset));
+			
+			String url 		= "https://webaloe.ulima.edu.pe/portalUL/j_security_check";
+			String charset 	= "ISO-8859-1";
+			String param1 	= codigo;
+			String param2 	= password;
+			String query 	= String.format("j_username=%s&j_password=%s",URLEncoder.encode(param1,charset),URLEncoder.encode(param2,charset));
 			
 			HttpURLConnection connection = (HttpURLConnection)new URL(url).openConnection();
 			connection.setRequestMethod("POST");
@@ -62,13 +73,15 @@ public class Ulima {
 			connection.setRequestProperty("Content-Type","application/x-www-form-urlencoded;charset=" + charset);
 			OutputStream output = null;
 			
-			//System.out.println("RESPONSE --> : " + connection.getResponseCode());
-			
-			try{
+			try
+			{
 				output = connection.getOutputStream();
 				output.write(query.getBytes(charset));
-			}finally{
-				if(output != null) try { output.close(); } catch(IOException logOrIgnore){
+			}
+			finally
+			{
+				if(output != null) try { output.close(); } catch(IOException logOrIgnore)
+				{
 					System.out.println("FAIL");
 				}
 			}
@@ -85,10 +98,6 @@ public class Ulima {
 
 			connection.disconnect();
 
-			for(HttpCookie cookie: cookies){
-				System.out.println(cookie.getName() + " --> " + cookie.getValue());
-			}
-			
 			// The cookies for session has been saved by the cookie manager.
 			// Now the application make a request to another URL ["Consolidado de Matrícula"]
 			String url1 = "http://webaloe.ulima.edu.pe/portalUL/layout.jsp";
@@ -119,32 +128,43 @@ public class Ulima {
 			
 		    BufferedReader reader = null;
 		    
-		    try {
+		    try 
+		    {
 		        reader = new BufferedReader(new InputStreamReader(connection2.getInputStream(), charset));
-		        for (String line; (line = reader.readLine()) != null;) {
+		        
+		        for (String line; (line = reader.readLine()) != null;) 
+		        {
 		            response+=line;
 		        }
-		    } finally {
+		        
+		    } 
+		    finally 
+		    {
 		        if (reader != null) try { reader.close(); } catch (IOException logOrIgnore) {}
 		    }
-		    
-		    System.out.println("RESPONSE --> : " + connection.getResponseCode());			
-		    
-		}catch (Exception e) {
+		    		    
+		}
+		catch (Exception e) 
+		{
 			e.printStackTrace();
 		}
-		
-		System.out.println("length --> " + response.length());
-		
-		if(response.length() <= 460){
-			// Not user
+				
+		if(response.length() <= 460)
+		{
+			// Not a user
 			throw new Exception("No es usuario");
-		}else{
+		}
+		else
+		{
 			return response;
 		}
 	}
 
 
+	/*
+	 * A partir de la página de perfil de usuario se obtiene los scripts contenidos
+	 */
+	
 	public static String getJS(String html){
 		Document doc = Jsoup.parse(html);
 		Elements scripts = doc.getElementsByTag("script");
@@ -153,123 +173,36 @@ public class Ulima {
 		return js;
 	}
 	
-	public static List<CursoInfo> getCourses(String html){
+	/*
+	 * Se ejecuta el script del contenido de la página de perfil de usuario,
+	 * mediante el cual se obtiene un objeto JSON con toda la información de los
+	 * cursos del usuario.
+	 */
+	
+	public static JSONArray getCourses(String html){
 		
-		// READ TABLE 87
-		Document doc = Jsoup.parse(html);
+		ScriptEngine engine = new ScriptEngineManager().getEngineByExtension("js");
+		String js = getJS(html);
+		JSONArray cursos = null;
 		
-		Elements tables = doc.getElementsByTag("table");
-		
-		// For information about the user, the number of table is 4
-		Element tableInfo = tables.get(4);
-		System.out.println(tableInfo.child(0).toString());
-
-		// FOR ["CONSOLIDAD DE MATRICULA"] the number of table is 5, whereas for miulima is 87
-		Element table = tables.get(5);
-		
-		Element tbody = table.child(0);
-		
-		//List<Node> nodes = tbody.childNodes();
-		
-		Elements nodes = tbody.children();
-		
-		Elements nodeCourses = new Elements();
-		
-		System.out.println(String.valueOf(nodes.size()));
-		
-		for(int i=0;i<nodes.size();i++){
-			//System.out.println("ELEMENT------------------------------------");
-			String nodeContent = nodes.get(i).toString().trim();
-			//System.out.println(nodeContent.length());
-			if(nodeContent.length() != 0){
-				nodeCourses.add(nodes.get(i));
-			}
-		}
-		
-		List<CursoInfo> cursos = new ArrayList<CursoInfo>();
-		
-		for(int j=1;j<nodeCourses.size();j++){
-			Elements td = nodeCourses.get(j).children();
-			
-			// CODIGO DE CURSO
-			String codigo = td.get(1).text();
-			String nombre = td.get(4).text();
-			String seccion = td.get(2).text();
-
-			System.out.println(codigo + " " + nombre + " " + seccion);
-			
-			CursoInfo curso = new CursoInfo();
-				  curso.setCodigo(codigo.trim());
-				  curso.setNombre(nombre.trim());
-				  curso.setSeccion(Integer.parseInt(seccion.trim()));
-				  
-			cursos.add(curso);
-			//System.out.println("CURSO --> " + courseInfo);
+		try {
+			String currentDir = new File("./app/models/ulima.js").getAbsolutePath();
+			System.out.println("CURRENT DIRECTORY : " + currentDir);
+			File script = new File(currentDir);
+            Reader reader = new FileReader(script);
+			engine.eval("var msg = '" + js + "';");
+			engine.eval(reader);
+			cursos = (JSONArray) engine.get("courses");			 
+		} catch (FileNotFoundException e) {
+            e.printStackTrace();
+		} catch (ScriptException e1) {
+			e1.printStackTrace();
 		}
 		
 		return cursos;
 	}
 
-	public static void main(String[] args){
-
-		String html = null;
-
-		ScriptEngine se = new ScriptEngineManager().getEngineByExtension("js");
-		
-		try {
-			html = login("20082219","DFYAPL");
-			List<CursoInfo> cursos = getCourses(html);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.out.println(e.getMessage());
-		}		
-		//List<CursoInfo> cursos = getCourses(html);
-
-		String js = getJS(html);
-		//System.out.println(js);
-
-		// Eliminar espacios en blanco
-        //msg = msg.replace(/\n/g,"");
-        // Eliminar comentarios
-        //msg = msg.replace(/\/\/(\s|\S)*\/\//gim,"");
-        // Eval is evil, ejecutar el script extraído de miulima
-        //eval(msg);
-		
-		
-
-		try {
-			se.eval("var msg = '" + js + "';");
-			se.eval("msg = msg.replace(/\\n/g,'');");
-			se.eval("msg = msg.replace(/\\/\\/(\\s|\\S)*\\/\\//gim,'');");
-			se.eval("eval(msg)");
-			se.eval("print(cursosMat)");
-			se.eval("importClass(org.json.JSONArray);var courses=new JSONArray();for(var i in cursosMat){for(var j=0;j<cursosMat[i].oSeccion.nHorario.length;j++){if(cursosMat[i].oSeccion.nHorario[j].length>0){var course={"+
-					"code:cursosMat[i].sCoCurs,"+
-					"day:j+1,"+
-					"name:cursosMat[i].sNoAbrCurs,"+
-					"fullname:cursosMat[i].sNoCmpCurs,"+
-					"classroom:cursosMat[i].oSeccion.sAula[j][0],"+
-					"shour:cursosMat[i].oSeccion.nHorario[j][0],"+
-					"ehour:cursosMat[i].oSeccion.nHorario[j][cursosMat[i].oSeccion.nHorario[j].length-1]+1"+
-				"};courses.put(course)}}}");
-		
-			 JSONArray cursos = (JSONArray) se.get("courses");
-			 try {
-				System.out.println(cursos.get(0).toString());
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
-		} catch (ScriptException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
-
 	// How to run this with cmd?
-	// javac -cp .;C:/jsoup-1.6.3.jar models/Ulima.java
-	// java -cp .;C:/jsoup-1.6.3.jar models.Ulima
-
+	// javac -cp .;C:/jsoup-1.6.3.jar;C:\play-2.0.3\repository\local\org.json\json\20080701\jars\json.jar  models/Ulima.java
+	// java -cp .;C:/jsoup-1.6.3.jar;C:\play-2.0.3\repository\local\org.json\json\20080701\jars\json.jar  models/Ulima
 }

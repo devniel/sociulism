@@ -72,14 +72,16 @@ create table Universidad (
 
 create table Usuario (
   id                        bigint auto_increment not null,
-  codigo                    varchar(255),
-  password                  varchar(255),
+  username                  varchar(255) not null,
+  password                  varchar(255) not null,
   nombres                   varchar(255),
   apellidos                 varchar(255),
+  privilegio                Integer default '0' not null,
+  rol                       Integer default '0' not null,
   universidad_id            bigint,
   carrera_id                bigint,
   facultad_id               bigint,
-  constraint uq_Usuario_codigo unique (codigo),
+  constraint uq_Usuario_username unique (username),
   constraint pk_Usuario primary key (id))
 ;
 

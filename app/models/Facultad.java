@@ -33,6 +33,11 @@ public class Facultad extends Model{
 	
 	@OneToOne(cascade = {CascadeType.ALL})
 	private Universidad universidad;
+
+	public static Facultad create(Facultad facultad){
+		facultad.save();
+		return facultad;
+	}
 	
 	/*
 	 * GETTERS AND SETTERS

@@ -15,7 +15,11 @@ import play.data.*;
 import play.mvc.*;
 import play.mvc.Http.RequestBody;
 
+import models.*;
+
 public class Facultades extends Controller {
+
+	static Form<Facultad> facultadForm = form(Facultad.class);
 
 	/*
 	 * Elegir acción
@@ -54,6 +58,37 @@ public class Facultades extends Controller {
 		mensaje.save();
 		
 		return ok(json.toString());		
+	}
+
+	@BodyParser.Of(play.mvc.BodyParser.Json.class)
+	public static Result create(){
+
+		System.out.println("EN FACULTADES : NUEVO MENSAJE");
+		
+		RequestBody body = request().body();
+		
+		System.out.println(body.toString());
+		
+		JsonNode json = body.asJson();
+		
+		System.out.println(json.toString());
+		
+		String nombre = json.get("facultad.nombre").toString();
+
+		String universidad_id = json.get("facultad.universidad").toString();
+		
+		/*
+		 * Obtener facultad
+		 */
+		
+		Universidad universidad = Universidad.find.byId(Long.parseLong(universidad_id));
+
+		Facultad facultad = new Facultad();
+		facultad.setNombre(nombre);
+		facultad.setUniversidad(universidad);
+		facultad.save();
+
+		return ok("");
 	}
 
 }

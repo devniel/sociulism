@@ -15,6 +15,7 @@ import play.db.ebean.Model;
 @Entity
 @Table(name="Curso_Usuario")
 @IdClass(CursoHasUsuarioID.class)
+
 public class CursoHasUsuario extends Model {
 	
 	@Column(name = "seccion")

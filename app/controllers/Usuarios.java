@@ -25,6 +25,7 @@ public class Usuarios extends Controller {
 		// Comprobar si está logueado
 		if (!isLogged()) 
 		{
+
 			// Mostrar la vista principal
 			return ok(views.html.index.render(userForm));
 		}
@@ -53,12 +54,12 @@ public class Usuarios extends Controller {
 		String uuid = java.util.UUID.randomUUID().toString();
 		session("uuid", uuid);
 		session("cuuid", uuid);
-		session("codigo", user.getCodigo());
+		session("username", user.getUsername());
 		session("password", user.getPassword());
 	}
 
 	/*
-	 * Logueo de usuario Se ejecuta cuando se loguean en el portal :
+	 * Logueo de usuario, se ejecuta cuando se loguean en el portal :
 	 * index.scala.html
 	 */
 
@@ -66,14 +67,14 @@ public class Usuarios extends Controller {
 	public static Result login()
 	{
 		Map<String, String[]> formData = request().body().asFormUrlEncoded();
-		String code = formData.get("codigo")[0];
+		String username = formData.get("username")[0];
 		String password = formData.get("password")[0];
 		
 		Usuario user = null;
 		
 		try
 		{
-			user = Usuario.getUserByCodigo(code);
+			user = Usuario.getUserByUsername(username);
 			// Comprobar password y cargar sesión.
 			if (password.equals(user.getPassword()))
 			{
@@ -83,15 +84,14 @@ public class Usuarios extends Controller {
 		}
 		catch (NullPointerException ex) 
 		{
-			System.out.println("ESTA ENTRANDO AQUI ? ");
 			// Si captura este error, no encontró al usuario en la base de datos, intentaremos
-			// crearlo
+			// crearlo, si no se puede generar el usuario ( por una contraseña o usuario incorrecto que no logre loguearse
+			// en Usuario.create ) se lanza una excepción y se ejecuta el finally.
+			
 			 user = new Usuario();
-			 user.setCodigo("20082219");
-			 user.setPassword("DFYAPL");
-			 
-			 System.out.println("ESTA ENTRANDO AQUI 2 ? ");
-			 
+			 user.setUsername(username);
+			 user.setPassword(password);
+			 		
 			 Usuario newUser = Usuario.create(user);
 			 loadSession(newUser);
 			 
@@ -118,10 +118,21 @@ public class Usuarios extends Controller {
 
 	public static Result show()
 	{
-		System.out.println("Entra aquí");
-		Usuario user = Usuario.getUserByCodigo(session("codigo"));
-		// Mostrar Intranet
-		return ok(views.html.intranet.render(user));
+
+
+		Usuario user = Usuario.getUserByUsername(session("username"));
+
+		// Mostrar Intranet de acuerdo a privilegios
+
+		Result view = null;
+
+		if(user.getPrivilegio() == 3){
+			view = ok(views.html.admin.render(user));
+		}else{
+			view = ok(views.html.intranet.render(user));
+		}
+
+		return view;
 	}
 
 	/*
@@ -136,7 +147,7 @@ public class Usuarios extends Controller {
 			return badRequest(views.html.index.render(filledForm));
 		} else {
 			// Es usuario --> Loguear
-			if (isUser(filledForm.get().codigo)) 
+			if (isUser(filledForm.get().username)) 
 			{
 				return login();
 				// No es usuario --> Registrar
@@ -160,9 +171,9 @@ public class Usuarios extends Controller {
 	 * Determinar si el usuario existe
 	 */
 
-	public static boolean isUser(String codigo) 
+	public static boolean isUser(String username) 
 	{
-		Usuario user = Usuario.getUserByCodigo(codigo);
+		Usuario user = Usuario.getUserByUsername(username);
 		if (user == null)
 			return false;
 		else
@@ -207,31 +218,43 @@ public class Usuarios extends Controller {
 
 	public static boolean validSessionInfo() 
 	{
-		String codigo = session("codigo");
+		String username = session("username");
+
 		String password = session("password");
 
-		System.out.println(codigo + " " + password + " " + session("uuid")
-				+ " " + session("cuuid"));
-		Usuario user = Usuario.getUserByCodigo(codigo);
-		if (user == null) {
+		System.out.println(username + " " + password + " " + session("uuid") + " " + session("cuuid"));
+
+		if(username == "" || password == "") return false;
+
+		Usuario user = Usuario.getUserByUsername(username);
+
+		if (user == null)
+		{
 			return false;
-		} else if (!session("uuid").toString().equals(
-				session("cuuid").toString())) {
+		} 
+		else if (!session("uuid").toString().equals(session("cuuid").toString())) 
+		{
 			return false;
-		} else {
-			if (user.getPassword().equals(password)) {
+		}
+		else 
+		{
+			if (user.getPassword().equals(password))
+			{
 				return true;
-			} else {
+			} 
+			else
+			{
 				return false;
 			}
 		}
+
 	}
 
 	public static Usuario getUserSession() 
 	{
-		String codigo = session("codigo");
+		String username = session("username");
 		String password = session("password");
-		Usuario user = Usuario.getUserByCodigo(codigo);
+		Usuario user = Usuario.getUserByUsername(username);
 		return user;
 	}
 

@@ -5,9 +5,12 @@ import play.db.ebean.*;
 import play.data.validation.Constraints.*;
 import javax.persistence.*;
 
-import com.avaje.ebean.*;
+import org.json.*;
 
-// Task.java
+import com.avaje.ebean.*;
+import com.avaje.ebean.validation.NotNull;
+
+
 @Entity
 @Table(name="Usuario")
 public class Usuario extends Model{
@@ -22,14 +25,37 @@ public class Usuario extends Model{
 	
 	@Column(unique=true) 
 	@Required
-	public String codigo;
+	@NotNull
+	public String username;
 
 	@Required
+	@NotNull
 	public String password;
-
+	
 	public String nombres;
 	
 	public String apellidos;
+	
+	/*
+	 * Privilegios :
+	 * 0 -> Estudiante
+	 * 1 -> Profesor
+	 * 2 -> Secretaria
+	 */
+	@NotNull
+	@Column(columnDefinition="Integer default '0'")
+	public Integer privilegio;
+	
+	/*
+	 * Rol : 
+	 * 0 -> Estudiante
+	 * 1 -> Profesor
+	 * 2 -> Secretaria
+	 */
+	
+	@NotNull
+	@Column(columnDefinition="Integer default '0'")
+	public Integer rol;
 	
 	public static Finder<Long,Usuario> find = new Finder(Long.class, Usuario.class);
 
@@ -45,18 +71,16 @@ public class Usuario extends Model{
 	@ManyToOne
 	public Facultad facultad;
 	
+	/*
+	 * Obtener todos los usuarios
+	 *  de la aplicación
+	 */
+	
 	public static List<Usuario> all(){
 		//return TODO;
 		return find.all();
 	}
 
-	public String validate() {
-        if(codigo == "" || password == "") {
-            return "Invalid email or password";
-        }
-        return null;
-    }
-	
 	/*
 	 * Método para crear un usuario a partir de un objeto
 	 * Usuario que debe contener el usuario y la contraseña
@@ -66,67 +90,135 @@ public class Usuario extends Model{
 	 * Retorna : [Usuario]
 	 */
 
-	public static Usuario create(Usuario user) throws Exception
+	public static Usuario create(Usuario usuario) throws Exception
 	{
 		
-		String userPage = "";
+		String userHTML = "";
 				
 		// Determinar si el usuario existe o no, se lanza una Exception, si pasa la Exception entonces se guarda
-		userPage = Ulima.login(user.getCodigo(),user.getPassword());
+		// el contenido html del logueo resultante en userPage
+		
+		userHTML = Ulima.login(usuario.getUsername(),usuario.getPassword());
 		
 		// Crear usuario
-		user.save();
+		usuario.save();
 					
-		List<CursoInfo> cursos = Ulima.getCourses(userPage);
+		// Obtener cursos de usuario
+		JSONArray cursos = Ulima.getCourses(userHTML);
 		
-		for (CursoInfo cursoInfo : cursos)
-		{
+		// Por cada curso, crearlo y agregar profesor en caso no exista
+		for(int i=0;i<cursos.length();i++){
+			JSONObject node = new JSONObject();
+			node = (JSONObject)cursos.get(i);
 			
-			Curso curso = new Curso();
-			curso.setCodigo(cursoInfo.getCodigo());
-			curso.setNombre(cursoInfo.getNombre());
+			String codigo = node.getString("codigo");
+			String nombre = node.getString("nombre");
+			String seccion = node.getString("seccion");
+			String profesor_nombre = node.getString("profesor");
 			
-			// Se crea curso o se obtiene el ya existente
+			Curso curso = Curso.getCursoByCodigo(codigo);
 			
-			curso= Curso.create(curso);
-			
-			// Agregar a tabla asociativa
-			
-			CursoHasUsuario asoc = new CursoHasUsuario();
-			asoc.setUsuario(user);
-			asoc.setCurso(curso);
-			asoc.setSeccion(cursoInfo.getSeccion());
-			asoc.save();
-			
-			// Actualizar usuario
-			user.getCursos().add(asoc);
+			if(curso == null)
+			{
+				// Crear curso
+				curso = new Curso();
+				curso.setCodigo(codigo);
+				curso.setNombre(nombre);
+				curso = Curso.create(curso);
+				
+				// Registrando a profesor
+				
+				/*
+				
+				Usuario profesor = new Usuario();
+				profesor.setNombres(profesor_nombre);
+				profesor.setRol(1);
+				profesor.setPrivilegio(1);
+				profesor.save();
+				
+				// Crear asociación entre profesor --> curso
+				CursoHasUsuario profesorCurso = new CursoHasUsuario();
+				profesorCurso.setUsuario(profesor);
+				profesorCurso.setCurso(curso);
+				profesorCurso.setSeccion(Integer.parseInt(seccion));
+				profesorCurso.save();
+				
+				// Actualizar profesor
+				profesor.getCursos().add(profesorCurso);
+				
+				*/
+				
+				// Crear asociación entre estudiante --> curso
+				CursoHasUsuario estudianteCurso = new CursoHasUsuario();
+				estudianteCurso.setUsuario(usuario);
+				estudianteCurso.setCurso(curso);
+				estudianteCurso.setSeccion(Integer.parseInt(seccion));
+				estudianteCurso.save();
+				
+				// Actualizar profesor
+				usuario.getCursos().add(estudianteCurso);
+				
+			}
 		}
-		
-		user.save();	
+
+		usuario.save();	
 		
 		// Crear usuario
-		return user;
+		return usuario;
 	}
+	
+	/*
+	 * Eliminar usuario en base
+	 * a su Id
+	 */
 
 	public static void delete(Long id){
 		find.ref(id).delete();
 	}
+	
+	/*
+	 * Obtener usuario en base
+	 * a su Id
+	 */
 
 	public static Usuario getUser(Long id){
 		Usuario user = find.ref(id);
 		return user;
 	}
 
-	public static Usuario getUserByCodigo(String codigo){
-		Usuario user = find.where().eq("codigo",codigo).findUnique();
+	/*
+	 *	Obtener usuario por código 
+	 *	de universidad 
+	 */
+	
+	public static Usuario getUserByUsername(String username){
+		Usuario user = find.where().eq("username",username).findUnique();
 		return user;
 	}
-
-	/** GETTERS AND SETTERS **/
 	
+
+	/*
+	 * GETTERS AND SETTERS 
+	 */
 	
 	public Universidad getUniversidad() {
 		return universidad;
+	}
+
+	public Integer getPrivilegio() {
+		return privilegio;
+	}
+
+	public void setPrivilegio(Integer privilegio) {
+		this.privilegio = privilegio;
+	}
+
+	public Integer getRol() {
+		return rol;
+	}
+
+	public void setRol(Integer rol) {
+		this.rol = rol;
 	}
 
 	public Long getId() {
@@ -157,12 +249,12 @@ public class Usuario extends Model{
 		this.facultad = facultad;
 	}
 
-	public String getCodigo() {
-		return codigo;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {

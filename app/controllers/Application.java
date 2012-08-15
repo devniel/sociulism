@@ -40,7 +40,7 @@ public class Application extends Controller {
 
 	Usuario usuario = new Usuario();
 	usuario.setPassword("DFYAPL");
-	usuario.setCodigo("20082219");
+	usuario.setUsername("20082219");
 	usuario.setNombres("Daniel Mauricio");
 	usuario.setFacultad(facultad);
 	usuario.setUniversidad(universidad);

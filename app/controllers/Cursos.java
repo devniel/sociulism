@@ -22,8 +22,6 @@ public class Cursos extends Controller {
 
   	Curso curso = Curso.getCurso(Long.parseLong(id));
 
-    System.out.println("# MENSAJES --> " + curso.getMensajes().size());
-
   	return ok(views.html.curso.render(usuario,curso));
   }
   

@@ -73,7 +73,7 @@ public class ChatCurso extends UntypedActor {
                    String message = event.get("text").asText();
                    String code = username;
                    
-                   Usuario usuario = Usuario.getUserByCodigo(code);
+                   Usuario usuario = Usuario.getUserByUsername(code);
                    Curso cursoChat = Curso.getCursoByCodigo(curso.toString());
                    
                    // Send a Talk message to the room.
@@ -170,7 +170,7 @@ public class ChatCurso extends UntypedActor {
             // Received a Talk message
             Mensaje msg = (Mensaje)message;
             
-            notifyAll("talk",msg.getEmisor().getCodigo() , msg.getContenido());
+            notifyAll("talk",msg.getEmisor().getUsername() , msg.getContenido());
             
         } else if(message instanceof Quit)  {
             
@@ -199,7 +199,7 @@ public class ChatCurso extends UntypedActor {
             event.put("kind", kind); // Tipo de Evento
             event.put("user", user);
 
-            Usuario _user = Usuario.getUserByCodigo(user);
+            Usuario _user = Usuario.getUserByUsername(user);
             event.put("nombres",_user.getNombres());
             event.put("message", text);
 
