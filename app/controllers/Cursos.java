@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.Map;
+
 import org.codehaus.jackson.JsonNode;
 
 import play.*;
@@ -23,6 +25,23 @@ public class Cursos extends Controller {
   	Curso curso = Curso.getCurso(Long.parseLong(id));
 
   	return ok(views.html.curso.render(usuario,curso));
+  }
+
+  /*
+  * CREAR CURSO
+  */
+  public static Result create(){
+      Map<String, String[]> formData = request().body().asFormUrlEncoded();
+      String codigo = formData.get("codigo")[0];
+      String nombre = formData.get("nombre")[0];
+      
+      Curso curso = new Curso();
+      curso.setNombre(nombre);
+      curso.setCodigo(codigo);
+      curso.save();
+      
+      // Redireccionar a página inicial (con o sin carga de sesión)
+      return redirect(routes.Admin.cursos());
   }
   
   

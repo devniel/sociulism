@@ -32,12 +32,18 @@ GET		/curso/:id/chat				controllers.Cursos.chat(id: String,codigo: String)
 
 GET		/admin/facultades			controllers.Admin.facultades()
 
-#GET		/admin/carreras				controllers.Admin.carreras()
+#GET	/admin/carreras				controllers.Admin.carreras()
 
 #GET 	/admin/universidades		controllers.Admin.universidades()
 
 #GET 	/admin/Usuarios				controllers.Admin.usuarios()
 
+GET		/admin/cursos			 	controllers.Admin.cursos()
+
 # FACULTADES
 
 POST 	/facultades/new					controllers.Facultades.create()
+
+# CURSOS
+
+POST 	/cursos/new					controllers.Cursos.create()

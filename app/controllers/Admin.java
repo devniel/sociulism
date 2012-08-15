@@ -25,7 +25,18 @@ public class Admin extends Controller {
 	public static Result facultades()
 	{
 		System.out.println("Usuario quiere crear facultad");
-		return ok(views.html.facultades.render(facultadForm));
+
+		// Una facultad requiere de una universidad, en el formulario aparecerá
+		// la opción de escoger universidad de una lista, por eso se le pasa los objetos Universidad.
+		return ok(views.html.facultades.render(Universidad.find.all()));
+	}
+
+	public static Result cursos()
+	{
+
+		System.out.println("Alguien quiere crear cursos");
+
+		return ok(views.html.cursos.render());
 	}
 
 	/*public static Result carreras()

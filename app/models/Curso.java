@@ -37,8 +37,6 @@ public class Curso extends Model{
 	
 	@OneToMany
 	private List<Enlace> enlaces;
-
-	
 	
 	public String nombre;
 

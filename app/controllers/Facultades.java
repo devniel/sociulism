@@ -60,8 +60,12 @@ public class Facultades extends Controller {
 		return ok(json.toString());		
 	}
 
+	/*
+	 * WITH JSON
+	 */
+
 	@BodyParser.Of(play.mvc.BodyParser.Json.class)
-	public static Result create(){
+	public static Result createWithJson(){
 
 		System.out.println("EN FACULTADES : NUEVO MENSAJE");
 		
@@ -89,6 +93,27 @@ public class Facultades extends Controller {
 		facultad.save();
 
 		return ok("");
+	}
+
+	/*
+	 * WITHOUT JSON
+	 */
+
+	public static Result create(){
+		Map<String, String[]> formData = request().body().asFormUrlEncoded();
+	    String nombre = formData.get("nombre")[0];
+	    String universidad_id = formData.get("universidad_id")[0];
+	    
+	    Universidad universidad = Universidad.find.byId(Long.parseLong(universidad_id));
+
+		Facultad facultad = new Facultad();
+		facultad.setNombre(nombre);
+		facultad.setUniversidad(universidad);
+		facultad.save();
+	    
+	    
+	    // Redireccionar a página inicial (con o sin carga de sesión)
+	    return redirect(routes.Admin.facultades());
 	}
 
 }

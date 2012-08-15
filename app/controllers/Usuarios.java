@@ -4,12 +4,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.h2.expression.ExpressionList;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import play.*;
 import play.data.*;
 import play.mvc.*;
 import play.mvc.Http.Session;
 import views.html.index;
+import models.Curso;
+import models.CursoHasUsuario;
+import models.Ulima;
 import models.Usuario;
 
 public class Usuarios extends Controller {
@@ -87,12 +92,8 @@ public class Usuarios extends Controller {
 			// Si captura este error, no encontró al usuario en la base de datos, intentaremos
 			// crearlo, si no se puede generar el usuario ( por una contraseña o usuario incorrecto que no logre loguearse
 			// en Usuario.create ) se lanza una excepción y se ejecuta el finally.
-			
-			 user = new Usuario();
-			 user.setUsername(username);
-			 user.setPassword(password);
-			 		
-			 Usuario newUser = Usuario.create(user);
+
+			 Usuario newUser = crearDesdeUlima(username,password);
 			 loadSession(newUser);
 			 
 		}
@@ -126,9 +127,12 @@ public class Usuarios extends Controller {
 
 		Result view = null;
 
-		if(user.getPrivilegio() == 3){
+		if(user.getPrivilegio() == 3)
+		{
 			view = ok(views.html.admin.render(user));
-		}else{
+		}
+		else
+		{
 			view = ok(views.html.intranet.render(user));
 		}
 
@@ -156,7 +160,7 @@ public class Usuarios extends Controller {
 			{
 				Usuario user;
 				try {
-					user = Usuario.create(filledForm.get());
+					user = crearDesdeUlima(filledForm.get().getUsername(),filledForm.get().getPassword());
 				} catch (Exception e) {
 					flash("Error", "Existen problemas con el usuario");
 					return redirect(routes.Application.index());
@@ -165,6 +169,94 @@ public class Usuarios extends Controller {
 				return redirect(routes.Application.index());
 			}
 		}
+	}
+
+	/*
+	 * Método para crear un usuario ESTUDIANTE a partir de su usuario y
+	 * contraseña de la Universidad de Lima.
+	 * 
+	 * Parámetros : [Usuario]
+	 * Retorna : [Usuario]
+	 */
+
+	public static Usuario crearDesdeUlima(String _username, String _password) throws Exception
+	{
+		
+		String userHTML = "";
+				
+		// Determinar si el usuario existe o no, se lanza una Exception, si pasa la Exception entonces se guarda
+		// el contenido html del logueo resultante en userPage
+		
+		Usuario usuario = new Usuario();
+		
+		userHTML = Ulima.login(_username, _password);
+		
+		// Crear usuario
+		usuario.save();
+					
+		// Obtener cursos de usuario
+		JSONArray cursos = Ulima.getCourses(userHTML);
+		
+		// Por cada curso, crearlo y agregar profesor en caso no exista
+		for(int i=0;i<cursos.length();i++)
+		{
+			JSONObject node = new JSONObject();
+			node = (JSONObject)cursos.get(i);
+			
+			String codigo = node.getString("codigo");
+			String nombre = node.getString("nombre");
+			String seccion = node.getString("seccion");
+			String profesor_nombre = node.getString("profesor");
+			
+			Curso curso = Curso.getCursoByCodigo(codigo);
+			
+			if(curso == null)
+			{
+				// Crear curso
+				curso = new Curso();
+				curso.setCodigo(codigo);
+				curso.setNombre(nombre);
+				curso = Curso.create(curso);
+				
+				// Registrando a profesor
+				
+				/*
+				
+				Usuario profesor = new Usuario();
+				profesor.setNombres(profesor_nombre);
+				profesor.setRol(1);
+				profesor.setPrivilegio(1);
+				profesor.save();
+				
+				// Crear asociación entre profesor --> curso
+				CursoHasUsuario profesorCurso = new CursoHasUsuario();
+				profesorCurso.setUsuario(profesor);
+				profesorCurso.setCurso(curso);
+				profesorCurso.setSeccion(Integer.parseInt(seccion));
+				profesorCurso.save();
+				
+				// Actualizar profesor
+				profesor.getCursos().add(profesorCurso);
+				
+				*/
+				
+				// Crear asociación entre estudiante --> curso
+				CursoHasUsuario estudianteCurso = new CursoHasUsuario();
+				estudianteCurso.setUsuario(usuario);
+				estudianteCurso.setCurso(curso);
+				estudianteCurso.setSeccion(Integer.parseInt(seccion));
+				estudianteCurso.save();
+				
+				// Actualizar profesor
+				usuario.getCursos().add(estudianteCurso);
+				
+			}
+		}
+
+		usuario.save();	
+		
+		// Crear usuario
+		return usuario;
 	}
 
 	/*
