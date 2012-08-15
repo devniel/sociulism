@@ -1,0 +1,286 @@
+package controllers;
+
+import java.util.List;
+import java.util.Map;
+
+import org.h2.expression.ExpressionList;
+
+import play.*;
+import play.data.*;
+import play.mvc.*;
+import play.mvc.Http.Session;
+import views.html.index;
+import models.Usuario;
+
+public class Usuarios extends Controller {
+
+	static Form<Usuario> userForm = form(Usuario.class);
+
+	/*
+	 * Elegir acción
+	 */
+
+	public static Result index()
+	{
+		// Comprobar si está logueado
+		if (!isLogged()) 
+		{
+
+			// Mostrar la vista principal
+			return ok(views.html.index.render(userForm));
+		}
+		else
+		{
+			// Mostrar la vista de usuario logueado
+			return show();
+		}
+	}
+
+	/*
+	 * Mostrar la lista de usuarios y formulario para registro/logueo.
+	 */
+
+	public static Result all() 
+	{
+		return ok(views.html.index.render(userForm));
+	}
+
+	/*
+	 * Cargar sesión a partir de objeto usuario.
+	 */
+	
+	public static void loadSession(Usuario user)
+	{
+		String uuid = java.util.UUID.randomUUID().toString();
+		session("uuid", uuid);
+		session("cuuid", uuid);
+		session("username", user.getUsername());
+		session("password", user.getPassword());
+	}
+
+	/*
+	 * Logueo de usuario, se ejecuta cuando se loguean en el portal :
+	 * index.scala.html
+	 */
+
+	@SuppressWarnings("finally")
+	public static Result login()
+	{
+		Map<String, String[]> formData = request().body().asFormUrlEncoded();
+		String username = formData.get("username")[0];
+		String password = formData.get("password")[0];
+		
+		Usuario user = null;
+		
+		try
+		{
+			user = Usuario.getUserByUsername(username);
+			// Comprobar password y cargar sesión.
+			if (password.equals(user.getPassword()))
+			{
+				System.out.println("Válido, entrar");
+				loadSession(user);
+			}
+		}
+		catch (NullPointerException ex) 
+		{
+			// Si captura este error, no encontró al usuario en la base de datos, intentaremos
+			// crearlo, si no se puede generar el usuario ( por una contraseña o usuario incorrecto que no logre loguearse
+			// en Usuario.create ) se lanza una excepción y se ejecuta el finally.
+			
+			 user = new Usuario();
+			 user.setUsername(username);
+			 user.setPassword(password);
+			 		
+			 Usuario newUser = Usuario.create(user);
+			 loadSession(newUser);
+			 
+		}
+		finally
+		{
+			// Redireccionar a página inicial (con o sin carga de sesión)
+			return redirect(routes.Application.index());
+		}
+	}
+
+	/*
+	 * Buscar un usuario por su codigo
+	 */
+
+	public static Result show(String codigo)
+	{
+		return TODO;
+	}
+
+	/*
+	 * Mostrar usuario de la sesión
+	 */
+
+	public static Result show()
+	{
+
+
+		Usuario user = Usuario.getUserByUsername(session("username"));
+
+		// Mostrar Intranet de acuerdo a privilegios
+
+		Result view = null;
+
+		if(user.getPrivilegio() == 3){
+			view = ok(views.html.admin.render(user));
+		}else{
+			view = ok(views.html.intranet.render(user));
+		}
+
+		return view;
+	}
+
+	/*
+	 * Comprobar formulario y crear nuevo usuario
+	 */
+
+	public static Result crear(){
+		
+
+		Map<String, String[]> formData = request().body().asFormUrlEncoded();
+		String username = formData.get("username")[0];
+		String password = formData.get("password")[0];
+		
+		Usuario user = null;
+		System.out.println("LOGRE LLEGAR");
+
+		
+
+
+
+
+		return ok();
+	}
+
+
+	public static Result create()
+	{
+		Form<Usuario> filledForm = userForm.bindFromRequest();
+		// Determinar si los datos del formulario tienen errores
+		if (filledForm.hasErrors()) {
+			return badRequest(views.html.index.render(filledForm));
+		} else {
+			// Es usuario --> Loguear
+			if (isUser(filledForm.get().username)) 
+			{
+				return login();
+				// No es usuario --> Registrar
+			}
+			else 
+			{
+				Usuario user;
+				try {
+					user = Usuario.create(filledForm.get());
+				} catch (Exception e) {
+					flash("Error", "Existen problemas con el usuario");
+					return redirect(routes.Application.index());
+				}
+				loadSession(user);
+				return redirect(routes.Application.index());
+			}
+		}
+	}
+
+	/*
+	 * Determinar si el usuario existe
+	 */
+
+	public static boolean isUser(String username) 
+	{
+		Usuario user = Usuario.getUserByUsername(username);
+		if (user == null)
+			return false;
+		else
+			return true;
+	}
+
+	/*
+	 * Buscar el usuario por id
+	 */
+
+	public static Result find(Long id) 
+	{
+		return TODO;
+	}
+
+	/*
+	 * Borrar usuario
+	 */
+
+	public static Result delete(Long id) 
+	{
+		return TODO;
+	}
+
+	/*
+	 * Comprobar si usuario está logueado
+	 */
+
+	public static boolean isLogged() 
+	{
+		if (validSessionInfo()) {
+			return true;
+		} else {
+			session().clear();
+			return false;
+		}
+	}
+
+	/*
+	 * Validar usuario y password, si existen y son válidos
+	 */
+
+	public static boolean validSessionInfo() 
+	{
+		String username = session("username");
+
+		String password = session("password");
+
+		System.out.println(username + " " + password + " " + session("uuid") + " " + session("cuuid"));
+
+		if(username == "" || password == "") return false;
+
+		Usuario user = Usuario.getUserByUsername(username);
+
+		if (user == null)
+		{
+			return false;
+		} 
+		else if (!session("uuid").toString().equals(session("cuuid").toString())) 
+		{
+			return false;
+		}
+		else 
+		{
+			if (user.getPassword().equals(password))
+			{
+				return true;
+			} 
+			else
+			{
+				return false;
+			}
+		}
+
+	}
+
+	public static Usuario getUserSession() 
+	{
+		String username = session("username");
+		String password = session("password");
+		Usuario user = Usuario.getUserByUsername(username);
+		return user;
+	}
+
+	public static Result logout() 
+	{
+		session().clear();
+		return redirect(routes.Application.index());
+	}
+
+}
