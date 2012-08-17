@@ -27,6 +27,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import javax.mail.*;
+import javax.mail.internet.*;
+
 public class Ulima {
 	
 	public static String login(String codigo, String password) throws Exception{
@@ -218,7 +221,12 @@ public class Ulima {
 	}
 
 
+		
+
+
 	public static void main(String[] args){
+		
+	
 		String html;
 		try {
 			html = login("20082219","XXXXXX");
@@ -230,7 +238,9 @@ public class Ulima {
 		}	
 		
 		System.out.println("HOLA MUNDO");
-		//List<CursoInfo> cursos = getCourses(html);
+		List<CursoInfo> cursos = getCourses(html);
+	
+
 	}
 
 	// How to run this with cmd?

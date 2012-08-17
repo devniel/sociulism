@@ -93,12 +93,9 @@
 	<classpathentry kind="lib" path="C:/play/repository/local/org.easytesting/fest-util/1.1.6/jars/fest-util.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="D:/Mitsuo/Sociul/target/scala-2.9.1/classes_managed"/>
-	<classpathentry kind="lib" path="D:/Mitsuo/jaf-1.1.1/activation.jar"/>
-	<classpathentry kind="lib" path="D:/Mitsuo/javamail-1.4.5/mail.jar"/>
-	<classpathentry kind="lib" path="D:/Mitsuo/javamail-1.4.5/lib/dsn.jar"/>
-	<classpathentry kind="lib" path="D:/Mitsuo/javamail-1.4.5/lib/imap.jar"/>
-	<classpathentry kind="lib" path="D:/Mitsuo/javamail-1.4.5/lib/mailapi.jar"/>
-	<classpathentry kind="lib" path="D:/Mitsuo/javamail-1.4.5/lib/pop3.jar"/>
-	<classpathentry kind="lib" path="D:/Mitsuo/javamail-1.4.5/lib/smtp.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaMail"/>
+	<classpathentry kind="lib" path="D:/Mitsuo/commons-email-1.2/commons-email-1.2.jar"/>
+	<classpathentry kind="lib" path="D:/Mitsuo/commons-email-1.2/commons-email-1.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="D:/Mitsuo/commons-email-1.2/commons-email-1.2-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
