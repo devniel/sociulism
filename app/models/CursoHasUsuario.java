@@ -11,6 +11,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import play.db.ebean.Model;
+import play.db.ebean.Model.Finder;
 
 @Entity
 @Table(name="Curso_Usuario")
@@ -29,6 +30,8 @@ public class CursoHasUsuario extends Model {
 	@PrimaryKeyJoinColumn(name="CURSOID", referencedColumnName="ID")
 	private Curso curso;
 
+	public static Finder<Long,CursoHasUsuario> find = new Finder(Long.class, CursoHasUsuario.class);
+	
 	public Integer getSeccion() {
 		return seccion;
 	}

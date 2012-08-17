@@ -201,6 +201,10 @@ public class Ulima {
 		
 		return cursos;
 	}
+	
+	/*
+	 * Método que carga a un usuario creado por el administrador con los cursos
+	 */
 
 	// How to run this with cmd?
 	// javac -cp .;C:/jsoup-1.6.3.jar;C:\play-2.0.3\repository\local\org.json\json\20080701\jars\json.jar  models/Ulima.java

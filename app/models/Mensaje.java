@@ -19,6 +19,11 @@ import play.db.ebean.Model.Finder;
 @Entity
 @Table(name="Mensaje")
 public class Mensaje extends Model{
+	
+	/*
+	 * Usando Single Table Inheritance, una misma tabla para varios modelos.
+	 * Mensaje puede ser de diferentes modelos. En este caso se especifica en el Tipo.
+	 */
 
 	/*
 	Mensaje 
@@ -39,7 +44,29 @@ public class Mensaje extends Model{
 	@Id
 	public Long Id;
 	
+	/*
+	 * Título del mensaje
+	 * Si es :
+	 * Pregunta -> OBLIGATORIO
+	 * Otros -> NO NECESARIO
+	 */
+	
+	public String titulo;
+	
+	/*
+	 * Contenido del mensaje
+	 * OBLIGATORIO
+	 */
+	
 	public String contenido;
+	
+	/*
+	 * Tipo de mensaje:
+	 * 0 -> Comentario o Respuesta
+	 * 1 -> Notificación
+	 * 2 -> Pregunta
+	 */
+	public Integer tipo;
 
 	/*
 	 * Fecha de envío del mensaje

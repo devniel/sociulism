@@ -28,16 +28,11 @@ public class Facultades extends Controller {
 	@BodyParser.Of(play.mvc.BodyParser.Json.class)
 	public static Result nuevoMensaje(String id)
 	{
-		System.out.println("EN FACULTADES : NUEVO MENSAJE");
 		
 		RequestBody body = request().body();
-		
-		System.out.println(body.toString());
-		
+				
 		JsonNode json = body.asJson();
-		
-		System.out.println(json.toString());
-		
+				
 		String uid = json.get("id").toString();
 		String contenido = json.get("mensaje").toString();
 		

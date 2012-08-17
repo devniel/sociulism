@@ -1,0 +1,283 @@
+@(user : Usuario, curso : Curso)
+@scripts = {
+
+}
+
+@import helper._
+@main(user,scripts){
+
+    <li><a href="/">Inicio</a></li>
+    <li class="active"><a href="/curso/@curso.getId()">@curso.getNombre()</a></li>
+    <li ><a href="/curso/@curso.getId()/asesoria">Asesoría</a></li>
+
+}{
+    <!-- Example row of columns -->
+      <div class="row">
+
+        <div class="span12">
+          <div class="row titilium">
+            <!--
+              SIDEBAR
+            -->
+            <div class="span3 content-left">
+              
+              
+                <ul class="nav nav-list">
+                  <li class="nav-header">
+                    PERSONAS
+                  </li>
+                  <li>
+                    <!-- 
+                      PERSONAS
+                    -->
+                    <a href="#" class="nav-header"><i class="icon-user"></i> PROFESORES</a>
+                    <ul class="nav nav-list">
+
+                      @*********************
+                       * PROFESORES *
+                       *********************@      
+
+                      @for(profesor <- curso.getProfesores()) {
+                        <li class="list-user">
+                          <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
+                          <a href="#">@profesor.getNombres()</a>
+                          <div class="cut"></div>
+                        </li>
+                      }
+
+
+                      <!-- <li class="list-user">
+                        <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
+                        <a href="#">Freddy Cahuas</a>
+                        <div class="cut"></div>
+                      </li>
+
+                      <li class="list-user">
+                        <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/369309_1270467084_942844184_q.jpg"/>
+                        <a href="#">Freddy Cahuas</a>
+                        <div class="cut"></div>
+                      </li>
+                      <li class="list-user">
+                        <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/48815_1032202210_1657296_q.jpg"/>
+                        <a href="#">Freddy Cahuas</a>
+                        <div class="cut"></div>
+                      </li>
+                      <li class="list-user">
+                        <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/161585_1104992034_168476089_q.jpg"/>
+                        <a href="#">Freddy Cahuas</a>
+                        <div class="cut"></div>
+                      </li>
+                      <li class="list-user">
+                        <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/211528_100002280642888_4125957_q.jpg"/>
+                        <a href="#">Freddy Cahuas</a>
+                        <div class="cut"></div>
+                      </li> -->
+
+                    </ul>
+                    <!-- / PERSONAS -->
+                  </li>
+
+                  @*********************
+                   * ASESORES *
+                   *********************@  
+
+                  <!--<li>
+                    <a href="#" class="nav-header"><i class="icon-user"></i> ASESORES</a>
+                    <div class="list-courses">
+                      <ul class="nav nav-list">
+                          <li class="list-user">
+                            <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
+                            <a href="#">Freddy Cahuas</a>
+                            <div class="cut"></div>
+                          </li>
+                          <li class="list-user">
+                            <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/369309_1270467084_942844184_q.jpg"/>
+                            <a href="#">Freddy Cahuas</a>
+                            <div class="cut"></div>
+                          </li>
+                          <li class="list-user">
+                            <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/48815_1032202210_1657296_q.jpg"/>
+                            <a href="#">Freddy Cahuas</a>
+                            <div class="cut"></div>
+                          </li>
+                          <li class="list-user">
+                            <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/161585_1104992034_168476089_q.jpg"/>
+                            <a href="#">Freddy Cahuas</a>
+                            <div class="cut"></div>
+                          </li>
+                          <li class="list-user">
+                            <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/211528_100002280642888_4125957_q.jpg"/>
+                            <a href="#">Freddy Cahuas</a>
+                            <div class="cut"></div>
+                          </li>
+                          <li class="list-user">
+                            <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
+                            <a href="#">Freddy Cahuas</a>
+                            <div class="cut"></div>
+                          </li>
+                          <li class="list-user">
+                            <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/369309_1270467084_942844184_q.jpg"/>
+                            <a href="#">Freddy Cahuas</a>
+                            <div class="cut"></div>
+                          </li>
+                          <li class="list-user">
+                            <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/48815_1032202210_1657296_q.jpg"/>
+                            <a href="#">Freddy Cahuas</a>
+                            <div class="cut"></div>
+                          </li>
+                          <li class="list-user">
+                            <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/161585_1104992034_168476089_q.jpg"/>
+                            <a href="#">Freddy Cahuas</a>
+                            <div class="cut"></div>
+                          </li>
+                          <li class="list-user">
+                            <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/211528_100002280642888_4125957_q.jpg"/>
+                            <a href="#">Freddy Cahuas</a>
+                            <div class="cut"></div>
+                          </li>
+                          <li class="list-user">
+                            <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
+                            <a href="#">Freddy Cahuas</a>
+                            <div class="cut"></div>
+                          </li>
+                          <li class="list-user">
+                            <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/369309_1270467084_942844184_q.jpg"/>
+                            <a href="#">Freddy Cahuas</a>
+                            <div class="cut"></div>
+                          </li>
+                          <li class="list-user">
+                            <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/48815_1032202210_1657296_q.jpg"/>
+                            <a href="#">Freddy Cahuas</a>
+                            <div class="cut"></div>
+                          </li>
+                          <li class="list-user">
+                            <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/161585_1104992034_168476089_q.jpg"/>
+                            <a href="#">Freddy Cahuas</a>
+                            <div class="cut"></div>
+                          </li>
+                          <li class="list-user">
+                            <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/211528_100002280642888_4125957_q.jpg"/>
+                            <a href="#">Freddy Cahuas</a>
+                            <div class="cut"></div>
+                          </li>
+                          <li class="list-user">
+                            <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
+                            <a href="#">Freddy Cahuas</a>
+                            <div class="cut"></div>
+                          </li>
+                          <li class="list-user">
+                            <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/369309_1270467084_942844184_q.jpg"/>
+                            <a href="#">Freddy Cahuas</a>
+                            <div class="cut"></div>
+                          </li>
+                          <li class="list-user">
+                            <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/48815_1032202210_1657296_q.jpg"/>
+                            <a href="#">Freddy Cahuas</a>
+                            <div class="cut"></div>
+                          </li>
+                          <li class="list-user">
+                            <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/161585_1104992034_168476089_q.jpg"/>
+                            <a href="#">Freddy Cahuas</a>
+                            <div class="cut"></div>
+                          </li>
+                          <li class="list-user">
+                            <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/211528_100002280642888_4125957_q.jpg"/>
+                            <a href="#">Freddy Cahuas</a>
+                            <div class="cut"></div>
+                          </li>
+
+                      </ul>
+                    </div>
+                  </li>-->
+
+                </ul>
+
+              <!--<ul>
+                <div class="input-prepend list-courses-search">
+                  <span class="add-on"><i class="icon-search"></i></span><input class="span2" id="inputIcon" type="text" placeholder="Buscar curso ...">
+                </div>
+              </ul>-->
+            
+
+
+
+            </div>
+            <!-- / SIDEBAR -->
+            <div class="span9 content-right">
+              
+              <div class="row row-header">
+                <div class="span9 course-image">
+                </div>
+              </div>
+
+              <div class="row">
+
+                <!-- BOX 1 -->
+                <div class="span9">
+                  <div class="row">
+
+                    <!-- DESCRIPCIÓN -->
+
+                    <div class="span9">
+                      <h3 class="ulima-color" style="font-size:15px">Descripción</h3>
+                      <hr style="margin-top:0px;margin-bottom:10px"/>
+                    </div>
+
+                    <div class="span9">
+                      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+                    </div>
+
+                  </div>
+                </div> <!-- /BOX 1 -->
+
+                <!-- BOX 2 -->
+                <div class="row" style="margin-top:10px">
+                  <div class="span9">
+                    <div class="row">
+
+                      <!-- OBJETIVOS -->
+
+                      <div class="span9">
+                        <h3 class="ulima-color" style="font-size:15px">Objetivos</h3>
+                        <hr style="margin-top:0px;margin-bottom:10px"/>
+                      </div>
+
+                      <div class="span9">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                      </div>
+                    </div>
+
+                  </div>
+                </div> <!-- /BOX 2 -->
+
+                <!-- BOX 3 -->
+                <div class="row" style="margin-top:10px">
+                  <div class="span9">
+                    <div class="row">
+
+                      <!-- OBJETIVOS -->
+
+                      <div class="span9">
+                        <h3 class="ulima-color" style="font-size:15px">Bibliografía</h3>
+                        <hr style="margin-top:0px;margin-bottom:10px"/>
+                      </div>
+
+                      <div class="span9">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                      </div>
+                    </div>
+
+                  </div>
+                </div> <!-- /BOX 3 -->
+                
+              </div>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+     </div>
+}

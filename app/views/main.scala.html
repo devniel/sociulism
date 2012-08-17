@@ -44,7 +44,7 @@
           <br/><span class="version">alpha</span>
         </div>
 
-        @if(user == null) {
+        @if(user == null && session.get("username") == null) {
 
         @*********************
          * LOGIN *
@@ -74,7 +74,7 @@
             <div class="header-user-picture"></div>
             <div class="header-user-details">
               <ul class="titilium">
-                <li class="name">Daniel Flores</li>
+                <li class="name">@session.get("username")</li>
                 <li class="faculty">Ingeniería de Sistemas</li>
                 <li><a href="@routes.Usuarios.logout()">Salir</a></li>
               </ul>

@@ -12,6 +12,7 @@ import play.mvc.Http.Session;
 import views.html.index;
 
 import models.*;
+import views.html.admin.*;
 
 public class Admin extends Controller {
 
@@ -28,7 +29,7 @@ public class Admin extends Controller {
 
 		// Una facultad requiere de una universidad, en el formulario aparecerá
 		// la opción de escoger universidad de una lista, por eso se le pasa los objetos Universidad.
-		return ok(views.html.facultades.render(Universidad.find.all()));
+		return ok(facultades.render(Universidad.find.all()));
 	}
 
 	public static Result cursos()
@@ -36,7 +37,7 @@ public class Admin extends Controller {
 
 		System.out.println("Alguien quiere crear cursos");
 
-		return ok(views.html.cursos.render());
+		return ok(cursos.render());
 	}
 
 	/*public static Result carreras()
@@ -49,13 +50,13 @@ public class Admin extends Controller {
 	{
 		System.out.println("Usuario quiere crear universidades");
 		return ok(views.html.universidades.render(universidadForm));
-	}
+	}*/
 
 	public static Result usuarios()
 	{
 		System.out.println("Usuario quiere crear usuarios");
-		return ok(views.html.usuarios.render(usuarioForm));
-	}*/
+		return ok(usuarios.render(Universidad.find.all(),Facultad.find.all(),Carrera.find.all()));
+	}
 
 	/*
 	 *	FACULTADES

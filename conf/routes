@@ -3,9 +3,11 @@
 # ~~~~
 
 # Home page
+
 GET     /                           controllers.Application.index()
 
 # Map static resources from the /public folder to the /assets URL path
+
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 GET 	/users/all					controllers.Usuarios.all()
@@ -24,9 +26,13 @@ POST 	/login						controllers.Usuarios.login()
 
 POST 	/facultad/:id/nuevoMensaje	controllers.Facultades.nuevoMensaje(id: String)
 
+# CURSO
+
 GET		/cursos/:id  				controllers.Cursos.show(id: String)
 
 GET		/curso/:id/chat				controllers.Cursos.chat(id: String,codigo: String)
+
+GET		/curso/:id/asesoria			controllers.Cursos.asesoria(id: String)
 
 # ADMIN
 
@@ -36,7 +42,7 @@ GET		/admin/facultades			controllers.Admin.facultades()
 
 #GET 	/admin/universidades		controllers.Admin.universidades()
 
-#GET 	/admin/Usuarios				controllers.Admin.usuarios()
+GET 	/admin/usuarios				controllers.Admin.usuarios()
 
 GET		/admin/cursos			 	controllers.Admin.cursos()
 
@@ -47,3 +53,9 @@ POST 	/facultades/new					controllers.Facultades.create()
 # CURSOS
 
 POST 	/cursos/new					controllers.Cursos.create()
+
+# USUARIOS
+
+GET 	/usuarios/all				controllers.Usuarios.all()
+
+POST 	/usuarios/new				controllers.Usuarios.create()

@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.List;
 import java.util.Map;
 
 import org.codehaus.jackson.JsonNode;
@@ -15,7 +16,7 @@ import models.Usuario;
 public class Cursos extends Controller {
   
   public static Result index() {
-    return ok(views.html.curso.render(null,null));
+    return ok(views.html.curso.index.render(null,null));
   }
 
   public static Result show(String id){
@@ -23,8 +24,16 @@ public class Cursos extends Controller {
   	Usuario usuario = Usuarios.getUserSession();
 
   	Curso curso = Curso.getCurso(Long.parseLong(id));
+  	
+  	List<Usuario> profesores = curso.getProfesores();
+  	
+  	System.out.println("PROFESORES DEL CURSO: ");
+  	
+  	for (Usuario profesor : profesores) {
+  		System.out.println(profesor.getNombres() + " --- " + profesor.getApellidos());
+	   }
 
-  	return ok(views.html.curso.render(usuario,curso));
+  	return ok(views.html.curso.index.render(usuario,curso));
   }
 
   /*
@@ -42,6 +51,20 @@ public class Cursos extends Controller {
       
       // Redireccionar a página inicial (con o sin carga de sesión)
       return redirect(routes.Admin.cursos());
+  }
+
+  /*
+   * Asesoría del cursos
+   */
+
+  public static Result asesoria(String id){
+
+    Usuario usuario = Usuarios.getUserSession();
+
+    Curso curso = Curso.getCurso(Long.parseLong(id));
+
+    return ok(views.html.curso.asesoria.render(usuario,curso));
+
   }
   
   

@@ -83,6 +83,29 @@ public class Curso extends Model{
 		return curso;
 	}
 
+	public List<Usuario> getProfesores(){
+		// 1 --> Rol Profesor
+
+		List<Usuario> profesores = Usuario.find.join("cursos")
+        .where()
+        .eq("curso_id",this.Id)
+        .eq("rol", "1")
+        .findList();
+		
+		return profesores;
+	}
+
+	public Usuario getProfesorPorSeccion(Integer seccion){
+		Usuario profesor = Usuario.find.join("cursos")
+        .where()
+        .eq("curso_id",this.Id)
+        .eq("seccion",seccion)
+        .eq("rol", "1")
+        .findUnique();
+		
+		return profesor;
+	}
+
 	/** GETTERS AND SETTERS **/
 	
 	

@@ -52,7 +52,9 @@ create table Facultad (
 
 create table Mensaje (
   id                        bigint auto_increment not null,
+  titulo                    varchar(255),
   contenido                 varchar(255),
+  tipo                      integer,
   fecha                     datetime,
   emisor_id                 bigint,
   receptor_id               bigint,
@@ -76,6 +78,7 @@ create table Usuario (
   password                  varchar(255) not null,
   nombres                   varchar(255),
   apellidos                 varchar(255),
+  email                     varchar(255),
   privilegio                Integer default '0' not null,
   rol                       Integer default '0' not null,
   universidad_id            bigint,

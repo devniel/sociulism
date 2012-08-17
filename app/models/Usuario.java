@@ -36,6 +36,9 @@ public class Usuario extends Model{
 	
 	public String apellidos;
 	
+	public String email;
+	
+	
 	/*
 	 * Privilegios :
 	 * 0 -> Estudiante
@@ -109,12 +112,33 @@ public class Usuario extends Model{
 		Usuario user = find.where().eq("username",username).findUnique();
 		return user;
 	}
-	
+
+	/*
+	 *	Obtener curso de usuario por ID
+	 *  Sirve para saber en que sección en específico está
+	 */
+
+	public CursoHasUsuario getCurso(Long id){
+		CursoHasUsuario relacion = CursoHasUsuario.find.where()
+		.eq("usuario_id",this.Id)
+		.eq("curso_id",id)
+		.findUnique();
+
+		return relacion;
+	}
 
 	/*
 	 * GETTERS AND SETTERS 
 	 */
 	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public Universidad getUniversidad() {
 		return universidad;
 	}
