@@ -74,6 +74,13 @@ public class Usuario extends Model{
 	@ManyToOne
 	public Facultad facultad;
 	
+	@OneToMany(cascade = {CascadeType.ALL})
+	public List<MensajeHasReceptor> mensajeRecibidos;
+	
+	@OneToMany(cascade = {CascadeType.ALL})
+	@JoinColumn(name="emisor_id")
+	public List<Mensaje> mensajesEnviados;
+	
 	/*
 	 * Obtener todos los usuarios
 	 *  de la aplicación
@@ -131,8 +138,26 @@ public class Usuario extends Model{
 	 * GETTERS AND SETTERS 
 	 */
 	
+	
+	
 	public String getEmail() {
 		return email;
+	}
+
+	public List<MensajeHasReceptor> getMensajeRecibidos() {
+		return mensajeRecibidos;
+	}
+
+	public void setMensajeRecibidos(List<MensajeHasReceptor> mensajeRecibidos) {
+		this.mensajeRecibidos = mensajeRecibidos;
+	}
+
+	public List<Mensaje> getMensajesEnviados() {
+		return mensajesEnviados;
+	}
+
+	public void setMensajesEnviados(List<Mensaje> mensajesEnviados) {
+		this.mensajesEnviados = mensajesEnviados;
 	}
 
 	public void setEmail(String email) {

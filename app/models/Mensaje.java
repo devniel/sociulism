@@ -8,6 +8,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -73,6 +74,17 @@ public class Mensaje extends Model{
 	 */
 
 	public Date fecha;
+	
+	/*
+	 * Comentarios o Respuestas - Recursivo
+	 */
+	
+	@OneToMany
+	public List<Mensaje> mensajes;
+	
+	@ManyToOne
+	public Mensaje mensaje;
+	
 
 	/*
 	 * USUARIO emisor, quien envía el mensaje
@@ -85,8 +97,8 @@ public class Mensaje extends Model{
 	 * USUARIO receptor, quien recibe el mensaje - NULL
 	 */
 
-	@OneToOne
-	private Usuario receptor;
+	@OneToMany(cascade = {CascadeType.ALL})
+	private MensajeHasReceptor receptores;
 	
 	/*
 	 * CURSO a donde se envía el mensaje - chat - NULL
@@ -143,42 +155,58 @@ public class Mensaje extends Model{
 		// TODO Auto-generated constructor stub
 	}
 
-	public static List<Mensaje> all()
-	{
-		//return TODO;
-		return find.all();
-	}
-
-	public static Mensaje create(Mensaje mensaje){
-		mensaje.save();
-		return mensaje;
-	}
-
 	public static void delete(Long id){
 		find.ref(id).delete();
-	}
-
-	public static Mensaje getMensaje(Long id){
-		Mensaje msg = find.ref(id);
-		return msg;
 	}
 	
 	/* 
 		GETTERS AND SETTERS
 	*/
+		
 	
 	
-
 	public Usuario getEmisor() {
 		return emisor;
 	}
 
-	public Usuario getReceptor() {
-		return receptor;
+	public Mensaje getMensaje() {
+		return mensaje;
 	}
 
-	public void setReceptor(Usuario receptor) {
-		this.receptor = receptor;
+	public void setMensaje(Mensaje mensaje) {
+		this.mensaje = mensaje;
+	}
+
+	public MensajeHasReceptor getReceptores() {
+		return receptores;
+	}
+
+	public void setReceptores(MensajeHasReceptor receptores) {
+		this.receptores = receptores;
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public Integer getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Integer tipo) {
+		this.tipo = tipo;
+	}
+
+	public List<Mensaje> getMensajes() {
+		return mensajes;
+	}
+
+	public void setMensajes(List<Mensaje> mensajes) {
+		this.mensajes = mensajes;
 	}
 
 	public Facultad getFacultad() {

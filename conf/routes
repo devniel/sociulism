@@ -34,6 +34,10 @@ GET		/curso/:id/chat				controllers.Cursos.chat(id: String,codigo: String)
 
 GET		/curso/:id/asesoria			controllers.Cursos.asesoria(id: String)
 
+POST	/curso/:id/asesoria/new		controllers.Cursos.nuevaAsesoria(id: String)
+
+GET 	/curso/:id/profesores/all	controllers.Cursos.getProfesorDelCurso(id: String)
+
 # ADMIN
 
 GET		/admin/facultades			controllers.Admin.facultades()
