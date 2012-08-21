@@ -4,62 +4,68 @@
 
 # Home page
 
-GET     /                           controllers.Application.index()
+GET     /                           				controllers.Application.index()
 
 # Map static resources from the /public folder to the /assets URL path
 
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /assets/*file               				controllers.Assets.at(path="/public", file)
 
-GET 	/users/all					controllers.Usuarios.all()
+GET 	/users/all									controllers.Usuarios.all()
 
-GET 	/users						controllers.Usuarios.index()
+GET 	/users										controllers.Usuarios.index()
 
-GET 	/user/:id 					controllers.Usuarios.find(id: Long)
+GET 	/user/:id 									controllers.Usuarios.find(id: Long)
 
-POST 	/users/new					controllers.Usuarios.create()
+POST 	/users/new									controllers.Usuarios.create()
 
-POST 	/users/:id/delete 			controllers.Usuarios.delete(id: Long)
+POST 	/users/:id/delete 							controllers.Usuarios.delete(id: Long)
 
-GET     /logout						controllers.Usuarios.logout()
+GET     /logout										controllers.Usuarios.logout()
+				
+POST 	/login										controllers.Usuarios.login()
 
-POST 	/login						controllers.Usuarios.login()
-
-POST 	/facultad/:id/nuevoMensaje	controllers.Facultades.nuevoMensaje(id: String)
+POST 	/facultad/:id/nuevoMensaje					controllers.Facultades.nuevoMensaje(id: String)
 
 # CURSO
 
-GET		/cursos/:id  				controllers.Cursos.show(id: String)
+GET		/cursos/:id  								controllers.Cursos.show(id: String)
 
-GET		/curso/:id/chat				controllers.Cursos.chat(id: String,codigo: String)
+GET		/curso/:id/chat								controllers.Cursos.chat(id: String,codigo: String)
 
-GET		/curso/:id/asesoria			controllers.Cursos.asesoria(id: String)
+GET		/curso/:id/asesoria							controllers.Cursos.asesoria(id: String)
 
-POST	/curso/:id/asesoria/new		controllers.Cursos.nuevaAsesoria(id: String)
+POST	/curso/:id/asesoria/new						controllers.Cursos.nuevaAsesoria(id: String)
 
-GET 	/curso/:id/profesores/all	controllers.Cursos.getProfesorDelCurso(id: String)
+GET 	/curso/:id/profesores/all					controllers.Cursos.getProfesorDelCurso(id: String)
+
+# CURSO - PREGUNTAS
+
+GET 	/curso/:cid/pregunta/:pid					controllers.Cursos.getPregunta(cid: String, pid: String)
+
+POST 	/curso/:cid/pregunta/:pid/respuesta			controllers.Cursos.postRespuesta(cid: String, pid:String)
 
 # ADMIN
 
-GET		/admin/facultades			controllers.Admin.facultades()
+GET		/admin/facultades							controllers.Admin.facultades()
 
-#GET	/admin/carreras				controllers.Admin.carreras()
+#GET	/admin/carreras								controllers.Admin.carreras()
 
-#GET 	/admin/universidades		controllers.Admin.universidades()
+#GET 	/admin/universidades						controllers.Admin.universidades()
 
-GET 	/admin/usuarios				controllers.Admin.usuarios()
+GET 	/admin/usuarios								controllers.Admin.usuarios()
 
-GET		/admin/cursos			 	controllers.Admin.cursos()
+GET		/admin/cursos			 					controllers.Admin.cursos()
 
 # FACULTADES
 
-POST 	/facultades/new					controllers.Facultades.create()
+POST 	/facultades/new								controllers.Facultades.create()
 
 # CURSOS
 
-POST 	/cursos/new					controllers.Cursos.create()
+POST 	/cursos/new									controllers.Cursos.create()
 
 # USUARIOS
 
-GET 	/usuarios/all				controllers.Usuarios.all()
+GET 	/usuarios/all								controllers.Usuarios.all()
 
-POST 	/usuarios/new				controllers.Usuarios.create()
+POST 	/usuarios/new								controllers.Usuarios.create()

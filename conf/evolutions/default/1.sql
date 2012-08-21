@@ -53,7 +53,7 @@ create table Facultad (
 create table Mensaje (
   id                        bigint auto_increment not null,
   titulo                    varchar(255),
-  contenido                 varchar(255),
+  contenido                 varchar(4000) not null,
   tipo                      integer,
   fecha                     datetime,
   mensaje_id                bigint,

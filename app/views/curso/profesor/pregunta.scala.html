@@ -1,4 +1,4 @@
-@(usuario : Usuario, curso : Curso, preguntas : List[Mensaje])
+@(usuario : Usuario, curso : Curso, pregunta : Mensaje)
 @scripts = {
 
   /*
@@ -116,14 +116,48 @@
         data: JSON.stringify({
           mensaje: mensaje
         })
-      }).done(function(msg ) {
+    }).done(function(msg ){
 
+    });
 
-      });
-
-      return false;
-
+    return false;
   })
+
+  /*
+   *  Formulario de envío de respuesta
+   */
+
+   $("#form-respuesta").submit(function(e){
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    var respuesta = {
+      emisor : @usuario.getId(),
+      contenido : null,
+      seccion : @usuario.getCurso(curso.getId()).getSeccion()
+    }
+
+    // Contenido
+
+    respuesta.contenido = $("#form-respuesta textarea[name='respuesta.contenido']").val();
+
+    $.ajax({
+        type: "POST",
+        url: "/curso/@curso.getId()/pregunta/@pregunta.getId()/respuesta",
+        contentType : "application/json;charset=utf-8",
+        dataType : "json",
+        data: JSON.stringify({
+          respuesta: respuesta
+        })
+    }).done(function(msg ){
+
+    });
+
+    return false;
+
+   });
+
 
 }
 
@@ -360,105 +394,6 @@
             <!-- / SIDEBAR -->
             <div class="span9 content-right">
               
-              <div class="row row-header">
-                <div class="span9">
-                  <div class="well">
-                    
-                    <form class="form-horizontal" id="form-consulta">
-                      <fieldset>
-                        <legend>Nueva consulta</legend>
-                       
-                        <div class="control-group">
-                          <label class="control-label" for="input01">Título de pregunta</label>
-                          <div class="controls">
-                            <input type="text" class="span6" id="input01" name="mensaje.titulo">
-                          </div>
-                        </div>
-
-                        <div class="control-group">
-                          <label class="control-label" for="input01">Detalles</label>
-                          <div class="controls">
-                            <textarea class="input-xlarge titilium span6" id="textarea" name="mensaje.contenido" placeholder="Explica detalladamente tu consulta, por favor."></textarea>
-                          </div>
-                        </div>
-
-                        <div class="control-group">
-                          <label class="control-label" for="input01">Destinatario</label>
-                          <div class="controls">
-
-                            @**********************************
-                              RECEPTORES
-                              Por defecto es el profesor del curso donde está matriculado el estudiante
-                            *********************************@
-
-                            <div class="span6 receptores">
-                              <ul>
-                                <li><i class="icon-user"></i><span class="suggestion_metadata receptor_id">@curso.getProfesorPorSeccion(usuario.getCurso(curso.getId()).getSeccion()).getId()</span> @curso.getProfesorPorSeccion(usuario.getCurso(curso.getId()).getSeccion()).getNombres()</li>
-                              </ul>
-                            </div>
-
-                            <div class="input-prepend">
-                              <span class="add-on"><i class="icon-plus"></i></span><input name="mensaje.receptor" class="span6 with-icon" id="inputIcon" type="text">
-                            </div>
-
-                            <!--<div class="span6 sugerencias destinatarios">
-                              <ul>
-                                <li>Rocio Checa</li>
-                                <li>Daniel Flores</li>
-                              </ul>
-                            </div>-->
-
-                            <!-- Sugerencias de destinatarios -->
-
-                            <!--<ul class="nav nav-list span6 suggestions">
-                              <li class="nav-header">
-                                &nbsp;Profesores
-                              </li>
-                              <li>
-                                <a class="suggestion" href="#">@curso.getProfesorPorSeccion(usuario.getCurso(curso.getId()).getSeccion()).getNombres()</a>
-                              </li>
-                              <li>
-                                <a class="suggestion" href="#">Nadia Rodriguez</a>
-                              </li>
-                              <li>
-                                <a class="suggestion" href="#">Rocío del Pilar Checa Fernandez</a>
-                              </li>
-                              <li>
-                                <a class="suggestion" href="#">Nadia Rodriguez</a>
-                              </li>
-                              <li>
-                                <a class="suggestion" href="#">Rocío del Pilar Checa Fernandez</a>
-                              </li>
-                              <li>
-                                <a class="suggestion" href="#">Nadia Rodriguez</a>
-                              </li>
-                              <li>
-                                <a class="suggestion" href="#">Rocío del Pilar Checa Fernandez</a>
-                              </li>
-                              <li>
-                                <a class="suggestion" href="#">Nadia Rodriguez</a>
-                              </li>
-                            </ul>-->
-
-
-
-                          </div>
-                        </div>
-
-                        <div class="control-group">
-                          <div class="controls">
-                            <button class="btn  btn-primary" type="submit">Consultar</button>
-                          </div>
-                        </div>
-
-                      </fieldset>
-                    </form>
-
-
-                  </div>
-                </div>
-              </div>
-
               <div class="row">
 
                 <!-- BOX 1 -->
@@ -471,11 +406,7 @@
                       <h3 class="ulima-color" style="font-size:15px">Preguntas</h3>
                       <hr style="margin-top:0px;margin-bottom:10px"/>
                     </div>
-
-
-                    @for(pregunta <- preguntas){
-
-                    
+       
                     <!-- PREGUNTA -->
                     <div class="span9 question">
                       <div class="row">
@@ -492,15 +423,41 @@
                       </div>
                     </div> <!--/PREGUNTA-->
 
-                    }
+
+                    <!-- PREGUNTA -->
+                    <div class="span9 response">
+                      <div class="row">
+                        <div class="span1">
+                          <div class="question-state"></div>
+                        </div>
+
+                        <div class="span8">
+                          <div class="question-content">@pregunta.getContenido()</div>
+                        </div>
+
+
+                      </div>
+                    </div> <!--/PREGUNTA-->
+
+
+                    <div class="span9 question">
+                      <form method="POST" id="form-respuesta" action="/curso/@curso.getId()/pregunta/@pregunta.getId()/respuesta">
+                        <textarea class="span9" name="respuesta.contenido"></textarea>
+                        <button type="submit" class="btn btn-large"><i class="icon-comment"></i> Comment</button>
+                      </form>
+                    </div>
+
+
+
 
                   </div>
                 </div>
-                </div> <!-- /BOX 1 -->
+              </div> <!-- /BOX 1 -->
+    
+            </div>
 
-                
-                
-              </div>
+
+
 
 
 

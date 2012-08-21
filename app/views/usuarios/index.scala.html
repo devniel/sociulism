@@ -83,7 +83,14 @@
                      * CURSOS DE USUARIO *
                      *********************@ 
 
-                    <a href="#" class="nav-header"><i class="icon-pencil"></i> Llevando actualmente</a>
+                    <a href="#" class="nav-header"><i class="icon-pencil">
+
+                    @if(usuario.getRol() == 0){
+                      </i> Llevando actualmente</a>
+                    }else{
+                      </i> Enseñando actualmente</a>
+                    }
+                    
                     <ul class="nav nav-list list-courses-user">
 
                       @for(UsuarioCurso <- usuario.getCursos()) {

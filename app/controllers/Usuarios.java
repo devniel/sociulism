@@ -109,16 +109,22 @@ public class Usuarios extends Controller {
 			// Comprobar password y cargar sesión.
 			if (password.equals(user.getPassword()))
 			{
-				// Si el usuario no tiene cursos cargados se lanzará una excepción
-				Integer cursos = CursoHasUsuario.find.where().ilike("usuario_id", user.getId().toString()).findList().size();
-
-				System.out.println("Cargar cursos de usuario ...");
-
-				user = cargarCursos(user);
-
-				if(cursos == 0)
-				{
-					user = cargarCursos(user);
+				switch(user.getRol()){
+					// ESTUDIANTE
+					case 0:
+						// Si el usuario no tiene cursos cargados se lanzará una excepción
+						Integer cursos = CursoHasUsuario.find.where().ilike("usuario_id", user.getId().toString()).findList().size();
+						user = cargarCursos(user);
+						if(cursos == 0)
+							user = cargarCursos(user);
+						break;
+					// PROFESOR
+					case 1:
+						System.out.println("ES UN PROFESOR");
+						break;
+					// ADMINISTRADOR
+					case 2:
+						System.out.println("ES UN ADMINISTRADOR !!!");
 				}
 
 				// Cargar sesión
@@ -135,13 +141,8 @@ public class Usuarios extends Controller {
 			// en Usuario.create ) se lanza una excepción y se ejecuta el finally.
 
 			// Crear desde mi Ulima
-			System.out.println("Creando usuario desde MiULIMA");
-
 			Usuario newUser = crearDesdeUlima(username,password);
-
-			System.out.println("no lLEGO AUI");
-
-			 loadSession(newUser);
+			loadSession(newUser);
 		}
 		finally
 		{
@@ -173,7 +174,7 @@ public class Usuarios extends Controller {
 
 		Result view = null;
 
-		if(user.getPrivilegio() == 3)
+		if(user.getPrivilegio() == 2)
 		{
 			view = ok(views.html.admin.index.render(user));
 		}
@@ -192,40 +193,6 @@ public class Usuarios extends Controller {
 
 	public static Result create()
 	{
-		/*
-		Form<Usuario> filledForm = userForm.bindFromRequest();
-		// Determinar si los datos del formulario tienen errores
-		if (filledForm.hasErrors()) 
-		{
-			return badRequest(views.html.index.render(filledForm));
-		} 
-		else 
-		{
-			// Es usuario --> Loguear
-			if (isUser(filledForm.get().username)) 
-			{
-				return login();
-				// No es usuario --> Registrar
-			}
-			else 
-			{
-				Usuario user;
-				try
-				{
-					user = crearDesdeUlima(filledForm.get().getUsername(),filledForm.get().getPassword());
-				} 
-				catch (Exception e)
-				{
-					flash("Error", "Existen problemas con el usuario");
-					return redirect(routes.Application.index());
-				}
-
-				loadSession(user);
-
-				return redirect(routes.Application.index());
-			}
-		}
-		*/
 
 		Map<String, String[]> formData = request().body().asFormUrlEncoded();
 
@@ -465,29 +432,7 @@ public class Usuarios extends Controller {
 				curso.setCodigo(codigo);
 				curso.setNombre(nombre);
 				curso = Curso.create(curso);
-				
-				// Registrando a profesor
-				
-				/*
-				
-				Usuario profesor = new Usuario();
-				profesor.setNombres(profesor_nombre);
-				profesor.setRol(1);
-				profesor.setPrivilegio(1);
-				profesor.save();
-				
-				// Crear asociación entre profesor --> curso
-				CursoHasUsuario profesorCurso = new CursoHasUsuario();
-				profesorCurso.setUsuario(profesor);
-				profesorCurso.setCurso(curso);
-				profesorCurso.setSeccion(Integer.parseInt(seccion));
-				profesorCurso.save();
-				
-				// Actualizar profesor
-				profesor.getCursos().add(profesorCurso);
-				
-				*/
-				
+			
 				// Crear asociación entre estudiante --> curso
 				CursoHasUsuario estudianteCurso = new CursoHasUsuario();
 				estudianteCurso.setUsuario(usuario);

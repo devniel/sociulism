@@ -59,6 +59,7 @@ public class Mensaje extends Model{
 	 * OBLIGATORIO
 	 */
 	
+	@Column(length=4000, nullable=false)
 	public String contenido;
 	
 	/*
