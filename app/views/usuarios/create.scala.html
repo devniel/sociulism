@@ -1,0 +1,212 @@
+@(universidades : List[models.Universidad], facultades : List[models.Facultad], carreras : List[Carrera])
+
+
+
+@import helper.twitterBootstrap._
+@import helper._
+
+
+@****************************************
+  SCRIPTS
+  ***********************************@
+
+@scripts = {
+
+  $('#navbar').affix()
+
+}
+
+@****************************************
+  NAVBAR
+  ***************************************@
+
+@navbar = {
+  <li><a href="">Inicio</a></li>
+  <li ><a href="/admin/facultades">Facultades</a></li>
+  <li class="active"><a href="/admin/usuarios">Usuarios</a></li>
+  <li><a href="/admin/cursos">Cursos</a></li>
+}
+
+@****************************************
+  SIDEBAR
+  ***********************************@
+
+@sidebar = {
+  <ul class="nav nav-list bs-docs-sidenav affix" data-spy="affix" data-offset-top="200" id="navTab">
+    <li class="nav-header">ACCIONES</li>
+    <li><a href="/admin/usuarios"><i class="icon-th-list"></i>Listar usuarios</a></li>
+    <li class="active"><a href="/admin/usuarios/create"><i class="icon-plus"></i>Crear usuario</a></li>
+  </ul>
+}
+
+@****************************************
+  MAINBAR
+  ***********************************@
+
+@mainbar = {
+
+  @*********************
+  * FORMULARIO *
+  *********************@ 
+
+
+  <!-- ACA INICIA EL FORMULARIO -->
+    
+    <form class="form-horizontal" method="POST" action="/admin/usuarios/new">
+      <fieldset>
+        <legend>Nuevo usuario</legend>
+
+        <div class="control-group">
+          <label class="control-label" for="input01">Nombres</label>
+          <div class="controls">
+            <input type="text" class="span6" name="usuario.nombres" id="input01">
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="input01">Apellidos</label>
+          <div class="controls">
+            <input type="text" class="span6" name="usuario.apellidos" id="input01">
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="input01">Nombre de usuario</label>
+          <div class="controls">
+            <input type="text" class="span6" name="usuario.username" id="input01">
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="input01">Contraseña</label>
+          <div class="controls">
+            <input type="text" class="span6" name="usuario.password" id="input01">
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="input01">Email</label>
+          <div class="controls">
+            <input type="text" class="span6" name="usuario.email" id="input01">
+          </div>
+        </div>
+
+        @****************
+        *    ROLES      *
+        ****************@
+
+        <div class="control-group">
+          <label class="control-label">Rol</label>
+          <div class="controls">
+            <label class="radio">
+              <input type="radio" name="usuario.rol" id="optionsRadios1" value="0" checked="">
+              Estudiante
+            </label>
+            <label class="radio">
+              <input type="radio" name="usuario.rol" id="optionsRadios2" value="1">
+              Profesor
+            </label>
+            <label class="radio">
+              <input type="radio" name="usuario.rol" id="optionsRadios2" value="2">
+              Administrador
+            </label>
+          </div>
+        </div>
+
+        @****************
+        *   PRIVILEGIOS *
+        ****************@
+
+        <div class="control-group">
+          <label class="control-label">Privilegios</label>
+          <div class="controls">
+            <label class="radio">
+              <input type="radio" name="usuario.privilegio" id="optionsRadios1" value="0" checked="">
+              Usuario estándar
+            </label>
+            <label class="radio">
+              <input type="radio" name="usuario.privilegio" id="optionsRadios2" value="1">
+              Usuario privilegiado
+            </label>
+            <label class="radio">
+              <input type="radio" name="usuario.privilegio" id="optionsRadios2" value="2">
+              Administrador
+            </label>
+          </div>
+        </div>
+
+        @****************
+        * UNIVERSIDADES *
+        ****************@
+
+        <div class="control-group">
+          <label class="control-label" for="select01">Universidad</label>
+          <div class="controls">
+            <select id="select01" name="usuario.universidad">
+
+              @for(universidad <- universidades) {
+                <option value="@universidad.getId()">@universidad.getNombre()</li>
+              } 
+
+            </select>
+          </div>
+        </div>
+
+
+        @****************
+        *  FACULTADES   *
+        ****************@
+
+        <div class="control-group">
+          <label class="control-label" for="select01">Facultad</label>
+          <div class="controls">
+            <select id="select01" name="usuario.facultad">
+
+              @for(facultad <- facultades) {
+                <option value="@facultad.getId()">@facultad.getNombre()</li>
+              } 
+
+            </select>
+          </div>
+        </div>
+
+
+        @****************
+        *  CARRERAS     *
+        ****************@
+
+        <div class="control-group">
+          <label class="control-label" for="select01">Carrera</label>
+          <div class="controls">
+            <select id="select01" name="usuario.carrera">
+
+              @for(carrera <- carreras) {
+                <option value="@carrera.getId()">@carrera.getNombre()</li>
+              } 
+
+            </select>
+          </div>
+        </div>
+       
+
+        <!--<div class="control-group">
+          <label class="control-label" for="input01">Detalles</label>
+          <div class="controls">
+            <textarea class="input-xlarge titilium span6" id="textarea" placeholder="Explica detalladamente tu consulta, por favor."></textarea>
+          </div>
+        </div>-->
+
+        <div class="control-group">
+          <div class="controls">
+            <button class="btn  btn-primary" type="submit">Crear</button>
+          </div>
+        </div>
+
+      </fieldset>
+    </form>
+  
+}
+
+
+
+@admin_layout(null,scripts,navbar,sidebar,mainbar)

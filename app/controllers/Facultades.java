@@ -111,4 +111,12 @@ public class Facultades extends Controller {
 	    return redirect(routes.Admin.facultades());
 	}
 
+
+	/*
+	 * 	Mostrar todas las facultades
+	 */
+
+	public static Result all(){
+		return ok(views.html.facultades.all.render(Facultad.find.all()));
+	}
 }

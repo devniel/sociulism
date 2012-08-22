@@ -180,6 +180,14 @@ body {
   height:300px;
 }
 
+#myCarousel {
+  height:inherit !important;
+}
+
+.carousel-inner {
+  height:inherit !important;
+}
+
 .container {
   width:940px !important;
 }

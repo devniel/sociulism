@@ -10,7 +10,7 @@ GET     /                           				controllers.Application.index()
 
 GET     /assets/*file               				controllers.Assets.at(path="/public", file)
 
-GET 	/users/all									controllers.Usuarios.all()
+#GET 	/users/all									controllers.Usuarios.all()
 
 GET 	/users										controllers.Usuarios.index()
 
@@ -52,8 +52,6 @@ GET		/admin/facultades							controllers.Admin.facultades()
 
 #GET 	/admin/universidades						controllers.Admin.universidades()
 
-GET 	/admin/usuarios								controllers.Admin.usuarios()
-
 GET		/admin/cursos			 					controllers.Admin.cursos()
 
 # FACULTADES
@@ -64,8 +62,18 @@ POST 	/facultades/new								controllers.Facultades.create()
 
 POST 	/cursos/new									controllers.Cursos.create()
 
-# USUARIOS
+# ADMIN - USUARIOS
 
-GET 	/usuarios/all								controllers.Usuarios.all()
+GET 	/admin/usuarios								controllers.Usuarios.all()
 
-POST 	/usuarios/new								controllers.Usuarios.create()
+GET 	/admin/usuarios/:id/edit					controllers.Usuarios.edit(id: Long)
+
+GET 	/admin/usuarios/create						controllers.Usuarios.showCreate()
+
+POST 	/admin/usuarios/new							controllers.Usuarios.create()
+
+POST 	/admin/usuarios/:id/update					controllers.Usuarios.update(id: Long)
+
+# ADMIN - FACULTADES
+
+GET 	/admin/facultades 							controllers.Facultades.all()

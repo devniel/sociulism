@@ -45,18 +45,106 @@ public class Usuarios extends Controller {
 	}
 
 	/*
-	 * Mostrar la lista de usuarios y formulario para registro/logueo.
+	 * Listar todos los usuarios
 	 */
 
 	public static Result all() 
 	{
+		/*
 		if(isAdmin()){ // Si es admin
 			Usuario usuario = getUserSession();
+
 			return ok(views.html.admin.index.render(usuario));
+
 		}else{ // Si es públic
 			return ok(views.html.index.render(userForm));
-		}		
+		}
+		*/	
+
+		return ok(views.html.usuarios.all.render(Universidad.find.all(),Facultad.find.all(),Carrera.find.all(),Usuario.find.all()));
 	}
+
+	/*
+	 *	Editar a usuario
+	 */
+
+	public static Result edit(Long id){
+		return ok(views.html.usuarios.edit.render(Usuario.find.ref(id),Universidad.find.all(),Facultad.find.all()));
+	}
+
+	/*
+	 *	Actualizar usuario
+	 */
+
+	public static Result update(Long id){
+
+		Map<String, String[]> formData = request().body().asFormUrlEncoded();
+
+	    String nombres = formData.get("usuario.nombres")[0];
+	    String apellidos = formData.get("usuario.apellidos")[0];
+	    String username = formData.get("usuario.username")[0];
+	    String password = formData.get("usuario.password")[0];
+	    String email = formData.get("usuario.email")[0];
+	    String rol = formData.get("usuario.rol")[0];
+	    String privilegio = formData.get("usuario.privilegio")[0];
+
+	    String universidad_id = (formData.get("usuario.universidad") != null)? formData.get("usuario.universidad")[0] : null;
+	    String facultad_id = (formData.get("usuario.facultad")!= null)? formData.get("usuario.facultad")[0] : null;
+	    String carrera_id = (formData.get("usuario.carrera") != null) ? formData.get("usuario.carrera")[0] : null;
+
+		Usuario usuario = Usuario.find.ref(id);
+
+		// Asignar cuenta
+		usuario.setUsername(username);
+		usuario.setPassword(password);
+
+		// Asignar datos personales
+		usuario.setNombres(nombres);
+		usuario.setApellidos(apellidos);
+		usuario.setEmail(email);
+
+		// Asignar permisos
+		usuario.setRol(Integer.parseInt(rol));
+		usuario.setPrivilegio(Integer.parseInt(privilegio));
+		
+		// Asignar universidad
+		if(universidad_id != null)
+		{
+	    	Universidad universidad = Universidad.find.byId(Long.parseLong(universidad_id));
+	    	usuario.setUniversidad(universidad);
+		}
+		
+		// Asignar facultad
+	    if(facultad_id != null)
+	    {
+	    	Facultad facultad = Facultad.find.byId(Long.parseLong(facultad_id));
+	    	usuario.setFacultad(facultad);
+	    }
+	    
+	    // Asignar carrera
+	    if(carrera_id != null){
+	    	Carrera carrera = Carrera.find.byId(Long.parseLong(carrera_id));
+	    	usuario.setCarrera(carrera);
+	    }
+
+	    // Crear usuario
+		usuario.save();
+	    
+	    
+	    // Redireccionar a página inicial (con o sin carga de sesión)
+	    return redirect(routes.Usuarios.all());
+
+	}
+
+	/*
+	 * 	Mostrar formulario de creación de nuevo usuario
+	 */
+
+	public static Result showCreate(){
+
+		return ok(views.html.usuarios.create.render(Universidad.find.all(), Facultad.find.all(), Carrera.find.all()));
+	}
+
 
 	/*
 	 *	Determinar si la actual sesión es de un administrador o no
@@ -100,8 +188,6 @@ public class Usuarios extends Controller {
 		
 		Usuario user = null;
 
-		System.out.println("Usuarion logueando con :" + username + "/" + password);
-		
 		try
 		{
 			user = Usuario.getUserByUsername(username);
@@ -250,7 +336,7 @@ public class Usuarios extends Controller {
 	    
 	    
 	    // Redireccionar a página inicial (con o sin carga de sesión)
-	    return redirect(routes.Admin.usuarios());
+	    return redirect(routes.Usuarios.all());
 
 	}
 	
@@ -482,6 +568,7 @@ public class Usuarios extends Controller {
 	{
 		return TODO;
 	}
+
 
 	/*
 	 * Comprobar si usuario está logueado

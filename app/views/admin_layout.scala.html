@@ -1,0 +1,51 @@
+@(user: Usuario, scripts: Html = Html(""),navbar: Html,sidebar: Html, mainbar: Html)
+@import helper.twitterBootstrap._
+
+@import helper._
+
+@main(user, scripts){
+
+  <style>
+
+    .navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle {
+      color: #FFF !important;
+    }
+
+    .navbar .nav > li > a {
+      text-shadow: none !important;
+    }
+
+    .navbar .nav li.dropdown.open > .dropdown-toggle .caret, .navbar .nav li.dropdown.active > .dropdown-toggle .caret, .navbar .nav li.dropdown.open.active > .dropdown-toggle .caret {
+      border-top-color : #FFF !important;
+      border-bottom-color: #FFF !important;
+    }
+
+  </style>
+
+  @navbar
+  
+}{
+
+    @*********************
+     * CONTENIDO *
+     *********************@ 
+
+      <!-- Example row of columns -->
+      <div class="row">
+
+        <div class="span12">
+          <div class="row titilium">
+
+            <div class="span3 pull-left">
+              @sidebar
+            </div>
+
+            <div class="span9 pull-right">
+              @mainbar
+            </div>
+
+          </div>
+        </div>
+     </div>
+
+}
