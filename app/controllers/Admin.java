@@ -55,7 +55,7 @@ public class Admin extends Controller {
 	public static Result usuarios()
 	{
 		System.out.println("Usuario quiere crear usuarios");
-		return ok(usuarios.render(Universidad.find.all(),Facultad.find.all(),Carrera.find.all()));
+		return ok(usuarios.render(Universidad.find.all(),Facultad.find.all(),Carrera.find.all(),Usuario.find.all()));
 	}
 
 	/*

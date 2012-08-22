@@ -87,20 +87,20 @@ body {
 .header-login-inner input {
   border-radius:0px !important;
   font-size:11px;
-  font-family: TitilliumText22LRegular !important;
+  font-family: inherit !important
   text-align: left !important;
 }
 
 .header-login-inner input.btn {
   border-radius:3px !important;
-  font-family: TitilliumText22LBold !important;
+  font-family: inherit !important
   font-weight: bold;
   float:right;
 }
 
 .header-login-inner .olvide-contrasena {
   font-size:12px;
-  font-family: TitilliumText22LRegular !important;
+  font-family: inherit !important
   float:left;
   margin-left:5px;
 }
@@ -127,12 +127,13 @@ body {
   background-image: none !important;
   -webkit-box-shadow: none !important;
   box-shadow:  none !important;
+  border: none !important;
 }
 
 .navbar-inner .container {
   width:940px !important;
   font-size:15px !important;
-  font-family: TitilliumText22LRegular !important;
+  font-family: inherit !important
 }
 
 .navbar {
@@ -160,7 +161,7 @@ body {
   border-bottom:1px solid #F6F6F6;
 
 }
-
+/*
 .navbar .nav > li > a {
   color: #D86D58;
   text-shadow:none !important;
@@ -170,7 +171,7 @@ body {
   color: #ffffff;
   text-decoration: none;
   background-color: #E94E1B  !important;
-}
+}*/
 
 .hero-unit {
   border-radius:none;
@@ -185,12 +186,12 @@ body {
 
 .carousel-caption h4{
   color: #FFF !important;
-  font-family: TitilliumText22LBold !important;
+  font-family: inherit !important
 }
 
 .carousel-caption p{
   color: #FFF !important;
-  font-family: TitilliumText22LRegular !important;
+  font-family: inherit !important
 }
 
 /* ROWS */
@@ -231,7 +232,7 @@ body {
 .titilium h4,
 .titilium h5,
 .titilium h6 {
-  font-family: TitilliumText22LRegular !important;
+  font-family: inherit !important
   text-rendering: auto !important;
 }
 
@@ -334,7 +335,7 @@ footer {
   width:218px !important;
   background:#FFF !important;
   height:600px;
-  border-right:1px solid rgba(0,0,0,0.1);
+ /* border-right:1px solid rgba(0,0,0,0.1);*/
 }
 
 .content-right {
@@ -347,9 +348,9 @@ footer {
   margin-bottom:0px !important;
 }
 
-.content-left ul li a {
+/*.content-left ul li a {
   color:#000 !important;
-}
+}*/
 
 .content-left .list-courses {
   height:200px;

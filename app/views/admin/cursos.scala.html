@@ -5,7 +5,16 @@
 
 @scripts = {
 
+  $('#navbar').affix()
 
+  $(function () {
+      $('#navTab a:first').tab('show');
+  })
+
+  $('#navTab a').click(function (e) {
+    e.preventDefault();
+    $(this).tab('show');
+  })
 
 } 
 
@@ -17,6 +26,9 @@
   
 }{
 
+      <style type="text/css">
+      </style>
+
         @*********************
          * CONTENIDO *
          *********************@ 
@@ -27,16 +39,138 @@
         <div class="span12">
           <div class="row titilium">
 
+            <!--
+              SIDEBAR
+            -->
+            <div class="span3 content-left">
+              <ul class="nav nav-list bs-docs-sidenav affix" data-spy="affix" data-offset-top="200" id="navTab">
+                <li class="nav-header">ACCIONES</li>
+                <li class="active"><a href="#lista_cursos"><i class="icon-th-list"></i>Listar cursos</a></li>
+                <li><a href="#formulario_cursos"><i class="icon-plus"></i>Crear curso</a></li>
+              </ul>         
+            </div>
             <!-- / SIDEBAR -->
+
             <div class="span9 content-right">
-              
-              <h1>Administración</h1>
 
-              <!-- ACA INICIA EL FORMULARIO -->
 
-                <div class="span9">
-                  <div class="well">
-                    
+              @*********************
+               * LISTA DE USUARIOS *
+               *********************@
+
+
+               <div class="tab-content">
+
+                @****************** LISTA USUARIOS *******************@
+                <div class="tab-pane active" id="lista_cursos">
+
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Username</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>1</td>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>mdo</td>
+                        <td>
+                          <a class="btn btn-small pull-right" href="#" ><i class="icon-trash"></i></a>
+                          <a class="btn btn-small pull-right" href="#" style="margin-right:5px"><i class="icon-edit"></i></a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>2</td>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>fat</td>
+                        <td>
+                          <a class="btn btn-small pull-right" href="#" ><i class="icon-trash"></i></a>
+                          <a class="btn btn-small pull-right" href="#" style="margin-right:5px"><i class="icon-edit"></i></a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>3</td>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>twitter</td>
+                        <td>
+                          <a class="btn btn-small pull-right" href="#" ><i class="icon-trash"></i></a>
+                          <a class="btn btn-small pull-right" href="#" style="margin-right:5px"><i class="icon-edit"></i></a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>3</td>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>twitter</td>
+                        <td>
+                          <a class="btn btn-small pull-right" href="#" ><i class="icon-trash"></i></a>
+                          <a class="btn btn-small pull-right" href="#" style="margin-right:5px"><i class="icon-edit"></i></a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>3</td>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>twitter</td>
+                        <td>
+                          <a class="btn btn-small pull-right" href="#" ><i class="icon-trash"></i></a>
+                          <a class="btn btn-small pull-right" href="#" style="margin-right:5px"><i class="icon-edit"></i></a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>3</td>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>twitter</td>
+                        <td>
+                          <a class="btn btn-small pull-right" href="#" ><i class="icon-trash"></i></a>
+                          <a class="btn btn-small pull-right" href="#" style="margin-right:5px"><i class="icon-edit"></i></a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>3</td>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>twitter</td>
+                        <td>
+                          <a class="btn btn-small pull-right" href="#" ><i class="icon-trash"></i></a>
+                          <a class="btn btn-small pull-right" href="#" style="margin-right:5px"><i class="icon-edit"></i></a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>3</td>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>twitter</td>
+                        <td>
+                          <a class="btn btn-small pull-right" href="#" ><i class="icon-trash"></i></a>
+                          <a class="btn btn-small pull-right" href="#" style="margin-right:5px"><i class="icon-edit"></i></a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+
+                </div>
+
+                @****************** FORMULARIO CURSOS *******************@
+
+                <div class="tab-pane" id="formulario_cursos">
+
+                  @*********************
+                  * FORMULARIO         *
+                  *********************@ 
+
+
+                    <!-- ACA INICIA EL FORMULARIO -->
                     <form class="form-horizontal" method="POST" action="/cursos/new">
                       <fieldset>
                         <legend>Nuevo curso</legend>
@@ -72,16 +206,15 @@
                     </form>
 
 
-                  </div>
-                </div>
+                </div> @**************************** /FORMULARIO CURSOS ****************************@
 
-              <!-- ACA TERMINA EL FORMULARIO -->
+              </div>
 
 
             </div>
+
           </div>
         </div>
 
-     </div>
-
+     </div> 
 }

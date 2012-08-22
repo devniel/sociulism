@@ -78,7 +78,7 @@ public class Cursos extends Controller {
     	// Usuario común
       case 0:
         // Select * from mensaje where emisor_id = 2 and curso_id = 1;
-        List<Mensaje> preguntas_enviadas = Mensaje.find.where().eq("emisor_id",usuario.getId().toString()).eq("curso_id", curso.getId().toString()).findList();
+        List<Mensaje> preguntas_enviadas = Mensaje.find.where().eq("emisor_id",usuario.getId().toString()).eq("curso_id", curso.getId().toString()).eq("tipo","2").findList();
         view = ok(views.html.curso.asesoria.render(usuario,curso,preguntas_enviadas));
         break;
         // Profesor
@@ -91,7 +91,7 @@ public class Cursos extends Controller {
 			   preguntas_recibidas.add(pregunta_recibida.getMensaje());
 		    }
         
-        view = ok(views.html.curso.profesor.asesoria.render(usuario,curso,preguntas_recibidas));
+        view = ok(views.html.curso.asesoria.render(usuario,curso,preguntas_recibidas));
         break;
         // Administrador
       /*case 2:
@@ -187,7 +187,7 @@ public class Cursos extends Controller {
     Mensaje pregunta = Mensaje.find.ref(Long.parseLong(pid));
     Usuario usuario = Usuarios.getUserSession();
 
-    Result view = ok(views.html.curso.profesor.pregunta.render(usuario,curso,pregunta));
+    Result view = ok(views.html.curso.pregunta.render(usuario,curso,pregunta));
     return view;
   }
 
@@ -197,16 +197,15 @@ public class Cursos extends Controller {
 
   @BodyParser.Of(play.mvc.BodyParser.Json.class)
   public static Result postRespuesta(String cid, String pid){
+	  
+	RequestBody body = request().body();
+	JsonNode json = body.asJson();
 
     Curso curso = Curso.find.ref(Long.parseLong(cid));
     Mensaje pregunta = Mensaje.find.ref(Long.parseLong(pid));
     String seccion = json.get("respuesta").get("seccion").toString();
 
 
-    RequestBody body = request().body();
-    
-    JsonNode json = body.asJson();
-    
     String respuesta_contenido = json.get("respuesta").get("contenido").toString();
     String respuesta_emisor = json.get("respuesta").get("emisor").toString();
 

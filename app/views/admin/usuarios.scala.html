@@ -1,21 +1,60 @@
-@(universidades : List[models.Universidad], facultades : List[models.Facultad], carreras : List[Carrera])
+@(universidades : List[models.Universidad], facultades : List[models.Facultad], carreras : List[Carrera], usuarios : List[Usuario])
 
 @import helper.twitterBootstrap._
 @import helper._
 
 @scripts = {
 
+$('#navbar').affix()
+
+$(function () {
+    $('#navTab a:first').tab('show');
+})
+
+$('#navTab a').click(function (e) {
+  e.preventDefault();
+  $(this).tab('show');
+})
 
 
 } 
 
 @main(null, scripts){
-  <li><a href="">Inicio</a></li>
-  <li><a href="/admin/facultades">Facultades</a></li>
-  <li class="active"><a href="/admin/usuarios">Usuarios</a></li>
-  <li><a href="/admin/cursos">Cursos</a></li>
+
+  <style>
+
+    .navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle {
+      color: #FFF !important;
+    }
+
+    .navbar .nav > li > a {
+      text-shadow: none !important;
+    }
+
+    .navbar .nav li.dropdown.open > .dropdown-toggle .caret, .navbar .nav li.dropdown.active > .dropdown-toggle .caret, .navbar .nav li.dropdown.open.active > .dropdown-toggle .caret {
+      border-top-color : #FFF !important;
+      border-bottom-color: #FFF !important;
+    }
+
+  </style>
+
+  <li class="dropdown active">
+    <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Usuarios <b class="caret"></b></a>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+      <li><a tabindex="-1" href="/admin/facultades">Facultades</a></li>
+      <li><a tabindex="-1" href="/admin/cursos">Cursos</a></li>
+      <li class="divider"></li>
+      <li><a tabindex="-1" href="/admin">Inicio</a></li>
+    </ul>
+  </li>
+
+  <li><a href="#formulario_usuarios"><i class="icon-plus"></i> Agregar usuario</a></li>
+
   
 }{
+
+  <style type="text/css">
+  </style>
 
         @*********************
          * CONTENIDO *
@@ -27,15 +66,109 @@
         <div class="span12">
           <div class="row titilium">
 
+            <!--
+              SIDEBAR
+            -->
+            <!--<div class="span2 pull-left">
+              <ul class="nav nav-list bs-docs-sidenav affix" data-spy="affix" data-offset-top="200" id="navTab">
+                <li class="nav-header">ACCIONES</li>
+                <li class="active"><a href="#lista_usuarios"><i class="icon-th-list"></i>Listar usuarios</a></li>
+                <li ><a href="#formulario_usuarios"><i class="icon-plus"></i>Crear usuarios</a></li>
+              </ul>         
+            </div>-->
             <!-- / SIDEBAR -->
-            <div class="span9 content-right">
-              
-              <h1>Administración</h1>
+
+            <div class="span12 pull-right">
+
+
+              @*********************
+               * LISTA DE USUARIOS *
+               *********************@
+
+
+               <div class="tab-content">
+
+                @****************** LISTA USUARIOS *******************@
+                <div class="tab-pane active" id="lista_usuarios">
+
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Usuario</th>
+                        <th>Email</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      @for(usuario <- usuarios){
+                        <tr>
+                          <td>@usuario.getId()</td>
+                          <td>@usuario.getNombres()</td>
+                          <td>@usuario.getApellidos()</td>
+                          <td>@usuario.getUsername()</td>
+                          <td>
+                            @if(usuario.getEmail() != null){
+                              @usuario.getEmail()
+                            }else{
+                              -
+                            }
+                            
+                          </td>
+                          <td>
+                            <a class="btn btn-small pull-right" href="#" ><i class="icon-trash"></i></a>
+                            <a class="btn btn-small pull-right" href="#" style="margin-right:5px"><i class="icon-edit"></i></a>
+                          </td>
+                        </tr>
+                      }
+
+                      @for(usuario <- usuarios){
+                        <tr>
+                          <td>@usuario.getId()</td>
+                          <td>@usuario.getNombres()</td>
+                          <td>@usuario.getApellidos()</td>
+                          <td>@usuario.getUsername()</td>
+                          <td>@usuario.getEmail()</td>
+                          <td>
+                            <a class="btn btn-small pull-right" href="#" ><i class="icon-trash"></i></a>
+                            <a class="btn btn-small pull-right" href="#" style="margin-right:5px"><i class="icon-edit"></i></a>
+                          </td>
+                        </tr>
+                      }
+
+                      @for(usuario <- usuarios){
+                        <tr>
+                          <td>@usuario.getId()</td>
+                          <td>@usuario.getNombres()</td>
+                          <td>@usuario.getApellidos()</td>
+                          <td>@usuario.getUsername()</td>
+                          <td>@usuario.getEmail()</td>
+                          <td>
+                            <a class="btn btn-small pull-right" href="#" ><i class="icon-trash"></i></a>
+                            <a class="btn btn-small pull-right" href="#" style="margin-right:5px"><i class="icon-edit"></i></a>
+                          </td>
+                        </tr>
+                      }
+                          
+                    </tbody>
+                  </table>
+
+
+                </div>
+
+                @****************** FORMULARIO USUARIOS *******************@
+
+                <div class="tab-pane" id="formulario_usuarios">
+
+                  @*********************
+                  * FORMULARIO *
+                  *********************@ 
+
 
               <!-- ACA INICIA EL FORMULARIO -->
-
-                <div class="span9">
-                  <div class="well">
                     
                     <form class="form-horizontal" method="POST" action="/usuarios/new">
                       <fieldset>
@@ -191,10 +324,9 @@
                     </form>
 
 
-                  </div>
-                </div>
+                </div> @**************************** /FORMULARIO USUARIOS ****************************@
 
-              <!-- ACA TERMINA EL FORMULARIO -->
+              </div>
 
 
             </div>
