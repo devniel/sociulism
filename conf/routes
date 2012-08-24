@@ -31,6 +31,10 @@ POST 	/facultad/:id/nuevoMensaje					controllers.Facultades.nuevoMensaje(id: Str
 # USUARIOS - PROFESORES
 
 GET 	/usuarios/profesores 						controllers.Usuarios.getProfesores()
+
+# USUARIOS - ALUMNOS
+
+GET 	/usuarios/alumnos 							controllers.Usuarios.getAlumnos()
  			
 # CURSO
 
@@ -119,3 +123,7 @@ GET 	/admin/cursos/:id/seccion/:sid				controllers.Cursos.showSeccion(id: Long, 
 GET 	/admin/cursos/:id/secciones 				controllers.Cursos.showSecciones(id: Long)
 
 POST 	/admin/cursos/:id/seccion/:sid/add/profesor/		controllers.Cursos.asignarProfesor(id: Long, sid: Long)
+
+POST 	/admin/cursos/:id/seccion/:sid/update/profesor/		controllers.Cursos.updateProfesor(id: Long, sid: Long)
+
+POST 	/admin/cursos/:id/seccion/:sid/add/alumno/		controllers.Cursos.agregarAlumno(id: Long, sid: Long)

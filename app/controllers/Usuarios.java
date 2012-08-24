@@ -228,8 +228,8 @@ public class Usuarios extends Controller {
 			// en Usuario.create ) se lanza una excepción y se ejecuta el finally.
 
 			// Crear desde mi Ulima
-			Usuario newUser = crearDesdeUlima(username,password);
-			loadSession(newUser);
+			//Usuario newUser = crearDesdeUlima(username,password);
+			//loadSession(newUser);
 		}
 		finally
 		{
@@ -256,6 +256,8 @@ public class Usuarios extends Controller {
 
 
 		Usuario user = Usuario.getUserByUsername(session("username"));
+
+		System.out.println("CURSOS : " + user.getCursos().get(0).getSeccion() );
 
 		// Mostrar Intranet de acuerdo a privilegios
 
@@ -348,7 +350,7 @@ public class Usuarios extends Controller {
 	
 	public static Usuario cargarCursos(Usuario _usuario) throws Exception {
 		
-		if(_usuario.getRol() == 0)
+		/*if(_usuario.getRol() == 0)
 		{
 			System.out.println("Entró en cargarCursos ...");
 
@@ -367,7 +369,11 @@ public class Usuarios extends Controller {
 			
 			System.out.println("Por cada curso, crearlo y agregar profesor en caso no exista ...");
 
+			*/
+
 			// Por cada curso, crearlo y agregar profesor en caso no exista
+			
+			/*
 			for(int i=0;i<cursos.length();i++)
 			{
 				JSONObject node = new JSONObject();
@@ -402,8 +408,12 @@ public class Usuarios extends Controller {
 					
 					Usuario profesor = Usuario.find.where().ilike("apellidos", "%" + profesor_aprox_apellidos + "%").ilike("nombres", "%" + profesor_aprox_nombre + "%").findUnique();
 					
+					*/
+
+					/*
 					System.out.println("ENCONTRADO : " + profesor.getNombres() + " , " + profesor.getApellidos());
-					
+					*/
+
 					/*Usuario profesor = new Usuario();
 					profesor.setNombres(profesor_nombre);
 					profesor.setRol(1);
@@ -413,6 +423,8 @@ public class Usuarios extends Controller {
 					// Crear asociación entre profesor --> curso
 					
 					// Determinar primero si la asociación ya existe
+
+					/*
 					CursoHasUsuario profesorCurso = CursoHasUsuario.find.where()
 					.ilike("usuario_id",profesor.getId().toString())
 					.ilike("curso_id", curso.getId().toString())
@@ -452,7 +464,9 @@ public class Usuarios extends Controller {
 		else
 		{
 			return _usuario;
-		}
+		}*/
+
+		return null;
 	}
 
 	/*
@@ -466,7 +480,7 @@ public class Usuarios extends Controller {
 	public static Usuario crearDesdeUlima(String _username, String _password) throws Exception
 	{
 		
-		String userHTML = "";
+		/*String userHTML = "";
 				
 		// Determinar si el usuario existe o no, se lanza una Exception, si pasa la Exception entonces se guarda
 		// el contenido html del logueo resultante en userPage
@@ -536,7 +550,9 @@ public class Usuarios extends Controller {
 		usuario.save();	
 		
 		// Crear usuario
-		return usuario;
+		return usuario;*/
+
+		return null;
 	}
 
 	/*
@@ -612,6 +628,34 @@ public class Usuarios extends Controller {
 
 	  return ok(profesores.toString());
   }
+
+
+  /*
+	 *	Obtiene todos los profesores del sistema
+	 */
+	public static Result getAlumnos(){
+       
+	    List<Usuario> usuarios_alumnos = Usuario.find.where()
+	        .eq("rol", "0")
+	        .findList();
+	    
+	    JSONArray alumnos = new JSONArray();
+	    
+	    for(Usuario alumno : usuarios_alumnos){
+	    	JSONObject json = new JSONObject();
+	        try {
+				json.put("nombres", alumno.getNombres());
+				json.put("apellidos", alumno.getApellidos());
+				json.put("id",alumno.getId());
+	        } catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        alumnos.put(json);
+	    }
+
+		  return ok(alumnos.toString());
+	  }
 
 
 

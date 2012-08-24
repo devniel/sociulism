@@ -2,6 +2,7 @@ package models;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
@@ -53,14 +54,14 @@ public class Seccion extends Model {
 	 * Estudiantes y/o auxiliares de la sección
 	 */
 	
-	@OneToMany
-	private List<SeccionHasUsuario> usuarios;
+	@OneToMany(cascade = {CascadeType.ALL})
+	public List<SeccionHasUsuario> usuarios;
 	
 	/*
 	 * Mensajes de la sección
 	 */
 	
-	@OneToMany
+	@OneToMany(cascade = {CascadeType.ALL})
 	private List<Mensaje> mensajes;
 	
 	

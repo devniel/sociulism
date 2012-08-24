@@ -36,12 +36,13 @@
     <li><a href="/admin/cursos/create"><i class="icon-plus"></i>Crear curso</a></li>
 
     <li class="nav-header">@curso.getNombre()</li>
-    <li class="active"><a href="/admin/cursos"><i class="icon-info-sign"></i>Editar información</a></li>
+    <li class="active"><a href="/admin/cursos/@curso.getId()/edit"><i class="icon-info-sign"></i>Editar información</a></li>
+    <li><a href="/admin/cursos/@curso.getId()/activity"><i class="icon-globe"></i>Actividad</a></li>
     <li>
       <a href="/admin/cursos/@curso.getId/secciones"><i class="icon-th-large"></i>Secciones</a>
       <ul class="nav nav-list">
         @for(seccion <- curso.getSecciones()){
-          <li><a href="/admin/cursos/@curso.getId/seccion/@seccion.getId()"><i class="icon-chevron-right"></i>@seccion.getSeccion()</a></li>
+          <li><a href="/admin/cursos/@curso.getId()/seccion/@seccion.getId()"><i class="icon-chevron-right"></i>@seccion.getSeccion()</a></li>
         }
       </ul>
     </li>

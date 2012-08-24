@@ -328,15 +328,89 @@ public class Cursos extends Controller {
 
     Map<String, String[]> formData = request().body().asFormUrlEncoded();
     String seccion_profesor = formData.get("seccion.profesor_id")[0];
-
-
     
+    Usuario profesor = Usuario.find.ref(Long.parseLong(seccion_profesor));
+    
+    // Actualizar seccion
     Seccion seccion = Seccion.find.ref(sid);
-    seccion.setProfesor(Usuario.find.ref(Long.parseLong(seccion_profesor)));
+    seccion.setProfesor(profesor);
+    seccion.save();
+    
+    // Generar relación
+    SeccionHasUsuario seccionHasUsuario = new SeccionHasUsuario();
+    seccionHasUsuario.setSeccion(seccion);
+    seccionHasUsuario.setUsuario(profesor);
+    
+    // Actualizar profesor
+    profesor.getCursos().add(seccionHasUsuario);
+    profesor.save();
+    
+
     seccion.save();
     
     // Redireccionar a página inicial (con o sin carga de sesión)
     return redirect(routes.Cursos.showSeccion(seccion.getCurso().getId(), seccion.getId()));
+  }
+
+  /*
+   *  Actualizar profesor de la seccion
+   */
+
+  public static Result updateProfesor(Long id, Long sid){
+    
+    System.out.println("ASIGNANDO PROFESOR A SECCÍÓN ...");
+
+    Map<String, String[]> formData = request().body().asFormUrlEncoded();
+    String seccion_profesor = formData.get("seccion.profesor_id")[0];
+    Usuario profesor = Usuario.find.ref(Long.parseLong(seccion_profesor));
+
+     // Actualizar seccion
+    Seccion seccion = Seccion.find.ref(sid);
+    seccion.setProfesor(profesor);
+    seccion.save();
+    
+    SeccionHasUsuario seccionHasUsuario = SeccionHasUsuario.find.where().eq("usuario_id", "sd").eq("seccion_id","sds").findUnique();
+   
+    if(seccionHasUsuario == null){
+    	seccionHasUsuario = new SeccionHasUsuario();
+    }
+    
+    seccionHasUsuario.setSeccion(seccion);
+    seccionHasUsuario.setUsuario(profesor);
+    seccionHasUsuario.save();
+    
+    // Actualizar profesor
+    profesor.getCursos().add(seccionHasUsuario);
+    profesor.save();
+    
+    // Redireccionar a página inicial (con o sin carga de sesión)
+    return redirect(routes.Cursos.showSeccion(seccion.getCurso().getId(), seccion.getId()));
+  }
+
+  /*
+   *  Agregar alumno a la sección
+   */
+
+  public static Result agregarAlumno(Long id, Long sid){
+
+    System.out.println("ASIGNANDO ALUMNO A SECCÍÓN ...");
+
+    Map<String, String[]> formData = request().body().asFormUrlEncoded();
+    String seccion_alumno = formData.get("seccion.alumno_id")[0];
+
+    Seccion seccion = Seccion.find.ref(sid);
+
+    SeccionHasUsuario seccionHasUsuario = new SeccionHasUsuario();
+    seccionHasUsuario.setUsuario(Usuario.find.ref(Long.parseLong(seccion_alumno)));
+    seccionHasUsuario.setSeccion(Seccion.find.ref(sid));
+    seccionHasUsuario.save();
+
+    seccion.getUsuarios().add(seccionHasUsuario);
+    seccion.save();
+    
+    // Redireccionar a página inicial (con o sin carga de sesión)
+    return redirect(routes.Cursos.showSeccion(seccion.getCurso().getId(), seccion.getId()));
+
   }
 
 }

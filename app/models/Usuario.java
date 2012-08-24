@@ -62,8 +62,8 @@ public class Usuario extends Model{
 	
 	public static Finder<Long,Usuario> find = new Finder(Long.class, Usuario.class);
 
-	@OneToMany
-	public List<CursoHasUsuario> cursos;
+	@OneToMany(cascade = {CascadeType.ALL})
+	public List<SeccionHasUsuario> cursos;
 	
 	@ManyToOne
 	public Universidad universidad;
@@ -233,11 +233,11 @@ public class Usuario extends Model{
 		this.password = password;
 	}
 
-	public List<CursoHasUsuario> getCursos() {
+	public List<SeccionHasUsuario> getCursos() {
 		return cursos;
 	}
 
-	public void setCursos(List<CursoHasUsuario> cursos) {
+	public void setCursos(List<SeccionHasUsuario> cursos) {
 		this.cursos = cursos;
 	}
 

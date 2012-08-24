@@ -94,7 +94,7 @@
                     <ul class="nav nav-list list-courses-user">
 
                       @for(UsuarioCurso <- usuario.getCursos()) {
-                        <li><a href="@routes.Cursos.show(UsuarioCurso.getCurso().getId().toString())">@UsuarioCurso.getCurso().getNombre()</a></li>
+                        <li><a href="">@UsuarioCurso.getSeccion().getCurso().getNombre() (@UsuarioCurso.getSeccion().getSeccion())</a></li>                        
                       }
 
                     </ul>
