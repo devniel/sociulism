@@ -10,6 +10,8 @@ GET     /                           				controllers.Application.index()
 
 GET     /assets/*file               				controllers.Assets.at(path="/public", file)
 
+# USUARIOS
+
 #GET 	/users/all									controllers.Usuarios.all()
 
 GET 	/users										controllers.Usuarios.index()
@@ -26,11 +28,15 @@ POST 	/login										controllers.Usuarios.login()
 
 POST 	/facultad/:id/nuevoMensaje					controllers.Facultades.nuevoMensaje(id: String)
 
+# USUARIOS - PROFESORES
+
+GET 	/usuarios/profesores 						controllers.Usuarios.getProfesores()
+ 			
 # CURSO
 
 GET		/cursos/:id  								controllers.Cursos.show(id: String)
 
-GET		/curso/:id/chat								controllers.Cursos.chat(id: String,codigo: String)
+# GET		/curso/:id/chat								controllers.Cursos.chat(id: String,codigo: String)
 
 GET		/curso/:id/asesoria							controllers.Cursos.asesoria(id: String)
 
@@ -46,13 +52,13 @@ POST 	/curso/:cid/pregunta/:pid/respuesta			controllers.Cursos.postRespuesta(cid
 
 # ADMIN
 
-GET		/admin/facultades							controllers.Admin.facultades()
+# GET		/admin/facultades							controllers.Admin.facultades()
 
 #GET	/admin/carreras								controllers.Admin.carreras()
 
 #GET 	/admin/universidades						controllers.Admin.universidades()
 
-GET		/admin/cursos			 					controllers.Admin.cursos()
+#GET		/admin/cursos			 					controllers.Admin.cursos()
 
 # FACULTADES
 
@@ -74,6 +80,42 @@ POST 	/admin/usuarios/new							controllers.Usuarios.create()
 
 POST 	/admin/usuarios/:id/update					controllers.Usuarios.update(id: Long)
 
+GET 	/admin/usuarios/:id/delete					controllers.Usuarios.delete(id: Long)
+
 # ADMIN - FACULTADES
 
 GET 	/admin/facultades 							controllers.Facultades.all()
+
+GET 	/admin/facultades/:id/edit					controllers.Facultades.edit(id: Long)
+
+GET 	/admin/facultades/create					controllers.Facultades.showCreate()
+
+POST 	/admin/facultades/new						controllers.Facultades.create()
+
+POST 	/admin/facultades/:id/update				controllers.Facultades.update(id: Long)
+
+GET 	/admin/facultades/:id/delete				controllers.Facultades.delete(id: Long)
+
+# ADMIN - CURSOS
+
+GET 	/admin/cursos 								controllers.Cursos.all()
+
+GET 	/admin/cursos/:id/edit						controllers.Cursos.edit(id: Long)
+	
+GET 	/admin/cursos/create						controllers.Cursos.showCreate()
+
+POST 	/admin/cursos/new							controllers.Cursos.create()
+
+POST 	/admin/cursos/:id/update					controllers.Cursos.update(id: Long)
+
+GET 	/admin/cursos/:id/delete					controllers.Cursos.delete(id: Long)
+
+POST 	/admin/cursos/:id/add/seccion/				controllers.Cursos.addSeccion(id: Long)
+
+# ADMIN - CURSOS - SECCIONES
+
+GET 	/admin/cursos/:id/seccion/:sid				controllers.Cursos.showSeccion(id: Long, sid: Long)
+
+GET 	/admin/cursos/:id/secciones 				controllers.Cursos.showSecciones(id: Long)
+
+POST 	/admin/cursos/:id/seccion/:sid/add/profesor/		controllers.Cursos.asignarProfesor(id: Long, sid: Long)

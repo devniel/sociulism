@@ -30,22 +30,11 @@ public class Curso extends Model{
 	public String codigo;
 	
 	@OneToMany
-	private List<CursoHasUsuario> usuarios;
-	
-	@OneToMany
-	private List<Mensaje> mensajes;
-	
-	@OneToMany
-	private List<Enlace> enlaces;
+	public List<Seccion> secciones;
 	
 	public String nombre;
 
 	public static Finder<Long,Curso> find = new Finder(Long.class, Curso.class);
-
-	public static List<Curso> all(){
-		//return TODO;
-		return find.all();
-	}
 	
 	/*
 	 * Agrega un nuevo curso a la base de datos
@@ -68,6 +57,19 @@ public class Curso extends Model{
 		
 		return curso;
 	}
+	
+	
+
+	public List<Seccion> getSecciones() {
+		return secciones;
+	}
+
+
+	public void setSecciones(List<Seccion> secciones) {
+		this.secciones = secciones;
+	}
+
+
 
 	public static void delete(Long id){
 		find.ref(id).delete();
@@ -106,60 +108,46 @@ public class Curso extends Model{
 		return profesor;
 	}
 
-	/** GETTERS AND SETTERS **/
-	
-	
-	
-	public List<Mensaje> getMensajes() {
-		return mensajes;
-	}
+
 
 	public Long getId() {
 		return Id;
 	}
 
+
+
 	public void setId(Long id) {
 		Id = id;
 	}
 
-	public void setMensajes(List<Mensaje> mensajes) {
-		this.mensajes = mensajes;
-	}
-	
-	public String getNombre() {
-		return nombre;
-	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
 
 	public String getCodigo() {
 		return codigo;
 	}
 
+
+
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
 
-	public List<CursoHasUsuario> getUsuarios() {
-		return usuarios;
+
+
+	public String getNombre() {
+		return nombre;
 	}
 
-	public void setUsuarios(List<CursoHasUsuario> usuarios) {
-		this.usuarios = usuarios;
+
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
-	public List<Enlace> getEnlaces() {
-		return enlaces;
-	}
+	/** GETTERS AND SETTERS **/
 
-	public void setEnlaces(List<Enlace> enlaces) {
-		this.enlaces = enlaces;
-	}
 	
 	
-
 	
 
 }

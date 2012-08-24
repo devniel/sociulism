@@ -96,8 +96,8 @@ public class Facultades extends Controller {
 
 	public static Result create(){
 		Map<String, String[]> formData = request().body().asFormUrlEncoded();
-	    String nombre = formData.get("nombre")[0];
-	    String universidad_id = formData.get("universidad_id")[0];
+	    String nombre = formData.get("facultad.nombre")[0];
+	    String universidad_id = formData.get("facultad.universidad_id")[0];
 	    
 	    Universidad universidad = Universidad.find.byId(Long.parseLong(universidad_id));
 
@@ -108,7 +108,15 @@ public class Facultades extends Controller {
 	    
 	    
 	    // Redireccionar a página inicial (con o sin carga de sesión)
-	    return redirect(routes.Admin.facultades());
+	    return redirect(routes.Facultades.all());
+	}
+
+	/*
+	 * 	Mostrar formulario de creación de facultades
+	 */
+
+	public static Result showCreate(){
+		return ok(views.html.facultades.create.render(Universidad.find.all()));
 	}
 
 
@@ -118,5 +126,43 @@ public class Facultades extends Controller {
 
 	public static Result all(){
 		return ok(views.html.facultades.all.render(Facultad.find.all()));
+	}
+
+	/*
+	 *	Editar a facultad
+	 */
+
+	public static Result edit(Long id){
+		return ok(views.html.facultades.edit.render(Facultad.find.ref(id),Universidad.find.all()));
+	}
+
+	/*
+	 *	Actualizar a facultad
+	 */
+
+	public static Result update(Long id){
+		Map<String, String[]> formData = request().body().asFormUrlEncoded();
+	    String nombre = formData.get("facultad.nombre")[0];
+	    String universidad_id = formData.get("facultad.universidad_id")[0];
+	    
+	    Universidad universidad = Universidad.find.byId(Long.parseLong(universidad_id));
+
+		Facultad facultad = Facultad.find.ref(id);
+		facultad.setNombre(nombre);
+		facultad.setUniversidad(universidad);
+		facultad.save();
+	    
+	    
+	    // Redireccionar a página inicial (con o sin carga de sesión)
+	    return redirect(routes.Facultades.all());
+	}
+
+	/*
+	 *	Borrar facultad
+	 */
+
+	public static Result delete(Long id){
+		Facultad.find.ref(id).delete();
+		return redirect(routes.Facultades.all());
 	}
 }

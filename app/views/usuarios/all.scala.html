@@ -32,7 +32,7 @@
 @sidebar = {
   <ul class="nav nav-list bs-docs-sidenav affix" data-spy="affix" data-offset-top="200" id="navTab">
     <li class="nav-header">ACCIONES</li>
-    <li class="active"><a href="#lista_usuarios"><i class="icon-th-list"></i>Listar usuarios</a></li>
+    <li class="active"><a href="/admin/usuarios"><i class="icon-th-list"></i>Listar usuarios</a></li>
     <li><a href="/admin/usuarios/create"><i class="icon-plus"></i>Crear usuario</a></li>
   </ul>
 }
@@ -71,7 +71,7 @@
             
           </td>
           <td>
-            <a class="btn btn-small pull-right" href="#" ><i class="icon-trash"></i></a>
+            <a class="btn btn-small pull-right" href="/admin/usuarios/@usuario.getId()/delete" ><i class="icon-trash"></i></a>
             <a class="btn btn-small pull-right" href="/admin/usuarios/@usuario.getId()/edit" style="margin-right:5px"><i class="icon-edit"></i></a>
           </td>
         </tr>

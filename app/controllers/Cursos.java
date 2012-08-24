@@ -14,12 +14,7 @@ import play.mvc.*;
 import play.mvc.Http.RequestBody;
 
 import views.html.*;
-import models.ChatCurso;
-import models.Curso;
-import models.CursoHasUsuario;
-import models.Mensaje;
-import models.MensajeHasReceptor;
-import models.Usuario;
+import models.*;
 
 public class Cursos extends Controller {
   
@@ -49,8 +44,8 @@ public class Cursos extends Controller {
   */
   public static Result create(){
       Map<String, String[]> formData = request().body().asFormUrlEncoded();
-      String codigo = formData.get("codigo")[0];
-      String nombre = formData.get("nombre")[0];
+      String codigo = formData.get("curso.codigo")[0];
+      String nombre = formData.get("curso.nombre")[0];
       
       Curso curso = new Curso();
       curso.setNombre(nombre);
@@ -58,7 +53,7 @@ public class Cursos extends Controller {
       curso.save();
       
       // Redireccionar a página inicial (con o sin carga de sesión)
-      return redirect(routes.Admin.cursos());
+      return redirect(routes.Cursos.all());
   }
 
   /*
@@ -124,8 +119,7 @@ public class Cursos extends Controller {
     String mensaje_contenido = json.get("mensaje").get("contenido").toString();
     String mensaje_emisor = json.get("mensaje").get("emisor").toString();
 
-    String curso_id = json.get("mensaje").get("curso").toString();
-    String curso_seccion = json.get("mensaje").get("seccion").toString();
+    String curso_seccion = json.get("mensaje").get("curso_seccion").toString();
 
     Mensaje mensaje = new Mensaje();
     mensaje.setTipo(2); // Tipo de pregunta.
@@ -133,7 +127,9 @@ public class Cursos extends Controller {
     System.out.println("CONTENIDO ----> " + mensaje_contenido.length());
     mensaje.setContenido(mensaje_contenido);
     mensaje.setEmisor(Usuario.find.ref(Long.parseLong(mensaje_emisor)));
-    mensaje.setCurso(Curso.find.ref(Long.parseLong(curso_id)));
+    
+    
+    mensaje.setSeccion(Seccion.find.ref(Long.parseLong(curso_seccion)));
     mensaje.save();
     
     for(int i = 0;i < json.get("mensaje").get("receptores").size();i++){
@@ -201,7 +197,8 @@ public class Cursos extends Controller {
 	RequestBody body = request().body();
 	JsonNode json = body.asJson();
 
-    Curso curso = Curso.find.ref(Long.parseLong(cid));
+    Seccion curso_seccion = Seccion.find.ref(Long.parseLong(cid));
+    
     Mensaje pregunta = Mensaje.find.ref(Long.parseLong(pid));
     String seccion = json.get("respuesta").get("seccion").toString();
 
@@ -215,7 +212,9 @@ public class Cursos extends Controller {
     respuesta.setContenido(respuesta_contenido);
     respuesta.setEmisor(Usuario.find.ref(Long.parseLong(respuesta_emisor)));
     respuesta.setMensaje(Mensaje.find.ref(Long.parseLong(pid)));
-    respuesta.setCurso(Curso.find.ref(Long.parseLong(cid)));
+    
+    respuesta.setSeccion(curso_seccion);
+    
     respuesta.save();
     
     /*for(int i = 0;i < json.get("mensaje").get("receptores").size();i++){
@@ -232,23 +231,112 @@ public class Cursos extends Controller {
 
   }
   
-  /**
-   * Handle the chat websocket.
+  /*
+   *  Mostrar todas los cursos
    */
-  public static WebSocket<JsonNode> chat(final String id,final String codigo) {
-      return new WebSocket<JsonNode>() {
-          
-          // Called when the Websocket Handshake is done.
-          public void onReady(WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out){
-              
-              // Join the chat room.
-              try { 
-                  ChatCurso.join(codigo, id, in, out);
-              } catch (Exception ex) {
-                  ex.printStackTrace();
-              }
-          }
-      };
+
+  public static Result all(){
+    return ok(views.html.cursos.all.render(Curso.find.all()));
   }
+
+  /*
+   *  Mostrar formulario de creación de nuevo curso
+   */
+
+  public static Result showCreate(){
+
+    return ok(views.html.cursos.create.render(Universidad.find.all(), Facultad.find.all()));
+  }
+
+
+  /*
+   *  Actualizar curso
+   */
+
+  public static Result update(Long id){
+    Map<String, String[]> formData = request().body().asFormUrlEncoded();
+    String codigo = formData.get("curso.codigo")[0];
+    String nombre = formData.get("curso.nombre")[0];
+    
+    Curso curso = Curso.find.ref(id);
+    curso.setNombre(nombre);
+    curso.setCodigo(codigo);
+    curso.save();
+    
+    // Redireccionar a página inicial (con o sin carga de sesión)
+    return redirect(routes.Cursos.all());
+  }
+
+  /*
+   *  Editar a curso
+   */
+
+  public static Result edit(Long id){
+    return ok(views.html.cursos.edit.render(Curso.find.ref(id)));
+  }
+
+  public static Result delete(Long id){
+    Curso.find.ref(id).delete();
+    return redirect(routes.Cursos.all());
+  }
+
+  /*
+   *  Agregar sección al curso
+   */
   
+  public static Result addSeccion(Long id){
+
+    System.out.println("CREANDO SECCÍÓN ...");
+
+    Map<String, String[]> formData = request().body().asFormUrlEncoded();
+    String seccion_codigo = formData.get("seccion.codigo")[0];
+    
+    Seccion seccion = new Seccion();
+    seccion.setSeccion(Integer.parseInt(seccion_codigo));
+    seccion.setCurso(Curso.find.ref(id));
+    seccion.save();
+    
+    // Redireccionar a página inicial (con o sin carga de sesión)
+    return redirect(routes.Cursos.edit(id));
+  }
+
+  /*
+   *  Mostrar sección
+   */
+
+  public static Result showSeccion(Long id, Long sid){
+
+    return ok(views.html.cursos.seccion.render(Curso.find.ref(id),Seccion.find.ref(sid)));
+  }
+
+  /*
+   *  Mostrar lista de secciones del curso
+   */
+
+  public static Result showSecciones(Long id){
+    Curso curso = Curso.find.ref(id);
+    return ok(views.html.cursos.secciones.render(curso));
+  }
+
+  /*
+   *  Asignar profesor a la seccion
+   */
+
+  public static Result asignarProfesor(Long id, Long sid){
+    
+    System.out.println("ASIGNANDO PROFESOR A SECCÍÓN ...");
+
+    Map<String, String[]> formData = request().body().asFormUrlEncoded();
+    String seccion_profesor = formData.get("seccion.profesor_id")[0];
+
+
+    
+    Seccion seccion = Seccion.find.ref(sid);
+    seccion.setProfesor(Usuario.find.ref(Long.parseLong(seccion_profesor)));
+    seccion.save();
+    
+    // Redireccionar a página inicial (con o sin carga de sesión)
+    return redirect(routes.Cursos.showSeccion(seccion.getCurso().getId(), seccion.getId()));
+  }
+
 }

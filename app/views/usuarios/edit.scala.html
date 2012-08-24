@@ -64,7 +64,7 @@ $('#navTab a').click(function (e) {
             <div class="span3 pull-left">
               <ul class="nav nav-list bs-docs-sidenav affix" data-spy="affix" data-offset-top="200" id="navTab">
                 <li class="nav-header">ACCIONES</li>
-                <li class="active"><a href="#lista_usuarios"><i class="icon-th-list"></i>Listar usuarios</a></li>
+                <li class="active"><a href="/admin/usuarios"><i class="icon-th-list"></i>Listar usuarios</a></li>
                 <li><a href="/admin/usuarios/create"><i class="icon-plus"></i>Crear usuario</a></li>
               </ul>         
             </div>
@@ -134,7 +134,7 @@ $('#navTab a').click(function (e) {
                                 <input type="radio" name="usuario.rol" id="optionsRadios1" value="0">
                               }
                               
-                              Estudiante
+                              Alumno
 
                             </label>
                             <label class="radio">
@@ -174,7 +174,7 @@ $('#navTab a').click(function (e) {
                               }else{
                                 <input type="radio" name="usuario.privilegio" id="optionsRadios2" value="0">
                               }
-                              Usuario estándar
+                              Usuario
 
                             </label>
                             <label class="radio">
@@ -184,7 +184,7 @@ $('#navTab a').click(function (e) {
                               }else{
                                 <input type="radio" name="usuario.privilegio" id="optionsRadios2" value="0">
                               }
-                              Usuario privilegiado
+                              Super Usuario
 
                             </label>
                             <label class="radio">
@@ -194,7 +194,7 @@ $('#navTab a').click(function (e) {
                               }else{
                                 <input type="radio" name="usuario.privilegio" id="optionsRadios2" value="2">
                               }
-                              Administrador
+                              Sistema
 
                             </label>
                           </div>
@@ -209,13 +209,18 @@ $('#navTab a').click(function (e) {
                           <div class="controls">
                             <select id="select01" name="usuario.universidad">
 
-                              @for(universidad <- universidades) {
-                                @if(universidad.getId() == usuario.getUniversidad().getId()){
-                                  <option value="@universidad.getId()" selected>@universidad.getNombre()</li>
-                                }else{
-                                  <option value="@universidad.getId()">@universidad.getNombre()</li>
-                                }
-                              } 
+                                @for(universidad <- universidades) {
+
+                                  @if(usuario.getUniversidad() == null){
+                                    <option value="@universidad.getId()">@universidad.getNombre()</li>
+                                  }else{
+                                    @if(universidad.getId() == usuario.getUniversidad().getId()){
+                                      <option value="@universidad.getId()" selected>@universidad.getNombre()</li>
+                                    }else{
+                                      <option value="@universidad.getId()">@universidad.getNombre()</li>
+                                    }
+                                  } 
+                              }
 
                             </select>
                           </div>
@@ -231,13 +236,18 @@ $('#navTab a').click(function (e) {
                           <div class="controls">
                             <select id="select01" name="usuario.facultad">
 
-                              @for(facultad <- facultades) {
-                                @if(facultad.getId() == usuario.getFacultad().getId()){
-                                  <option value="@facultad.getId()" selected>@facultad.getNombre()</li>
-                                }else{
-                                  <option value="@facultad.getId()">@facultad.getNombre()</li>
+                              
+                                @for(facultad <- facultades) {
+                                  @if(usuario.getFacultad() == null){
+                                    <option value="@facultad.getId()">@facultad.getNombre()</li>
+                                  }else{
+                                    @if(facultad.getId() == usuario.getFacultad().getId()){
+                                      <option value="@facultad.getId()" selected>@facultad.getNombre()</li>
+                                    }else{
+                                      <option value="@facultad.getId()">@facultad.getNombre()</li>
+                                    }
+                                  } 
                                 }
-                              } 
 
                             </select>
                           </div>

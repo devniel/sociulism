@@ -102,11 +102,11 @@ public class Mensaje extends Model{
 	private MensajeHasReceptor receptores;
 	
 	/*
-	 * CURSO a donde se envía el mensaje - chat - NULL
+	 * SECCIÓN (CURSO) a donde se envía el mensaje - chat - NULL
 	 */
 
 	@OneToOne
-	private Curso curso;
+	private Seccion seccion;
 
 	/*
 	 * FACULTAD a donde se envía el mensaje - intranet - NULL
@@ -135,17 +135,6 @@ public class Mensaje extends Model{
 	
 	public static Finder<Long,Mensaje> find = new Finder(Long.class, Mensaje.class);
 
-	/*
-	 * CONSTRUCTOR
-	 */
-	
-	public Mensaje(String contenido, Usuario emisor, Curso curso)
-	{
-		super();
-		this.contenido = contenido;
-		this.emisor = emisor;
-		this.curso = curso;
-	}
 	
 	/*
 	 * CURSO
@@ -238,12 +227,12 @@ public class Mensaje extends Model{
 		this.emisor = emisor;
 	}
 
-	public Curso getCurso() {
-		return curso;
+	public Seccion getSeccion() {
+		return seccion;
 	}
 
-	public void setCurso(Curso curso) {
-		this.curso = curso;
+	public void setSeccion(Seccion seccion) {
+		this.seccion = seccion;
 	}
 
 	public Long getId() {

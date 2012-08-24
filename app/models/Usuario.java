@@ -41,9 +41,9 @@ public class Usuario extends Model{
 	
 	/*
 	 * Privilegios :
-	 * 0 -> Estudiante
+	 * 0 -> Alumno
 	 * 1 -> Profesor
-	 * 2 -> Secretaria
+	 * 2 -> Administrador
 	 */
 	@NotNull
 	@Column(columnDefinition="Integer default '0'")
@@ -51,9 +51,9 @@ public class Usuario extends Model{
 	
 	/*
 	 * Rol : 
-	 * 0 -> Estudiante
-	 * 1 -> Profesor
-	 * 2 -> Secretaria
+	 * 0 -> Usuario
+	 * 1 -> Super Usuario
+	 * 2 -> Sistema
 	 */
 	
 	@NotNull
@@ -133,6 +133,11 @@ public class Usuario extends Model{
 
 		return relacion;
 	}
+
+
+	
+
+
 
 	/*
 	 * GETTERS AND SETTERS 

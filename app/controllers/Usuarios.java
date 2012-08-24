@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.h2.expression.ExpressionList;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import play.*;
@@ -199,10 +200,10 @@ public class Usuarios extends Controller {
 					// ESTUDIANTE
 					case 0:
 						// Si el usuario no tiene cursos cargados se lanzará una excepción
-						Integer cursos = CursoHasUsuario.find.where().ilike("usuario_id", user.getId().toString()).findList().size();
+						/*Integer cursos = CursoHasUsuario.find.where().ilike("usuario_id", user.getId().toString()).findList().size();
 						user = cargarCursos(user);
 						if(cursos == 0)
-							user = cargarCursos(user);
+							user = cargarCursos(user);*/
 						break;
 					// PROFESOR
 					case 1:
@@ -566,7 +567,8 @@ public class Usuarios extends Controller {
 
 	public static Result delete(Long id) 
 	{
-		return TODO;
+		Usuario.find.ref(id).delete();
+		return redirect(routes.Usuarios.all());
 	}
 
 
@@ -583,6 +585,35 @@ public class Usuarios extends Controller {
 			return false;
 		}
 	}
+
+	/*
+	 *	Obtiene todos los profesores del sistema
+	 */
+	public static Result getProfesores(){
+       
+    List<Usuario> usuarios_profesores = Usuario.find.where()
+        .eq("rol", "1")
+        .findList();
+    
+    JSONArray profesores = new JSONArray();
+    
+    for(Usuario profesor : usuarios_profesores){
+    	JSONObject json = new JSONObject();
+        try {
+			json.put("nombres", profesor.getNombres());
+			json.put("apellidos", profesor.getApellidos());
+			json.put("id",profesor.getId());
+        } catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        profesores.put(json);
+    }
+
+	  return ok(profesores.toString());
+  }
+
+
 
 	/*
 	 * Validar usuario y password, si existen y son válidos

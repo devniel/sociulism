@@ -1,0 +1,121 @@
+@(universidades : List[Universidad],facultades : List[Facultad])
+
+@import helper.twitterBootstrap._
+@import helper._
+
+
+@****************************************
+  SCRIPTS
+  ***********************************@
+
+@scripts = {
+
+  $('#navbar').affix()
+
+}
+
+@****************************************
+  NAVBAR
+  ***************************************@
+
+@navbar = {
+  <li><a href="">Inicio</a></li>
+  <li><a href="/admin/facultades">Facultades</a></li>
+  <li><a href="/admin/usuarios">Usuarios</a></li>
+  <li class="active"><a href="/admin/cursos">Cursos</a></li>
+}
+
+@****************************************
+  SIDEBAR
+  ***********************************@
+
+@sidebar = {
+  <ul class="nav nav-list bs-docs-sidenav affix" data-spy="affix" data-offset-top="200" id="navTab">
+    <li class="nav-header">ACCIONES</li>
+    <li><a href="/admin/cursos"><i class="icon-th-list"></i>Listar cursos</a></li>
+    <li class="active"><a  href="/admin/cursos/create"><i class="icon-plus"></i>Crear cursos</a></li>
+  </ul>
+}
+
+@****************************************
+  MAINBAR
+  ***********************************@
+
+@mainbar = {
+
+  <form class="form-horizontal" method="POST" action="/admin/cursos/new">
+    <fieldset>
+      <legend>Nuevo curso</legend>
+
+      <div class="control-group">
+        <label class="control-label" for="input01">Código</label>
+        <div class="controls">
+          <input type="text" class="span6" name="curso.codigo" id="input01">
+        </div>
+      </div>
+     
+      <div class="control-group">
+        <label class="control-label" for="input01">Nombre</label>
+        <div class="controls">
+          <input type="text" class="span6" name="curso.nombre" id="input01">
+        </div>
+      </div>
+
+      <!--<div class="control-group">
+        <label class="control-label" for="input01">Detalles</label>
+        <div class="controls">
+          <textarea class="input-xlarge titilium span6" id="textarea" placeholder="Explica detalladamente tu consulta, por favor."></textarea>
+        </div>
+      </div>-->
+
+      @****************
+        * UNIVERSIDADES *
+        ****************@
+
+        <div class="control-group">
+          <label class="control-label" for="select01">Universidad</label>
+          <div class="controls">
+            <select id="select01" name="curso.universidad">
+
+              @for(universidad <- universidades) {
+                <option value="@universidad.getId()">@universidad.getNombre()</li>
+              } 
+
+            </select>
+          </div>
+        </div>
+
+
+        @****************
+        *  FACULTADES   *
+        ****************@
+
+        <div class="control-group">
+          <label class="control-label" for="select01">Facultad</label>
+          <div class="controls">
+            <select id="select01" name="curso.facultad">
+
+              @for(facultad <- facultades) {
+                <option value="@facultad.getId()">@facultad.getNombre()</li>
+              } 
+
+            </select>
+          </div>
+        </div>
+
+
+
+      <div class="control-group">
+        <div class="controls">
+          <button class="btn  btn-primary" type="submit">Crear</button>
+        </div>
+      </div>
+
+    </fieldset>
+  </form>
+  
+}
+
+
+
+@admin_layout(null,scripts,navbar,sidebar,mainbar)
