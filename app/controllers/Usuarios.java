@@ -53,7 +53,7 @@ public class Usuarios extends Controller {
 	{
 		/*
 		if(isAdmin()){ // Si es admin
-			Usuario usuario = getUserSession();
+			Usuario usuario = getSession();
 
 			return ok(views.html.admin.index.render(usuario));
 
@@ -167,13 +167,28 @@ public class Usuarios extends Controller {
 	 * Cargar sesión a partir de objeto usuario.
 	 */
 	
-	public static void loadSession(Usuario user)
+	public static void setSession(Usuario user)
 	{
 		String uuid = java.util.UUID.randomUUID().toString();
 		session("uuid", uuid);
 		session("cuuid", uuid);
 		session("username", user.getUsername());
 		session("password", user.getPassword());
+		session("id", user.getId().toString());
+		session("usuario.nombres",user.getNombres());
+		session("usuario.apellidos", user.getApellidos());
+	}
+
+	/*
+	 *	Convertir sesión proveniente del HTTP Request a objeto Usuario
+	 */
+
+	public static Usuario getSession(){
+		
+		System.out.println("ID --> " + session("id"));
+
+		Usuario usuario = Usuario.find.ref(Long.parseLong(session("id")));
+		return usuario;
 	}
 
 	/*
@@ -215,7 +230,7 @@ public class Usuarios extends Controller {
 				}
 
 				// Cargar sesión
-				loadSession(user);
+				setSession(user);
 			}
 			
 		}
@@ -229,7 +244,7 @@ public class Usuarios extends Controller {
 
 			// Crear desde mi Ulima
 			//Usuario newUser = crearDesdeUlima(username,password);
-			//loadSession(newUser);
+			//setSession(newUser);
 		}
 		finally
 		{
@@ -695,14 +710,6 @@ public class Usuarios extends Controller {
 			}
 		}
 
-	}
-
-	public static Usuario getUserSession() 
-	{
-		String username = session("username");
-		String password = session("password");
-		Usuario user = Usuario.getUserByUsername(username);
-		return user;
 	}
 
 	public static Result logout() 

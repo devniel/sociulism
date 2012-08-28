@@ -119,7 +119,6 @@ public class Facultades extends Controller {
 		return ok(views.html.facultades.create.render(Universidad.find.all()));
 	}
 
-
 	/*
 	 * 	Mostrar todas las facultades
 	 */

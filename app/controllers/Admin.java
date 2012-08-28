@@ -16,28 +16,33 @@ import views.html.admin.*;
 
 public class Admin extends Controller {
 
+	/*
+	 *	CURSOS
+	 */
 
-	static Form<Usuario> usuarioForm = form(Usuario.class);
-	static Form<Facultad> facultadForm = form(Facultad.class);
-	static Form<Carrera> carreraForm = form(Carrera.class);
-	static Form<Universidad> universidadForm = form(Universidad.class);
+
+	/*
+	 *	FACULTADES
+	 */
+
+
+	/*
+	 *	USUARIOS
+	 */
+
 
 
 	public static Result facultades()
 	{
-		System.out.println("Usuario quiere crear facultad");
-
 		// Una facultad requiere de una universidad, en el formulario aparecerá
 		// la opción de escoger universidad de una lista, por eso se le pasa los objetos Universidad.
-		return ok(facultades.render(Universidad.find.all()));
+		return ok("");
 	}
 
 	public static Result cursos()
 	{
 
-		System.out.println("Alguien quiere crear cursos");
-
-		return ok(cursos.render());
+		return ok("");
 	}
 
 	/*public static Result carreras()
@@ -54,7 +59,7 @@ public class Admin extends Controller {
 
 	public static Result usuarios()
 	{
-		return ok(views.html.usuarios.all.render(Universidad.find.all(),Facultad.find.all(),Carrera.find.all(),Usuario.find.all()));
+		return ok("");
 	}
 
 	/*

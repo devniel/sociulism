@@ -1,0 +1,84 @@
+@(cursos : List[Curso])
+
+@import helper.twitterBootstrap._
+@import helper._
+
+
+@****************************************
+  SCRIPTS
+  ***********************************@
+
+@scripts = {
+
+  $('#navbar').affix()
+
+}
+
+@****************************************
+  NAVBAR
+  ***************************************@
+
+@navbar = {
+  <li><a href="">Inicio</a></li>
+  <li><a href="/admin/facultades">Facultades</a></li>
+  <li><a href="/admin/usuarios">Usuarios</a></li>
+  <li  class="active"><a href="/admin/cursos">Cursos</a></li>
+}
+
+@****************************************
+  SIDEBAR
+  ***********************************@
+
+@sidebar = {
+  <ul class="nav nav-list bs-docs-sidenav affix" data-spy="affix" data-offset-top="200" id="navTab">
+    <li class="nav-header">ACCIONES</li>
+    <li class="active"><a href="/admin/cursos"><i class="icon-th-list"></i>Listar cursos</a></li>
+    <li><a href="/admin/cursos/create"><i class="icon-plus"></i>Crear curso</a></li>
+  </ul>
+}
+
+@****************************************
+  MAINBAR
+  ***********************************@
+
+@mainbar = {
+
+  @if(cursos.size() == 0){
+    <div class="alert alert-info">
+      <strong>¡No existen cursos!</strong> Prueba a crear uno desde <a class="btn btn-mini" href="/admin/cursos/create" type="button">aquí.</a>
+    </div>
+  }else {
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Código</th>
+          <th>Nombre</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+
+        @for(curso <- cursos){
+          <tr>
+            <td>@curso.getId()</td>
+            <td>@curso.getCodigo()</td>
+            <td>@curso.getNombre()</td>
+            <td>
+              <a class="btn btn-small pull-right" href="/admin/cursos/@curso.getId()/delete" ><i class="icon-trash"></i></a>
+              <a class="btn btn-small pull-right" href="/admin/cursos/@curso.getId()/edit" style="margin-right:5px"><i class="icon-edit"></i></a>
+            </td>
+          </tr>
+        }
+            
+      </tbody>
+    </table>
+  }
+
+  
+  
+}
+
+
+
+@admin_layout(null,scripts,navbar,sidebar,mainbar)

@@ -17,32 +17,34 @@ import views.html.*;
 import models.*;
 
 public class Cursos extends Controller {
+
+  /*
+   * Página de inicio del curso
+   */
   
-  public static Result index() {
-    return ok(views.html.curso.index.render(null,null));
-  }
-
-  public static Result show(String id){
-
-  	Usuario usuario = Usuarios.getUserSession();
-
-  	Curso curso = Curso.getCurso(Long.parseLong(id));
-  	
-  	List<Usuario> profesores = curso.getProfesores();
-  	
-  	System.out.println("PROFESORES DEL CURSO: ");
-  	
-  	for (Usuario profesor : profesores) {
-  		System.out.println(profesor.getNombres() + " --- " + profesor.getApellidos());
-	   }
-
-  	return ok(views.html.curso.index.render(usuario,curso));
+  public static Result index()
+  {
+    return ok("");
   }
 
   /*
-  * CREAR CURSO
-  */
-  public static Result create(){
+   * Mostrar curso
+   */
+
+  public static Result show(String id)
+  {
+  	Usuario usuario = Usuarios.getSession();
+  	Curso curso = Curso.getCurso(Long.parseLong(id));
+  	List<Usuario> profesores = curso.getProfesores();
+  	return ok("");
+  }
+
+  /*
+   * Crear curso
+   */
+
+  public static Result create()
+  {
       Map<String, String[]> formData = request().body().asFormUrlEncoded();
       String codigo = formData.get("curso.codigo")[0];
       String nombre = formData.get("curso.nombre")[0];
@@ -52,7 +54,6 @@ public class Cursos extends Controller {
       curso.setCodigo(codigo);
       curso.save();
       
-      // Redireccionar a página inicial (con o sin carga de sesión)
       return redirect(routes.Cursos.all());
   }
 
@@ -60,16 +61,17 @@ public class Cursos extends Controller {
    * Asesoría del cursos
    */
 
-  public static Result asesoria(String id){
+  public static Result asesoria(String id)
+  {
 
-    Usuario usuario = Usuarios.getUserSession();
+    Usuario usuario = Usuarios.getSession();
 
     Curso curso = Curso.getCurso(Long.parseLong(id));
 
 
     Result view = null;
 
-    switch(usuario.getRol()){
+    /*switch(usuario.getRol()){
     	// Usuario común
       case 0:
         // Select * from mensaje where emisor_id = 2 and curso_id = 1;
@@ -89,12 +91,44 @@ public class Cursos extends Controller {
         view = ok(views.html.curso.asesoria.render(usuario,curso,preguntas_recibidas));
         break;
         // Administrador
+      case 2:
+        view  = ok(views.html.curso.profesor.asesoria.render(usuario,curso,null));
+    }*/
+
+    return view;
+
+  }
+
+  /*
+   * Mostrar preguntas
+   */
+
+  public static Result showPreguntas(Long cid,Long sid)
+  {
+
+    Usuario usuario = Usuarios.getSession();
+    Curso curso = Curso.getCurso(cid);
+    Seccion seccion = Seccion.find.ref(sid);
+  
+    Result view = null;
+
+    switch(usuario.getRol()){
+      // Usuario común
+      case 0:
+        List<Mensaje> preguntasDeUsuario = Mensajes.getPreguntasDeUsuarioEnSeccion(usuario.getId(), sid);
+        view = ok(views.html.cursos._public_.asesoria.render(seccion,preguntasDeUsuario));
+        break;
+      // Profesor
+      case 1:
+        List<Mensaje> preguntasRecibidas = Mensajes.getPreguntasRecibidas(usuario.getId());
+        view = ok(views.html.cursos._profesor_.asesoria.render(seccion,preguntasRecibidas));
+        break;
+        // Administrador
       /*case 2:
         view  = ok(views.html.curso.profesor.asesoria.render(usuario,curso,null));*/
     }
 
     return view;
-
   }
 
   /*
@@ -109,7 +143,10 @@ public class Cursos extends Controller {
    */
 
   @BodyParser.Of(play.mvc.BodyParser.Json.class)
-  public static Result nuevaAsesoria(String id){
+  public static Result postPregunta(Long cid,  Long sid){
+
+    Seccion seccion = Seccion.find.ref(sid);
+    Curso curso = Curso.find.ref(cid);
     
     RequestBody body = request().body();
     
@@ -119,17 +156,22 @@ public class Cursos extends Controller {
     String mensaje_contenido = json.get("mensaje").get("contenido").toString();
     String mensaje_emisor = json.get("mensaje").get("emisor").toString();
 
-    String curso_seccion = json.get("mensaje").get("curso_seccion").toString();
-
     Mensaje mensaje = new Mensaje();
     mensaje.setTipo(2); // Tipo de pregunta.
+
+    mensaje_titulo = mensaje_titulo.substring(1,mensaje_titulo.length() - 1);
     mensaje.setTitulo(mensaje_titulo);
+
     System.out.println("CONTENIDO ----> " + mensaje_contenido.length());
+
+    // Quitar comillas
+    mensaje_contenido = mensaje_contenido.substring(1,mensaje_contenido.length() - 1);
+
+    		
     mensaje.setContenido(mensaje_contenido);
+
     mensaje.setEmisor(Usuario.find.ref(Long.parseLong(mensaje_emisor)));
-    
-    
-    mensaje.setSeccion(Seccion.find.ref(Long.parseLong(curso_seccion)));
+    mensaje.setSeccion(seccion);
     mensaje.save();
     
     for(int i = 0;i < json.get("mensaje").get("receptores").size();i++){
@@ -143,6 +185,11 @@ public class Cursos extends Controller {
     mensaje.save();
     
     return ok("");
+  }
+
+  public static Result showNuevaPregunta(Long cid, Long sid){
+    Seccion seccion = Seccion.find.ref(sid);
+    return ok(views.html.cursos._public_.nuevaPregunta.render(seccion));
   }
 
   /*
@@ -177,13 +224,26 @@ public class Cursos extends Controller {
    *  Obtener la pregunta determinada y cargar en la interfaz de asesorías del profesor
    */
 
-  public static Result getPregunta(String cid, String pid){
+  public static Result showPregunta(Long cid, Long sid,Long pid){
 
-    Curso curso = Curso.getCurso(Long.parseLong(cid));
-    Mensaje pregunta = Mensaje.find.ref(Long.parseLong(pid));
-    Usuario usuario = Usuarios.getUserSession();
+    Curso curso = Curso.find.ref(sid);
+    Seccion seccion = Seccion.find.ref(sid);
+    Mensaje pregunta = Mensaje.find.ref(pid);
+    Usuario usuario = Usuarios.getSession();
 
-    Result view = ok(views.html.curso.pregunta.render(usuario,curso,pregunta));
+    Result view = null;
+
+    if(usuario.getRol() == 1)
+    {
+       view = ok(views.html.cursos._profesor_.pregunta.render(seccion,pregunta));
+    }
+    else if (usuario.getRol() == 0)
+    {
+       view = ok(views.html.cursos._public_.pregunta.render(seccion,pregunta));
+    }
+
+   
+
     return view;
   }
 
@@ -192,18 +252,18 @@ public class Cursos extends Controller {
    */
 
   @BodyParser.Of(play.mvc.BodyParser.Json.class)
-  public static Result postRespuesta(String cid, String pid){
+  public static Result postRespuesta(Long cid, Long sid, Long pid){
 	  
-	RequestBody body = request().body();
-	JsonNode json = body.asJson();
+	  RequestBody body = request().body();
+	  JsonNode json = body.asJson();
 
-    Seccion curso_seccion = Seccion.find.ref(Long.parseLong(cid));
+    Seccion seccion = Seccion.find.ref(cid);
     
-    Mensaje pregunta = Mensaje.find.ref(Long.parseLong(pid));
-    String seccion = json.get("respuesta").get("seccion").toString();
-
+    Mensaje pregunta = Mensaje.find.ref(pid);
 
     String respuesta_contenido = json.get("respuesta").get("contenido").toString();
+    respuesta_contenido = respuesta_contenido.substring(1,respuesta_contenido.length() - 1);
+
     String respuesta_emisor = json.get("respuesta").get("emisor").toString();
 
     Mensaje respuesta = new Mensaje();
@@ -211,10 +271,8 @@ public class Cursos extends Controller {
     System.out.println("CONTENIDO ----> " + respuesta_contenido.length());
     respuesta.setContenido(respuesta_contenido);
     respuesta.setEmisor(Usuario.find.ref(Long.parseLong(respuesta_emisor)));
-    respuesta.setMensaje(Mensaje.find.ref(Long.parseLong(pid)));
-    
-    respuesta.setSeccion(curso_seccion);
-    
+    respuesta.setMensaje(Mensaje.find.ref(pid));
+    respuesta.setSeccion(seccion);
     respuesta.save();
     
     /*for(int i = 0;i < json.get("mensaje").get("receptores").size();i++){
@@ -307,6 +365,10 @@ public class Cursos extends Controller {
   public static Result showSeccion(Long id, Long sid){
 
     return ok(views.html.cursos.seccion.render(Curso.find.ref(id),Seccion.find.ref(sid)));
+  }
+
+  public static Result showPublicSeccion(Long id, Long sid){
+    return ok(views.html.cursos._public_.index.render(Seccion.find.ref(sid)));
   }
 
   /*

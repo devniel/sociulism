@@ -188,9 +188,9 @@ body {
   height:inherit !important;
 }
 
-.container {
+/*.container {
   width:940px !important;
-}
+}*/
 
 .carousel-caption h4{
   color: #FFF !important;
@@ -298,7 +298,7 @@ footer {
   width:auto;
   height:100px;
   position:absolute;
-  top:30px;
+  top:10px;
   right:0px;
 }
 
@@ -339,17 +339,16 @@ footer {
   clear:both;
 }
 
-.content-left {
+/*.content-left {
   width:218px !important;
   background:#FFF !important;
   height:600px;
- /* border-right:1px solid rgba(0,0,0,0.1);*/
-}
+}*/
 
-.content-right {
+
+/*.content-right {
   background:#FFF !important;
-
-}
+}*/
 
 /* INTRANET */
 .navbar {
@@ -360,11 +359,12 @@ footer {
   color:#000 !important;
 }*/
 
+/*
 .content-left .list-courses {
   height:200px;
   overflow:auto;
   border-bottom:1px solid rgba(0,0,0,0.1);
-}
+} */
 
 /*
  LISTA DE CURSOS "LLEVANDO ACTUALMENTE"

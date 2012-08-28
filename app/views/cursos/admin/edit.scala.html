@@ -1,0 +1,97 @@
+@(curso : Curso)
+
+@import helper.twitterBootstrap._
+@import helper._
+
+
+@****************************************
+  SCRIPTS
+  ***********************************@
+
+@scripts = {
+
+  $('#navbar').affix()
+
+}
+
+@****************************************
+  NAVBAR
+  ***************************************@
+
+@navbar = {
+  <li><a href="">Inicio</a></li>
+  <li><a href="/admin/facultades">Facultades</a></li>
+  <li><a href="/admin/usuarios">Usuarios</a></li>
+  <li  class="active"><a href="/admin/cursos">Cursos</a></li>
+}
+
+@****************************************
+  SIDEBAR
+  ***********************************@
+
+@sidebar = {
+  <ul class="nav nav-list bs-docs-sidenav affix" data-spy="affix" data-offset-top="200" id="navTab">
+    <li class="nav-header">ACCIONES</li>
+    <li><a href="/admin/cursos"><i class="icon-th-list"></i>Listar cursps</a></li>
+    <li><a href="/admin/cursos/create"><i class="icon-plus"></i>Crear curso</a></li>
+
+    <li class="nav-header">@curso.getNombre()</li>
+    <li class="active"><a href="/admin/cursos/@curso.getId()/edit"><i class="icon-info-sign"></i>Editar información</a></li>
+    <li><a href="/admin/cursos/@curso.getId()/activity"><i class="icon-globe"></i>Actividad</a></li>
+    <li>
+      <a href="/admin/cursos/@curso.getId/secciones"><i class="icon-th-large"></i>Secciones</a>
+      <ul class="nav nav-list">
+        @for(seccion <- curso.getSecciones()){
+          <li><a href="/admin/cursos/@curso.getId()/seccion/@seccion.getId()"><i class="icon-chevron-right"></i>@seccion.getSeccion()</a></li>
+        }
+      </ul>
+    </li>
+
+  </ul>
+}
+
+@****************************************
+  MAINBAR
+  ***********************************@
+
+@mainbar = {
+
+  <form class="form-horizontal" method="POST" action="/admin/cursos/@curso.getId/update">
+    <fieldset>
+      <legend>Editar curso</legend>
+
+      <div class="control-group">
+        <label class="control-label" for="input01">Código</label>
+        <div class="controls">
+          <input type="text" class="span6" name="curso.codigo" id="input01" value="@curso.getCodigo()">
+        </div>
+      </div>
+     
+      <div class="control-group">
+        <label class="control-label" for="input01">Nombre</label>
+        <div class="controls">
+          <input type="text" class="span6" name="curso.nombre" id="input01" value="@curso.getNombre()">
+        </div>
+      </div>
+
+      <!--<div class="control-group">
+        <label class="control-label" for="input01">Detalles</label>
+        <div class="controls">
+          <textarea class="input-xlarge titilium span6" id="textarea" placeholder="Explica detalladamente tu consulta, por favor."></textarea>
+        </div>
+      </div>-->
+
+      <div class="control-group">
+        <div class="controls">
+          <button class="btn  btn-primary" type="submit">Actualizar</button>
+        </div>
+      </div>
+
+    </fieldset>
+  </form>
+
+}
+
+
+
+@admin_layout(null,scripts,navbar,sidebar,mainbar)

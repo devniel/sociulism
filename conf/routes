@@ -36,34 +36,6 @@ GET 	/usuarios/profesores 						controllers.Usuarios.getProfesores()
 
 GET 	/usuarios/alumnos 							controllers.Usuarios.getAlumnos()
  			
-# CURSO
-
-GET		/cursos/:id  								controllers.Cursos.show(id: String)
-
-# GET		/curso/:id/chat								controllers.Cursos.chat(id: String,codigo: String)
-
-GET		/curso/:id/asesoria							controllers.Cursos.asesoria(id: String)
-
-POST	/curso/:id/asesoria/new						controllers.Cursos.nuevaAsesoria(id: String)
-
-GET 	/curso/:id/profesores/all					controllers.Cursos.getProfesorDelCurso(id: String)
-
-# CURSO - PREGUNTAS
-
-GET 	/curso/:cid/pregunta/:pid					controllers.Cursos.getPregunta(cid: String, pid: String)
-
-POST 	/curso/:cid/pregunta/:pid/respuesta			controllers.Cursos.postRespuesta(cid: String, pid:String)
-
-# ADMIN
-
-# GET		/admin/facultades							controllers.Admin.facultades()
-
-#GET	/admin/carreras								controllers.Admin.carreras()
-
-#GET 	/admin/universidades						controllers.Admin.universidades()
-
-#GET		/admin/cursos			 					controllers.Admin.cursos()
-
 # FACULTADES
 
 POST 	/facultades/new								controllers.Facultades.create()
@@ -71,6 +43,8 @@ POST 	/facultades/new								controllers.Facultades.create()
 # CURSOS
 
 POST 	/cursos/new									controllers.Cursos.create()
+
+##########################################################################################################################3
 
 # ADMIN - USUARIOS
 
@@ -127,3 +101,33 @@ POST 	/admin/cursos/:id/seccion/:sid/add/profesor/		controllers.Cursos.asignarPr
 POST 	/admin/cursos/:id/seccion/:sid/update/profesor/		controllers.Cursos.updateProfesor(id: Long, sid: Long)
 
 POST 	/admin/cursos/:id/seccion/:sid/add/alumno/		controllers.Cursos.agregarAlumno(id: Long, sid: Long)
+
+##########################################################################################################################3
+
+# PUBLIC - CURSOS 
+
+# PUBLIC - CURSOS - SECCIONES
+
+GET 	/cursos/:id/seccion/:sid				controllers.Cursos.showPublicSeccion(id: Long, sid: Long)
+
+GET 	/cursos/:cid/seccion/:sid/preguntas  	controllers.Cursos.showPreguntas(cid: Long, sid: Long)
+
+# PUBLIC - CURSOS
+
+GET		/cursos/:id  								controllers.Cursos.show(id: String)
+
+# GET		/curso/:id/chat								controllers.Cursos.chat(id: String,codigo: String)
+
+#GET		/curso/:cid/seccion/:sid/asesoria			controllers.Cursos.asesoria(id: String)
+
+POST	/cursos/:cid/seccion/:sid/asesoria/new		controllers.Cursos.postPregunta(cid: Long, sid: Long)
+
+GET 	/curso/:id/profesores/all					controllers.Cursos.getProfesorDelCurso(id: String)
+
+# CURSO - PREGUNTAS
+
+GET 	/cursos/:cid/seccion/:sid/pregunta/:pid	 					controllers.Cursos.showPregunta(cid: Long, sid: Long, pid: Long)
+
+POST 	/cursos/:cid/seccion/:sid/pregunta/:pid/respuesta			controllers.Cursos.postRespuesta(cid: Long, sid: Long, pid:Long)
+
+GET 	/cursos/:cid/seccion/:sid/preguntas/new			controllers.Cursos.showNuevaPregunta(cid: Long, sid:Long)

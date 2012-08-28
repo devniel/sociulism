@@ -1,0 +1,177 @@
+@(seccion : Seccion, pregunta : Mensaje)
+
+@import helper.twitterBootstrap._
+@import helper._
+
+
+@****************************************
+  SCRIPTS
+  ***********************************@
+
+@scripts = {
+
+}
+
+@****************************************
+  NAVBAR
+  ***************************************@
+
+@navbar = {
+  <li><a href="/">Inicio</a></li>
+  <li><a href="/cursos/@seccion.getCurso().getId()/seccion/@seccion.getId()">@seccion.getCurso().getNombre() | @seccion.getSeccion()
+  </a></li>
+  <li class="active"><a href="/cursos/@seccion.getCurso().getId()/seccion/@seccion.getId()/asesoria">Asesoría</a></li>
+}
+
+@****************************************
+  SIDEBAR
+  ***********************************@
+
+@sidebar = {
+  <ul class="nav nav-list">
+    <li class="nav-header">
+      PERSONAS
+    </li>
+    <li>
+      <!-- 
+        PERSONAS
+      -->
+      <a href="#" class="nav-header"><i class="icon-user"></i> PROFESORES</a>
+      <ul class="nav nav-list">
+
+        @*********************
+         * PROFESORES *
+         *********************@      
+
+       
+          <li class="list-user">
+            <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
+            <a href="#">Rocío Checca</a>
+            <div class="cut"></div>
+          </li>
+        
+
+
+        <!-- <li class="list-user">
+          <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
+          <a href="#">Freddy Cahuas</a>
+          <div class="cut"></div>
+        </li>
+
+        <li class="list-user">
+          <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/369309_1270467084_942844184_q.jpg"/>
+          <a href="#">Freddy Cahuas</a>
+          <div class="cut"></div>
+        </li>
+        <li class="list-user">
+          <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/48815_1032202210_1657296_q.jpg"/>
+          <a href="#">Freddy Cahuas</a>
+          <div class="cut"></div>
+        </li>
+        <li class="list-user">
+          <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/161585_1104992034_168476089_q.jpg"/>
+          <a href="#">Freddy Cahuas</a>
+          <div class="cut"></div>
+        </li>
+        <li class="list-user">
+          <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/211528_100002280642888_4125957_q.jpg"/>
+          <a href="#">Freddy Cahuas</a>
+          <div class="cut"></div>
+        </li> -->
+
+      </ul>
+      <!-- / PERSONAS -->
+    </li>
+
+    @*********************
+     * ASESORES *
+     *********************@  
+
+    <li>
+      <a href="#" class="nav-header"><i class="icon-user"></i>ALUMNOS</a>
+      <div class="list-courses">
+        <ul class="nav nav-list">
+
+          @for(seccion_usuario <- seccion.getUsuarios()){
+            @if(seccion_usuario.getUsuario().getRol() == 0){
+              <li class="list-user">
+                <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
+                <a href="#">@seccion_usuario.getUsuario().getNombres() @seccion_usuario.getUsuario().getApellidos()</a>
+                <div class="cut"></div>
+              </li>
+            }
+          }
+            
+
+            
+
+        </ul>
+      </div>
+    </li>
+  </ul>
+}
+
+@****************************************
+  MAINBAR
+  ***********************************@
+
+@mainbar = {
+
+  <div class="page-header">
+    <h1>Preguntas</h1>
+  </div>
+
+  <div class="row">
+    <!-- BOX 1 -->
+    <div class="span9">
+      <div class="row">
+
+        <!-- PREGUNTA -->
+        <div class="span9 question">
+          <div class="row">
+            <div class="span1">
+              <div class="question-state"></div>
+            </div>
+
+            <div class="span8">
+              <div class="question-title">@pregunta.getTitulo()</div>
+              <div class="question-content">@pregunta.getContenido()</div>
+            </div>
+
+
+          </div>
+        </div> <!--/PREGUNTA-->
+
+
+        @for(respuesta <- pregunta.getMensajes()){
+
+        <!-- PREGUNTA -->
+        <div class="span9 response">
+          <div class="row">
+            <div class="span1">
+              <div class="question-state"></div>
+            </div>
+
+            <div class="span8">
+              <div class="question-content">@respuesta.getContenido()</div>
+            </div>
+          </div>
+        </div> <!--/PREGUNTA-->
+
+        }
+
+        <div class="span9 question">
+          <form method="POST" id="form-respuesta" action="/cursos/@seccion.getCurso().getId()/seccion/@seccion.getId()/pregunta/@pregunta.getId()/respuesta">
+            <textarea class="span9" name="respuesta.contenido"></textarea>
+            <button type="submit" class="btn btn-large"><i class="icon-comment"></i> Comment</button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div> <!-- /BOX 1 -->
+}
+
+
+
+@user_layout(null,scripts,navbar,sidebar,mainbar)
