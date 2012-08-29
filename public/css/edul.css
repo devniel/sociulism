@@ -293,13 +293,18 @@ footer {
 }
 
 
-/* HEADER - USER */
+/*************************************
+  HEADER - USER 
+**************************************/
+
 .header-user {
   width:auto;
-  height:100px;
   position:absolute;
   top:10px;
   right:0px;
+  background:#FFF;
+  padding:5px;
+  border-radius:3px;
 }
 
 .header-user-picture {
@@ -308,6 +313,7 @@ footer {
   background:#CCC;
   float:left;
   margin-right:5px;
+  border-radius:3px;
 }
 
 .header-user-details {
@@ -327,12 +333,15 @@ footer {
 }
 
 .header-user-details ul li.name {
-  font-family: TitilliumText22LBold;
+  font-weight:bold;
   font-size:15px;
+  text-shadow:1px 1px 4px rgba(0,0,0,0.01);
 }
 
 .header-user-details ul li.faculty {
-  font-size:11px;
+  font-size:14px;
+  color:#AAA;
+  text-shadow:1px 1px 4px rgba(0,0,0,0.1);
 }
 
 .cut {

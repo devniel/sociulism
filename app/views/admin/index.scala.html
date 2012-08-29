@@ -24,12 +24,13 @@
 
 
     .estado {
-
+      height:30px !important;
     }
 
     .estado ul {
       list-style : none !important;
       height:30px !important;
+      margin-left:0px !important;
     }
 
     .estado ul li {
@@ -44,14 +45,46 @@
     }
 
     .actividad {
-      font-size:12px !important;
+      font-size:12px !important; 
+    }
 
+    .actividad .well {
+      padding-top:30px;
+    }
+
+    .actividad .page-header {
+      margin:0 0 0 0 !important;
+      margin-bottom:5px !important;
+      background:#E94E1B;
+      height:30px;
+      padding:0px !important;
+    }
+
+    .actividad .page-header h3 {
+      vertical-align: text-bottom;
+      line-height:25px !important;
+      color:#FFF;
+      padding-left:10px;
+      padding-top:2px;
+    }
+
+    .actividad .actividad-header {
+      font-weight:bold;
+      font-size:11px;
+      position:absolute;
+      top:0;
+      right:0;
+      z-index:10000;
+      background: #E94E1B;
+      padding:0px 5px;
+      color: #FFF;
     }
 
     .actividad ul {
       list-style:none;
-      height:300px !important;
+      height:450px !important;
       overflow:auto;
+      margin-left:0px !important;
     }
 
     .actividad ul li {
@@ -60,8 +93,25 @@
       padding-top:10px;
     }
 
-    .actividad ul li i {
+    .actividad .actividad-icono {
+      height:40px;
+      background:transparent;
+      float:left;
       margin-right:5px;
+      line-height:40px;
+      padding:0px !important;
+    }
+
+    .actividad .actividad-icono i {
+      font-size:30px;
+      margin:0px !important;
+      vertical-align: text-bottom;
+      color: #E94E1B;
+    }
+
+    .actividad .actividad-descripcion {
+      float:left;
+      width:390px;
     }
 
     .page-header h3 {
@@ -83,7 +133,38 @@
       list-style: none;
     }
 
+    .well {
+      position:relative !important;
+    }
 
+    .chart_title {
+      font-weight:bold;
+      font-size:11px;
+      position:absolute;
+      bottom:0;
+      right:0;
+      z-index:10000;
+      background: #E94E1B;
+      padding:0px 5px;
+      color: #FFF;
+    }
+
+    .estado-icono {
+      width:40px;
+      height:40px;
+      float:left;
+      font-size:40px;
+      margin-right:10px;
+    }
+
+    .estado-icono i {
+      vertical-align: bottom !important;
+    }
+
+    .estado-info {
+      float:left;
+
+    }
 
   </style>
 
@@ -92,6 +173,63 @@
   <li><a href="/admin/usuarios">Usuarios</a></li>
   <li><a href="/admin/cursos">Cursos</a></li>
 }{
+
+
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+
+      function drawChart()
+      {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Semana', 'Preguntas', 'Alumnos preguntando'],
+          ['1',  0,      0],
+          ['2',  12,      20],
+          ['3',  123,       21],
+          ['4',  32,      100]
+        ]);
+
+        var options = {
+          fontSize : 12,
+          chartArea :  {
+            width : 250,
+            left : 30,
+            top:20
+          },
+          hAxis : {
+            title : "Semanas"
+          }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+
+        // PIE CHART
+        
+        data = google.visualization.arrayToDataTable([
+          ['Sección', 'Preguntas'],
+          ['901',     11],
+          ['902',      2],
+          ['903',  2],
+          ['904', 2],
+          ['905',    7]
+        ]);
+
+        options = {
+          fontSize : 12
+        };
+
+        chart = new google.visualization.PieChart(document.getElementById('chart_pie_div'));
+        chart.draw(data, options);
+
+      }
+
+    </script>
+
+
 
         @*********************
          * CONTENIDO *
@@ -107,19 +245,23 @@
                   @**************************************************************************
                     ESTADO DE LA APLICACIÓN
                     *************************************************************************@
-                    <div class="well estado">
+                    <div class="well estado clearfix">
                       <ul class="clearfix">
-                        <li>
-                          <a href="#"><span class="cantidad">123</span> Estudiantes</a>
+                        <li class="clearfix">
+                          <div class="estado-icono"><i class="icon-camera-retro"></i></div>
+                          <div class="estado-info"><a href="#"><span class="cantidad">123</span> Estudiantes</a></div>
                         </li>
-                        <li>
-                          <a href="#"><span class="cantidad">8</span> Profesores</a>
+                        <li class="clearfix">
+                          <div class="estado-icono"><i class="icon-briefcase"></i></div>
+                          <div class="estado-info"><a href="#"><span class="cantidad">13</span> Profesores</a></div>
                         </li>
-                        <li>
-                          <a href="#"><span class="cantidad">254</span> Preguntas</a>
+                        <li class="clearfix">
+                          <div class="estado-icono"><i class="icon-question-sign"></i></div>
+                          <div class="estado-info"><a href="#"><span class="cantidad">27</span> Preguntas</a></div>
                         </li>
-                        <li class="last">
-                          <a href="#"><span class="cantidad">123</span> Archivos</a>
+                        <li class="last clearfix">
+                          <div class="estado-icono"><i class="icon-paper-clip"></i></div>
+                          <div class="estado-info"><a href="#"><span class="cantidad">74</span> Archivos</a></div>
                         </li>
                       </ul>
                     </div>
@@ -129,71 +271,164 @@
 
               <div class="row">
 
-                <div class="span9 actividad">
+                <div class="span6 actividad">
 
-                    <div class="page-header">
-                      <h3>Actividad</h3>
-                    </div>
+                  <div class="well well-small">
+
+                    <div class="actividad-header">
+                      Actividad
+                    </div>                   
 
                     <ul>
-      
-                      <li>
-                        <i class="icon-question-sign"></i> <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
-                      </li>
 
-                      <li>
-                        <i class="icon-question-sign"></i><strong>Miguel Mitsuo</strong> preguntó "¿Cómo se llama el profesor?" en la <strong>sección 702</strong>
-                      </li>
+                      @************************ ACTIVIDAD ***********************@
+                      <li class="clearfix">
+                        
+                        <div class="actividad-icono"><i class="icon-question-sign"></i></div>
 
-                      <li>
-                        <i class="icon-comment"></i><strong>Roberto Espinoza</strong> respondió la pregunta "¿Cuántas cartas se necesitan para ganar?" en la <strong>sección 801</strong>
-                      </li>
+                        <div class="actividad-descripcion">
+                          <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
+                        </div> 
 
-                      <li>
-                        <i class="icon-question-sign"></i><strong>Marcelo Arakaki</strong> preguntó "¿Cuántas cartas se necesitan para ganar?" en la <strong>sección 801</strong>
-                      </li>
+                      </li> @************************ ACTIVIDAD ***********************@
 
-                      <li>
-                        <i class="icon-question-sign"></i><strong>Fabrizio Romainville</strong> preguntó "¿Qué se necesita enviar como tema?" en la <strong>sección 802</strong>
-                      </li>
+                     
+                      @************************ ACTIVIDAD ***********************@
+                      <li class="clearfix">
+                        
+                        <div class="actividad-icono"><i class=" icon-comment-alt"></i></div>
 
-                      <li>
-                        <i class="icon-comment"></i><strong>Jaime Gutierrez</strong> respondió la pregunta "¿Cuál es la actividad de EduL?" de la <strong>sección 803</strong>
-                      </li>
+                        <div class="actividad-descripcion">
+                          <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
+                        </div> 
 
-                      <li>
-                        <i class="icon-question-sign"></i><strong>Erick Cachay</strong> preguntó "¿QUé se necesita para dominar el mundo?" en la <strong>sección 805</strong>
-                      </li>
+                      </li> @************************ ACTIVIDAD ***********************@
 
-                      <li>
-                        <i class="icon-question-sign"></i> <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
-                      </li>
+                      @************************ ACTIVIDAD ***********************@
+                      <li class="clearfix">
+                        
+                        <div class="actividad-icono"><i class="icon-question-sign"></i></div>
 
-                      <li>
-                        <i class="icon-question-sign"></i><strong>Miguel Mitsuo</strong> preguntó "¿Cómo se llama el profesor?" en la <strong>sección 702</strong>
-                      </li>
+                        <div class="actividad-descripcion">
+                          <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
+                        </div> 
 
-                      <li>
-                        <i class="icon-comment"></i><strong>Roberto Espinoza</strong> respondió la pregunta "¿Cuántas cartas se necesitan para ganar?" en la <strong>sección 801</strong>
-                      </li>
+                      </li> @************************ ACTIVIDAD ***********************@
 
-                      <li>
-                        <i class="icon-question-sign"></i><strong>Marcelo Arakaki</strong> preguntó "¿Cuántas cartas se necesitan para ganar?" en la <strong>sección 801</strong>
-                      </li>
+                      @************************ ACTIVIDAD ***********************@
+                      <li class="clearfix">
+                        
+                        <div class="actividad-icono"><i class="icon-question-sign"></i></div>
 
-                      <li>
-                        <i class="icon-question-sign"></i><strong>Fabrizio Romainville</strong> preguntó "¿Qué se necesita enviar como tema?" en la <strong>sección 802</strong>
-                      </li>
+                        <div class="actividad-descripcion">
+                          <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
+                        </div> 
 
-                      <li>
-                        <i class="icon-comment"></i><strong>Jaime Gutierrez</strong> respondió la pregunta "¿Cuál es la actividad de EduL?" de la <strong>sección 803</strong>
-                      </li>
+                      </li> @************************ ACTIVIDAD ***********************@
 
-                      <li>
-                        <i class="icon-question-sign"></i><strong>Erick Cachay</strong> preguntó "¿QUé se necesita para dominar el mundo?" en la <strong>sección 805</strong>
-                      </li>
+                      @************************ ACTIVIDAD ***********************@
+                      <li class="clearfix">
+                        
+                        <div class="actividad-icono"><i class=" icon-comment-alt"></i></div>
+
+                        <div class="actividad-descripcion">
+                          <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
+                        </div> 
+
+                      </li> @************************ ACTIVIDAD ***********************@
+
+                      @************************ ACTIVIDAD ***********************@
+                      <li class="clearfix">
+                        
+                        <div class="actividad-icono"><i class="icon-question-sign"></i></div>
+
+                        <div class="actividad-descripcion">
+                          <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
+                        </div> 
+
+                      </li> @************************ ACTIVIDAD ***********************@
+
+                      @************************ ACTIVIDAD ***********************@
+                      <li class="clearfix">
+                        
+                        <div class="actividad-icono"><i class=" icon-comment-alt"></i></div>
+
+                        <div class="actividad-descripcion">
+                          <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
+                        </div> 
+
+                      </li> @************************ ACTIVIDAD ***********************@
+
+                      @************************ ACTIVIDAD ***********************@
+                      <li class="clearfix">
+                        
+                        <div class="actividad-icono"><i class="icon-question-sign"></i></div>
+
+                        <div class="actividad-descripcion">
+                          <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
+                        </div> 
+
+                      </li> @************************ ACTIVIDAD ***********************@
+
+                      @************************ ACTIVIDAD ***********************@
+                      <li class="clearfix">
+                        
+                        <div class="actividad-icono"><i class=" icon-comment-alt"></i></div>
+
+                        <div class="actividad-descripcion">
+                          <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
+                        </div> 
+
+                      </li> @************************ ACTIVIDAD ***********************@
+
+                      @************************ ACTIVIDAD ***********************@
+                      <li class="clearfix">
+                        
+                        <div class="actividad-icono"><i class="icon-question-sign"></i></div>
+
+                        <div class="actividad-descripcion">
+                          <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
+                        </div> 
+
+                      </li> @************************ ACTIVIDAD ***********************@
+
+                      @************************ ACTIVIDAD ***********************@
+                      <li class="clearfix">
+                        
+                        <div class="actividad-icono"><i class="icon-question-sign"></i></div>
+
+                        <div class="actividad-descripcion">
+                          <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
+                        </div> 
+
+                      </li> @************************ ACTIVIDAD ***********************@
                       
                     </ul>
+                </div>
+
+              </div>
+
+                <div class="span6">
+
+                  <div class="row">
+                    
+                    
+                    <div class="span6"> 
+                        <div class="well well-small">
+                          <div class="chart_title">Preguntas vs Usuarios Preguntando</div>
+                          <div id="chart_div"  style="height:200px"></div>
+                        </div>
+                    </div>
+
+                    <div class="span6" style="height:150px"> 
+                        <div class="well well-small">
+                          <div class="chart_title">Preguntas por sección</div>
+                          <div id="chart_pie_div"  style="height:200px"></div>
+                        </div>
+                    </div>
+
+                  </div>
+
                 </div>
 
             </div> @*** FIN DE FILA *******************************************************@
@@ -290,6 +525,8 @@
             @************************** FILA - SECCIONES - SEMINARIO DE TESIS II ****************************@
             <div class="row">
 
+
+
               <div class="span12 secciones">
                 
                 <div class="page-header">
@@ -342,6 +579,9 @@
                 </div>
 
               </div>
+
+
+
 
             </div>
 
