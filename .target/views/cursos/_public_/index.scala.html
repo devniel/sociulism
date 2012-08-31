@@ -98,7 +98,7 @@
             @if(seccion_usuario.getUsuario().getRol() == 0){
               <li class="list-user">
                 <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
-                <a href="#">@seccion_usuario.getUsuario().getNombres() @seccion_usuario.getUsuario().getApellidos()</a>
+                <a href="/usuarios/@seccion_usuario.getUsuario().getId()">@seccion_usuario.getUsuario().getNombres() @seccion_usuario.getUsuario().getApellidos()</a>
                 <div class="cut"></div>
               </li>
             }
@@ -134,13 +134,15 @@
                     <!-- DESCRIPCIÓN -->
 
                     <div class="span9">
-                      <h3 class="ulima-color" style="font-size:15px">Descripción</h3>
+                      <h3 class="ulima-color" style="font-size:15px">Sumilla</h3>
                       <hr style="margin-top:0px;margin-bottom:10px"/>
                     </div>
 
                     <div class="span9">
-                      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+                      La asignatura pertenece al área académica de Sistemas de Gestión y es de carácter teórico-práctico. Esta asignatura tiene por objetivo la elaboración de un plan de trabajo de investigación. La asignatura comprende los siguientes temas: conocimiento sobre las metodologías y herramientas de investigación necesarias para la definición del tema de investigación y la elaboración del plan de investigación dentro de las líneas de investigación de la carrera. Esta asignatura se desarrolla mediante talleres, asesoría permanente y exposiciones.
                     </div>
+
+                  </div>
 
                   </div>
                 </div> <!-- /BOX 1 -->
@@ -153,19 +155,48 @@
                       <!-- OBJETIVOS -->
 
                       <div class="span9">
-                        <h3 class="ulima-color" style="font-size:15px">Objetivos</h3>
+                        <h3 class="ulima-color" style="font-size:15px">Objetivos Generales</h3>
                         <hr style="margin-top:0px;margin-bottom:10px"/>
                       </div>
 
                       <div class="span9">
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                       Adquirir capacidad para desarrollar un Plan de Trabajo de Investigación en el campo de la Ingeniería de Sistemas para titulación por la modalidad de Trabajo de Investigación.
                       </div>
-                    </div>
 
+                    </div>
                   </div>
                 </div> <!-- /BOX 2 -->
 
                 <!-- BOX 3 -->
+                <div class="row" style="margin-top:10px">
+                  <div class="span9">
+                    <div class="row">
+
+                      <!-- OBJETIVOS ESPECÍFICOS-->
+
+                      <div class="span9">
+                        <h3 class="ulima-color" style="font-size:15px">Objetivos Específicos</h3>
+                        <hr style="margin-top:0px;margin-bottom:10px"/>
+                      </div>
+
+                      <div class="span9">
+                       <ul>
+                        <li>Tomar conocimiento de tipos de investigación científica</li>
+                        <li>Capacitarse en la selección de un tema de investigación en el campo de la carrera</li>
+                        <li>Conocer la estructura de un Plan de Trabajo de Investigación</li>
+                        <li>Elaborar un Plan de Trabajo de Investigación para la titulación</li>
+                       </ul>
+                      </div>
+
+                    </div>
+                  </div>
+                </div> <!-- /BOX 3 -->
+
+
+
+                
+
+                <!-- BOX 4 -->
                 <div class="row" style="margin-top:10px">
                   <div class="span9">
                     <div class="row">
@@ -178,12 +209,33 @@
                       </div>
 
                       <div class="span9">
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                        <ul>
+                          <li>
+                            <strong>Libros</strong>
+                            <ul>
+                              <li>Hernández, Roberto; Fernández, Carlos; Baptista, Pilar. Metodología de la Investigación. Mc Graw Hill Interamericana Editores S.A. 3era Edición. México, 2003. Código Biblioteca U.Lima: 001.42/43.</li>
+                              <li>Tokeshi Alberto. Planifique, Desarrolle y Apruebe su Tesis. Guía para mejores resultados. Fondo Editorial Universidad de Lima 1ra. Edición. Lima, 2008. Código Biblioteca U. Lima: 001.42 T683.</li>
+                              <li>Dirección Universitaria de Investigación Científica. Apuntes sobre Metodología de la Investigación. Universidad de Lima. Lima, 1982. Código de Biblioteca U. Lima: 001/M77</li>
+                            </ul>
+                          </li>
+                          <li style="margin-top:10px">
+                            <strong>Páginas web</strong>
+                            <ul>
+                              <li><a href="http://www.computer.org/portal/web/publications/acmtaxonomy">http://www.computer.org/portal/web/publications/acmtaxonomy</a></li>
+                              <li><a href="http://bitpipe.com">http://bitpipe.com</a></li>
+                              <li><a href="http://www.doaj.org">http://www.doaj.org</a></li>
+                              <li><a href="http://www.acm.org">http://www.acm.org</a></li>
+                              <li><a href="www.ieee.org/index.html">http://www.ieee.org/index.html</a></li>
+                              <li>Google Scholar</li>
+                              <li>EBSCO</li>
+                              <li>Proquest</li>
+                              <li><a href="http://www.scanmyessay.com/viperdownload_aca.html">http://www.scanmyessay.com/viperdownload_aca.html</a></li>
+                        </ul>
                       </div>
                     </div>
 
                   </div>
-                </div> <!-- /BOX 3 -->
+                </div> <!-- /BOX 4 -->
   
   
 }

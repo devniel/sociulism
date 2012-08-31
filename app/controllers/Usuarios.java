@@ -12,13 +12,7 @@ import play.*;
 import play.data.*;
 import play.mvc.*;
 import play.mvc.Http.Session;
-import models.Carrera;
-import models.Curso;
-import models.CursoHasUsuario;
-import models.Facultad;
-import models.Ulima;
-import models.Universidad;
-import models.Usuario;
+import models.*;
 
 import views.html.*;
 
@@ -285,8 +279,9 @@ public class Usuarios extends Controller {
 		Result view = null;
 
 		if(user.getPrivilegio() == 2)
-		{
-			view = ok(views.html.admin.index.render(user));
+		{	
+			Edul edul = new Edul();
+			view = ok(views.html.admin.index.render(Usuario.find.all(),edul));
 		}
 		else
 		{

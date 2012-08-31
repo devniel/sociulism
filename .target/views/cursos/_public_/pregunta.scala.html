@@ -10,6 +10,40 @@
 
 @scripts = {
 
+  /*
+   *  Formulario de envío de respuesta
+   */
+
+   $("#form-respuesta").submit(function(e){
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    var respuesta = {
+      emisor : @session.get("id"),
+      contenido : null,
+      seccion : @seccion.getId()
+    }
+
+    // Contenido
+
+    respuesta.contenido = $("#form-respuesta textarea[name='respuesta.contenido']").val();
+
+    $.ajax({
+        type: "POST",
+        url: "/cursos/@seccion.getCurso().getId()/seccion/@seccion.getId()/pregunta/@pregunta.getId()/respuesta",
+        contentType : "application/json;charset=utf-8",
+        dataType : "json",
+        data: JSON.stringify({
+          respuesta: respuesta
+        })
+    }).done(function(msg ){
+
+    });
+
+    return false;
+
+   });
 }
 
 @****************************************
@@ -17,10 +51,77 @@
   ***************************************@
 
 @navbar = {
+
+  <style type="text/css">
+      .sugerencias ul{
+        list-style:none;
+        padding:0 !important;
+      }
+
+      .controls {
+        position:relative !important;
+      }
+
+      .input-prepend{
+        position: relative !important;
+      }
+
+      .suggestions {
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+        border:1px solid #CCC;
+        background: #FFF;
+        width:458px !important;
+        position:absolute;
+        top:28px;
+        left:0;
+        z-index: 10000 !important;
+      }
+
+      .suggestions > li > a{
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+        cursor:pointer;
+        display:block;
+      }
+
+      .suggestion_metadata {
+        display:none;
+      }
+
+      .receptor_id {
+        display:none;
+      }
+
+      .receptores {
+        margin-left:0px !important;
+        margin-top:5px !important;
+      }
+
+      .receptores ul{
+        padding:0px !important;
+        margin-left:0px !important;
+        list-style:none !important;
+      }
+
+      .receptores ul li i {
+        margin-right:5px;
+      }
+
+      input.with-icon {
+        width :422px !important;
+      }
+
+    </style>
+
+
+
+
+
   <li><a href="/">Inicio</a></li>
   <li><a href="/cursos/@seccion.getCurso().getId()/seccion/@seccion.getId()">@seccion.getCurso().getNombre() | @seccion.getSeccion()
   </a></li>
-  <li class="active"><a href="/cursos/@seccion.getCurso().getId()/seccion/@seccion.getId()/asesoria">Asesoría</a></li>
+  <li class="active"><a href="/cursos/@seccion.getCurso().getId()/seccion/@seccion.getId()/preguntas">Asesoría</a></li>
 }
 
 @****************************************
@@ -28,87 +129,7 @@
   ***********************************@
 
 @sidebar = {
-  <ul class="nav nav-list">
-    <li class="nav-header">
-      PERSONAS
-    </li>
-    <li>
-      <!-- 
-        PERSONAS
-      -->
-      <a href="#" class="nav-header"><i class="icon-user"></i> PROFESORES</a>
-      <ul class="nav nav-list">
 
-        @*********************
-         * PROFESORES *
-         *********************@      
-
-       
-          <li class="list-user">
-            <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
-            <a href="#">Rocío Checca</a>
-            <div class="cut"></div>
-          </li>
-        
-
-
-        <!-- <li class="list-user">
-          <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
-          <a href="#">Freddy Cahuas</a>
-          <div class="cut"></div>
-        </li>
-
-        <li class="list-user">
-          <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/369309_1270467084_942844184_q.jpg"/>
-          <a href="#">Freddy Cahuas</a>
-          <div class="cut"></div>
-        </li>
-        <li class="list-user">
-          <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/48815_1032202210_1657296_q.jpg"/>
-          <a href="#">Freddy Cahuas</a>
-          <div class="cut"></div>
-        </li>
-        <li class="list-user">
-          <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/161585_1104992034_168476089_q.jpg"/>
-          <a href="#">Freddy Cahuas</a>
-          <div class="cut"></div>
-        </li>
-        <li class="list-user">
-          <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/211528_100002280642888_4125957_q.jpg"/>
-          <a href="#">Freddy Cahuas</a>
-          <div class="cut"></div>
-        </li> -->
-
-      </ul>
-      <!-- / PERSONAS -->
-    </li>
-
-    @*********************
-     * ASESORES *
-     *********************@  
-
-    <li>
-      <a href="#" class="nav-header"><i class="icon-user"></i>ALUMNOS</a>
-      <div class="list-courses">
-        <ul class="nav nav-list">
-
-          @for(seccion_usuario <- seccion.getUsuarios()){
-            @if(seccion_usuario.getUsuario().getRol() == 0){
-              <li class="list-user">
-                <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
-                <a href="#">@seccion_usuario.getUsuario().getNombres() @seccion_usuario.getUsuario().getApellidos()</a>
-                <div class="cut"></div>
-              </li>
-            }
-          }
-            
-
-            
-
-        </ul>
-      </div>
-    </li>
-  </ul>
 }
 
 @****************************************
@@ -118,7 +139,7 @@
 @mainbar = {
 
   <div class="page-header">
-    <h1>Preguntas</h1>
+    <h3 class="pregunta-titulo">@pregunta.getTitulo()</h3>
   </div>
 
   <div class="row">
@@ -126,17 +147,47 @@
     <div class="span9">
       <div class="row">
 
-        <!-- PREGUNTA -->
-        <div class="span9 question">
-          <div class="row">
-            <div class="span1">
-              <div class="question-state"></div>
-            </div>
+        <style type="text/css">
 
-            <div class="span8">
-              <div class="question-title">@pregunta.getTitulo()</div>
-              <div class="question-content">@pregunta.getContenido()</div>
-            </div>
+          .pregunta-detalle, .respuesta-detalle {
+            border-bottom:1px dashed #CCC;
+            padding-bottom:10px;
+            margin-bottom:10px;
+          }
+
+          .pregunta-informacion , .respuesta-informacion{
+            width:auto;
+            height:auto;
+            background:#FFF;
+            border-left:3px solid #E94E1B;
+            float:right;
+            padding:0px 5px;
+          }
+
+          .pregunta-titulo .respuesta-titulo {
+
+          }
+
+          .pregunta-informacion span,
+          .respuesta-informacion span {
+            display:block;
+          }
+
+          .pregunta-contenido,
+          .respuesta-contenido {
+            margin-bottom:20px;
+          }
+
+        </style>
+
+        <!-- PREGUNTA -->
+        <div class="span9 pregunta-detalle">
+          <div class="pregunta-contenido">@pregunta.getContenido()</div>
+          <div class="pregunta-informacion clearfix">
+              <span class="pregunta-autor"><i class="icon-user"></i> @pregunta.getEmisor().getNombres() @pregunta.getEmisor().getApellidos()</span>
+              <span class="pregunta-fecha"><i class="icon-time"></i> @pregunta.getFechaFormateada()</span>
+          </div>
+        </div>
 
 
           </div>
@@ -152,8 +203,12 @@
               <div class="question-state"></div>
             </div>
 
-            <div class="span8">
-              <div class="question-content">@respuesta.getContenido()</div>
+            <div class="span8 respuesta-detalle">
+              <div class="respuesta-contenido">@respuesta.getContenido()</div>
+              <div class="respuesta-informacion clearfix">
+                <span class="respuesta-autor"><i class="icon-user"></i> @respuesta.getEmisor().getNombres() @respuesta.getEmisor().getApellidos()</span>
+                <span class="respuesta-fecha"><i class="icon-time"></i> @respuesta.getFechaFormateada()</span>
+            </div>
             </div>
           </div>
         </div> <!--/PREGUNTA-->
@@ -163,7 +218,7 @@
         <div class="span9 question">
           <form method="POST" id="form-respuesta" action="/cursos/@seccion.getCurso().getId()/seccion/@seccion.getId()/pregunta/@pregunta.getId()/respuesta">
             <textarea class="span9" name="respuesta.contenido"></textarea>
-            <button type="submit" class="btn btn-large"><i class="icon-comment"></i> Comment</button>
+            <button type="submit" class="btn btn-edul"><i class="icon-comment"></i> Comentar</button>
           </form>
         </div>
 
@@ -174,4 +229,4 @@
 
 
 
-@user_layout(null,scripts,navbar,sidebar,mainbar)
+@user_left_layout(null,scripts,navbar,sidebar,mainbar)

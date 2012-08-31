@@ -21,7 +21,7 @@ public class Mensajes extends Controller{
 		 Mensaje pregunta = Mensaje.find.ref(Long.parseLong(id));
 		 
 		 List<Mensaje> respuestas = Mensaje.find.where().eq("mensaje_id", id).findList();
-		 
+
 		 return ok("");	 
 	 }
 

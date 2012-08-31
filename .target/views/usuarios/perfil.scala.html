@@ -65,7 +65,9 @@ $('#navTab a').click(function (e) {
               <ul class="nav nav-list bs-docs-sidenav affix" data-spy="affix" data-offset-top="200" id="navTab">
                 <li class="nav-header">Mi perfil</li>
                 <li class="active"><a href="/usuarios/@usuario.getId()"><i class="icon-briefcase"></i>Mi perfil</a></li>
-                <li><a href="/usuarios/@usuario.getId()/tesis"><i class="icon-file"></i>Mi tesis</a></li>
+                @if(session.get("rol") == 0){
+                   <li><a href="/usuarios/@usuario.getId()/tesis"><i class="icon-file"></i>Mi tesis</a></li>
+                }
               </ul>         
             </div>
             <!-- / SIDEBAR -->

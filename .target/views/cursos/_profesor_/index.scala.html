@@ -86,7 +86,7 @@
     </li>
 
     @*********************
-     * ASESORES *
+     * ALUMNOS *
      *********************@  
 
     <li>
@@ -98,7 +98,7 @@
             @if(seccion_usuario.getUsuario().getRol() == 0){
               <li class="list-user">
                 <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
-                <a href="#">@seccion_usuario.getUsuario().getNombres() @seccion_usuario.getUsuario().getApellidos()</a>
+                <a href="/usuarios/@seccion_usuario.getUsuario().getId()">@seccion_usuario.getUsuario().getNombres() @seccion_usuario.getUsuario().getApellidos()</a>
                 <div class="cut"></div>
               </li>
             }

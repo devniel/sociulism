@@ -98,12 +98,10 @@
                     
                     <ul class="nav nav-list list-courses-user">
 
-                      @{
 
-                        val _seccion = usuario.getCursos().get(0).getSeccion();
+                        @if(usuario.getCursos().get(0).getSeccion() != null){
 
-                        if(_seccion != null){
-                          for(UsuarioCurso <- usuario.getCursos()) {
+                        @for(UsuarioCurso <- usuario.getCursos()) {
                             <li><a href="/cursos/@UsuarioCurso.getSeccion().getCurso().getId()/seccion/@UsuarioCurso.getSeccion().getId()">@UsuarioCurso.getSeccion().getCurso().getNombre() (@UsuarioCurso.getSeccion().getSeccion())</a></li>                        
                           }
                         }else{
@@ -112,7 +110,6 @@
                             <span style="font-size:12px">Consulta a un administrador para que se te asigne el curso en el sistema.</span>
                           </div></li>
                         } 
-                      }
 
                     </ul>
 
@@ -178,7 +175,7 @@
                     <div class="span6">
 
                       <div class="page-header" style="margin-bottom:10px !important">
-                        <h3 class="ulima-color" style="line-height:13px !important"><i class="icon-bullhorn"></i> Avisos</h3>
+                        <h3 class="ulima-color" style="line-height:13px !important"><i class="icon-bullhorn"></i> Notificaciones</h3>
                       </div>
 
                     </div>
@@ -189,12 +186,15 @@
                      * MENSAJES --> FACULTAD *
                      *********************@
 
-                     @**
-                        FORMULARIO DE ENVIO DE MENSAJE
-                        FACULTY_MESSAGE
-                      **@
 
-                    @if(session.get("usuario.rol") != 2) {
+                     @******************************************************
+
+                        FORMULARIO DE ENVIO DE MENSAJE
+                        FACULTY_MESSAGE, SOLO LO PUEDE VER EL ADMINISTRADOR
+
+                      *****************************************************@
+
+                    @if(session.get("usuario.rol") == 2) {
 
                     <div class="span6 facultad-input-form">
                       <form id="faculty_message" method="post" action="@routes.Facultades.nuevoMensaje(usuario.getFacultad().getId().toString())">
@@ -238,7 +238,7 @@
                       <div class="alert alert-info">
                         <h6 class="label label-info" style="margin-bottom:5px !important; display:inline-block;">¡Bienvenido!</h6>
                         <p style="font-size:11px;line-height:15px !important;text-align:justify">
-                          Este es el sistema de asesorías en línea, desarrollado por el <strong>ITLAB</strong>, para el curso de Seminario de Tesis. Actualmente se encuentra en fase alpha, por lo que aceptamos tus sugerencias a <i class="icon-envelope"></i> <a href="mailto:itlab@@ulima.edu.pe">itlab@@ulima.edu.pe</a>.
+                          Al sistema de asesorías en línea, desarrollado por el <strong>ITLAB</strong>, para el curso de Seminario de Tesis. Actualmente se encuentra en fase alpha, por lo que aceptamos tus sugerencias a <i class="icon-envelope"></i> <a href="mailto:itlab@@ulima.edu.pe">itlab@@ulima.edu.pe</a>.
                         </p>
                       </div>
                     </div>

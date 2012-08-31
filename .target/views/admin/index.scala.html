@@ -1,4 +1,4 @@
-@(usuario: Usuario)
+@(usuarios: List[Usuario], edul : Edul)
 @import helper.twitterBootstrap._
 @import helper._
 
@@ -8,7 +8,7 @@
 
 } 
 
-@main(usuario, scripts){
+@main(null, scripts){
 
   <style type="text/css">
 
@@ -257,7 +257,7 @@
                       <ul class="clearfix">
                         <li class="clearfix">
                           <div class="estado-icono"><i class="icon-camera-retro"></i></div>
-                          <div class="estado-info"><a href="#"><span class="cantidad">123</span> Estudiantes</a></div>
+                          <div class="estado-info"><a href="#"><span class="cantidad">@usuarios.size()</span> Estudiantes</a></div>
                         </li>
                         <li class="clearfix">
                           <div class="estado-icono"><i class="icon-briefcase"></i></div>
@@ -289,127 +289,28 @@
 
                     <ul>
 
-                      @************************ ACTIVIDAD ***********************@
-                      <li class="clearfix">
-                        
-                        <div class="actividad-icono"><i class="icon-question-sign"></i></div>
+                      @for(mensaje <- edul.getMensajes()){
 
-                        <div class="actividad-descripcion">
-                          <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
-                        </div> 
+                        @if(mensaje.getTipo() == 2){
+                            <li class="clearfix">
+                              <div class="actividad-icono"><i class="icon-question-sign"></i></div>
+                              <div class="actividad-descripcion">
+                                <strong>@mensaje.getEmisor().getNombres()</strong> preguntó "@mensaje.getTitulo()" en la <strong>sección @mensaje.getSeccion().getSeccion()</strong>
+                              </div> 
+                            </li> 
+                        }
 
-                      </li> @************************ ACTIVIDAD ***********************@
+                        @if(mensaje.getTipo() == 0){
+                          <li class="clearfix">
+                              <div class="actividad-icono"><i class="icon-comment"></i></div>
+                              <div class="actividad-descripcion">
+                                <strong>@mensaje.getEmisor().getNombres()</strong> respondió "@mensaje.getMensaje().getTitulo()" en la <strong>sección @mensaje.getSeccion().getSeccion()</strong>
+                              </div> 
+                            </li> 
 
-                     
-                      @************************ ACTIVIDAD ***********************@
-                      <li class="clearfix">
-                        
-                        <div class="actividad-icono"><i class=" icon-comment-alt"></i></div>
+                        }
 
-                        <div class="actividad-descripcion">
-                          <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
-                        </div> 
-
-                      </li> @************************ ACTIVIDAD ***********************@
-
-                      @************************ ACTIVIDAD ***********************@
-                      <li class="clearfix">
-                        
-                        <div class="actividad-icono"><i class="icon-question-sign"></i></div>
-
-                        <div class="actividad-descripcion">
-                          <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
-                        </div> 
-
-                      </li> @************************ ACTIVIDAD ***********************@
-
-                      @************************ ACTIVIDAD ***********************@
-                      <li class="clearfix">
-                        
-                        <div class="actividad-icono"><i class="icon-question-sign"></i></div>
-
-                        <div class="actividad-descripcion">
-                          <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
-                        </div> 
-
-                      </li> @************************ ACTIVIDAD ***********************@
-
-                      @************************ ACTIVIDAD ***********************@
-                      <li class="clearfix">
-                        
-                        <div class="actividad-icono"><i class=" icon-comment-alt"></i></div>
-
-                        <div class="actividad-descripcion">
-                          <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
-                        </div> 
-
-                      </li> @************************ ACTIVIDAD ***********************@
-
-                      @************************ ACTIVIDAD ***********************@
-                      <li class="clearfix">
-                        
-                        <div class="actividad-icono"><i class="icon-question-sign"></i></div>
-
-                        <div class="actividad-descripcion">
-                          <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
-                        </div> 
-
-                      </li> @************************ ACTIVIDAD ***********************@
-
-                      @************************ ACTIVIDAD ***********************@
-                      <li class="clearfix">
-                        
-                        <div class="actividad-icono"><i class=" icon-comment-alt"></i></div>
-
-                        <div class="actividad-descripcion">
-                          <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
-                        </div> 
-
-                      </li> @************************ ACTIVIDAD ***********************@
-
-                      @************************ ACTIVIDAD ***********************@
-                      <li class="clearfix">
-                        
-                        <div class="actividad-icono"><i class="icon-question-sign"></i></div>
-
-                        <div class="actividad-descripcion">
-                          <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
-                        </div> 
-
-                      </li> @************************ ACTIVIDAD ***********************@
-
-                      @************************ ACTIVIDAD ***********************@
-                      <li class="clearfix">
-                        
-                        <div class="actividad-icono"><i class=" icon-comment-alt"></i></div>
-
-                        <div class="actividad-descripcion">
-                          <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
-                        </div> 
-
-                      </li> @************************ ACTIVIDAD ***********************@
-
-                      @************************ ACTIVIDAD ***********************@
-                      <li class="clearfix">
-                        
-                        <div class="actividad-icono"><i class="icon-question-sign"></i></div>
-
-                        <div class="actividad-descripcion">
-                          <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
-                        </div> 
-
-                      </li> @************************ ACTIVIDAD ***********************@
-
-                      @************************ ACTIVIDAD ***********************@
-                      <li class="clearfix">
-                        
-                        <div class="actividad-icono"><i class="icon-question-sign"></i></div>
-
-                        <div class="actividad-descripcion">
-                          <strong>Daniel Flores</strong> preguntó "¿Cómo se realiza un plan de negocios?" en la <strong>sección 701</strong>
-                        </div> 
-
-                      </li> @************************ ACTIVIDAD ***********************@
+                      }
                       
                     </ul>
                 </div>
@@ -447,82 +348,30 @@
               <div class="span12 secciones">
                 
                 <div class="page-header">
-                    <h3>Seminario de Tesis I</h3>
+                    <h3>Seminario de Tesis | Secciones</h3>
                 </div>
 
                 <div class="row">
 
-                  <div class="span3">
-                    <div class="well well-small">
-                      <h2 class="seccion_codigo">901</h2>
-                          <ul>
-                            <li class="seccion_alumnos">32 alumnos</li>
-                            <li class="seccion_preguntas">40 preguntas</li>
-                          </ul>
+                  @if(edul.getSecciones().size() == 0){
+                    <div class="alert alert-block">
+                      <button type="button" class="close" data-dismiss="alert">×</button>
+                      <h4>Warning!</h4>
+                      Aún no has creado secciones para los cursos de Seminario de Tesis, creálas <a class="btn btn-mini" href="/admin/cursos/create" type="button">aquí.</a>
                     </div>
-                  </div>
+                  }
 
-                  <div class="span3">
-                    <div class="well well-small">
-                      <h2 class="seccion_codigo">902</h2>
-                          <ul>
-                            <li class="seccion_alumnos">32 alumnos</li>
-                            <li class="seccion_preguntas">40 preguntas</li>
-                          </ul>
+                  @for(seccion <- edul.getSecciones()){
+                    <div class="span3">
+                      <div class="well well-small">
+                        <h2 class="seccion_codigo">@seccion.getSeccion()</h2>
+                            <ul>
+                              <li class="seccion_alumnos">@seccion.getUsuarios().size() estudiantes</li>
+                              <li class="seccion_preguntas">@seccion.getMensajes().size() preguntas</li>
+                            </ul>
+                      </div>
                     </div>
-                  </div>
-
-                  <div class="span3">
-                    <div class="well well-small">
-                      <h2 class="seccion_codigo">903</h2>
-                          <ul>
-                            <li class="seccion_alumnos">32 alumnos</li>
-                            <li class="seccion_preguntas">40 preguntas</li>
-                          </ul>
-                    </div>
-                  </div>
-
-
-                  <div class="span3">
-                    <div class="well well-small">
-                      <h2 class="seccion_codigo">904</h2>
-                          <ul>
-                            <li class="seccion_alumnos">32 alumnos</li>
-                            <li class="seccion_preguntas">40 preguntas</li>
-                          </ul>
-                    </div>
-                  </div>
-
-                  <div class="span3">
-                    <div class="well well-small">
-                      <h2 class="seccion_codigo">905</h2>
-                          <ul>
-                            <li class="seccion_alumnos">32 alumnos</li>
-                            <li class="seccion_preguntas">40 preguntas</li>
-                          </ul>
-                    </div>
-                  </div>
-
-                  <div class="span3">
-                    <div class="well well-small">
-                      <h2 class="seccion_codigo">906</h2>
-                          <ul>
-                            <li class="seccion_alumnos">32 alumnos</li>
-                            <li class="seccion_preguntas">40 preguntas</li>
-                          </ul>
-                    </div>
-                  </div>
-
-
-                  <div class="span3">
-                    <div class="well well-small">
-                      <h2 class="seccion_codigo">906</h2>
-                          <ul>
-                            <li class="seccion_alumnos">32 alumnos</li>
-                            <li class="seccion_preguntas">40 preguntas</li>
-                          </ul>
-                    </div>
-                  </div>
+                  }
 
                 </div>
 
@@ -530,78 +379,7 @@
 
             </div>
 
-            @************************** FILA - SECCIONES - SEMINARIO DE TESIS II ****************************@
-            <div class="row">
-
-
-
-              <div class="span12 secciones">
-                
-                <div class="page-header">
-                    <h3>Seminario de Tesis II</h3>
-                </div>
-
-                <div class="row">
-
-                  <div class="span3">
-                    <div class="well well-small">
-                      <h2 class="seccion_codigo">1001</h2>
-                          <ul>
-                            <li class="seccion_alumnos">32 alumnos</li>
-                            <li class="seccion_preguntas">40 preguntas</li>
-                          </ul>
-                    </div>
-                  </div>
-
-                  <div class="span3">
-                    <div class="well well-small">
-                      <h2 class="seccion_codigo">1002</h2>
-                          <ul>
-                            <li class="seccion_alumnos">32 alumnos</li>
-                            <li class="seccion_preguntas">40 preguntas</li>
-                          </ul>
-                    </div>
-                  </div>
-
-                  <div class="span3">
-                    <div class="well well-small">
-                      <h2 class="seccion_codigo">1003</h2>
-                          <ul>
-                            <li class="seccion_alumnos">32 alumnos</li>
-                            <li class="seccion_preguntas">40 preguntas</li>
-                          </ul>
-                    </div>
-                  </div>
-
-
-                  <div class="span3">
-                    <div class="well well-small">
-                      <h2 class="seccion_codigo">1004</h2>
-                          <ul>
-                            <li class="seccion_alumnos">32 alumnos</li>
-                            <li class="seccion_preguntas">40 preguntas</li>
-                          </ul>
-                    </div>
-                  </div>
-
-                </div>
-
-              </div>
-
-
-
-
-            </div>
-
-
-
-
-
-
-
-
-
-            </div>
+          </div>
 
         </div>
 

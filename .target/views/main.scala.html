@@ -111,7 +111,9 @@
                   <a class="dropdown-toggle" id="drop4" role="button" data-toggle="dropdown" href="#"><i class="icon-user"></i>@session.get("usuario.nombres") <b class="caret"></b></a>
                   <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
                     <li><a tabindex="-1" href="/usuarios/@session.get("id")">Mi perfil</a></li>
-                    <li><a tabindex="-1" href="#">Mi tesis</a></li>
+                    @if(session.get("rol") == 0){
+                      <li><a tabindex="-1" href="#">Mi tesis</a></li>
+                    }
                     <li><a tabindex="-1" href="/logout">Salir</a></li>
                   </ul>
                 </li>

@@ -29,7 +29,7 @@ body {
 .header-inner .logo {
   font-size:15px;
   color : #FFF ;
-  font-family: "Sansation";
+  font-family: "Sansation",Arial,sans-serif;
   width:auto;
   height:auto;
 }
@@ -37,7 +37,7 @@ body {
 .header-inner .logo a {
   font-size:15px;
   color : #FFF ;
-  font-family: "Sansation";
+  font-family: "Sansation",Arial,sans-serif;
   width:auto;
   height:auto;
 }
@@ -207,7 +207,7 @@ body {
 
 .header-user-details ul li{
   display:block;
-  font-family: "Sansation";
+  font-family: "Sansation",Arial,sans-serif;
 }
 
 .header-user-details ul li.name {
@@ -268,13 +268,13 @@ body {
 
 .navbar .nav > li > a {
   padding : 5px 15px 5px;
-  font-family: "Sansation"
+  font-family: "Sansation",Arial,sans-serif
 }
 
 .navbar .nav > li.active > a {
   padding : 5px 15px 5px;
   text-shadow:0px 1px 1px #9B2C0F;
-  font-family: "Sansation"
+  font-family: "Sansation",Arial,sans-serif
 }
 
 .navbar .nav > li:hover > a {
@@ -310,7 +310,7 @@ body {
   border-radius:none;
   background-color:#F6F6F6;
   padding:0px;
-  height:300px;
+  height:350px;
 }
 
 #myCarousel {
@@ -422,7 +422,12 @@ footer {
 }
 
 .footer-inner p {
-  padding-top:40px !important;
+  padding-top: 25px !important;
+  font-size: 15px;
+  line-height: 25px;
+  font-weight: bold;
+  color: #615E5E;
+  text-shadow: 0px 0px 1px #E7E7E7;
 }
 
 
