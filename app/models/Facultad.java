@@ -26,6 +26,7 @@ public class Facultad extends Model{
 	public static Finder<Long,Facultad> find = new Finder(Long.class, Facultad.class);
 	
 	@OneToMany
+	@OrderBy("fecha desc")
 	private List<Mensaje> mensajes;
 	
 	@OneToMany

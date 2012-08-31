@@ -1,0 +1,87 @@
+@(universidades : List[models.Universidad], facultades : List[models.Facultad], carreras : List[Carrera], usuarios : List[Usuario])
+
+@import helper.twitterBootstrap._
+@import helper._
+
+
+@****************************************
+  SCRIPTS
+  ***********************************@
+
+@scripts = {
+
+  $('#navbar').affix()
+
+}
+
+@****************************************
+  NAVBAR
+  ***************************************@
+
+@navbar = {
+  <li><a href="">Inicio</a></li>
+  <li ><a href="/admin/facultades">Facultades</a></li>
+  <li class="active"><a href="/admin/usuarios">Usuarios</a></li>
+  <li><a href="/admin/cursos">Cursos</a></li>
+}
+
+@****************************************
+  SIDEBAR
+  ***********************************@
+
+@sidebar = {
+  <ul class="nav nav-list bs-docs-sidenav affix" data-spy="affix" data-offset-top="200" id="navTab">
+    <li class="nav-header">ACCIONES</li>
+    <li class="active"><a href="/admin/usuarios"><i class="icon-th-list"></i>Listar usuarios</a></li>
+    <li><a href="/admin/usuarios/create"><i class="icon-plus"></i>Crear usuario</a></li>
+  </ul>
+}
+
+@****************************************
+  MAINBAR
+  ***********************************@
+
+@mainbar = {
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombres</th>
+        <th>Apellidos</th>
+        <th>Usuario</th>
+        <th>Email</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+
+      @for(usuario <- usuarios){
+        <tr>
+          <td>@usuario.getId()</td>
+          <td>@usuario.getNombres()</td>
+          <td>@usuario.getApellidos()</td>
+          <td>@usuario.getUsername()</td>
+          <td>
+            @if(usuario.getEmail() != null){
+              @usuario.getEmail()
+            }else{
+              -
+            }
+            
+          </td>
+          <td>
+            <a class="btn btn-small pull-right" href="/admin/usuarios/@usuario.getId()/delete" ><i class="icon-trash"></i></a>
+            <a class="btn btn-small pull-right" href="/admin/usuarios/@usuario.getId()/edit" style="margin-right:5px"><i class="icon-edit"></i></a>
+          </td>
+        </tr>
+      }
+          
+    </tbody>
+  </table>
+  
+}
+
+
+
+@admin_layout(null,scripts,navbar,sidebar,mainbar)

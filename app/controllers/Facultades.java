@@ -9,6 +9,8 @@ import models.Usuario;
 
 import org.codehaus.jackson.JsonNode;
 import org.h2.expression.ExpressionList;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import play.*;
 import play.data.*;
@@ -34,7 +36,7 @@ public class Facultades extends Controller {
 		JsonNode json = body.asJson();
 				
 		String uid = json.get("id").toString();
-		String contenido = json.get("mensaje").toString();
+		String mensaje_contenido = json.get("mensaje").toString();
 		
 		/*
 		 * Obtener facultad
@@ -48,11 +50,29 @@ public class Facultades extends Controller {
 		
 		Mensaje mensaje = new Mensaje();
 		mensaje.setEmisor(Usuario.getUser(Long.parseLong(id)));
-		mensaje.setContenido(contenido);
+
+		mensaje_contenido = mensaje_contenido.substring(1,mensaje_contenido.length() - 1);
+
+		mensaje.setContenido(mensaje_contenido);
 		mensaje.setFacultad(facultad);
 		mensaje.save();
+
+		JSONObject json_mensaje = new JSONObject();
+        try {
+			json_mensaje.put("contenido", mensaje.getContenido());
+			json_mensaje.put("fecha", mensaje.getFechaFormateada());
+			json_mensaje.put("id", mensaje.getEmisor().getId());
+			json_mensaje.put("nombres", mensaje.getEmisor().getNombres());
+			json_mensaje.put("apellidos",mensaje.getEmisor().getApellidos());
+        } catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
 		
-		return ok(json.toString());		
+		
+		return ok(json_mensaje.toString());		
 	}
 
 	/*

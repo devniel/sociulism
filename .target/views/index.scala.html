@@ -3,15 +3,29 @@
 @import helper.twitterBootstrap._
 @import helper._
 
+@scripts = {
+  
+}
+
 @********************************
 * USUARIO, MENU, CONTENIDO      *
 ********************************@
 
-@main(user=null){
+@main(user=null,scripts){
   <li class="active"><a href="#">Inicio</a></li>
   <li><a href="#about">Acerca de</a></li>
 }{
 
+
+  <style type="text/css">
+
+    .carousel, .slide , .carousel-inner,
+    .carousel .carousel-inner .item,
+    .carousel .carousel-inner .active,
+    .carousel .carousel-inner img {
+      height: 350px !important;
+    }
+  </style>
 	<!--
 		SLIDER
 	-->
@@ -48,7 +62,7 @@
       </div> <!-- / END OF SLIDER HERO -->
 
       <!-- Example row of columns -->
-      <div class="row"  style="margin-top:20px;margin-bottom:20px">
+      <div class="row"  style="margin-top:120px;margin-bottom:20px">
 
         <div class="span6" style="margin-top:60px">
           <div class="row titilium">
@@ -102,127 +116,5 @@
        </div> 
 
      </div>
-
-    
-     <div class="row">
-
-       <!-- / CAJA - NOTICIAS -->
-       <div class="span6">
-
-        <div class="row titilium">
-
-          <div class="span6">
-            <h2 class="ulima-color">Noticias</h2>
-            <hr style="margin-top:0px;margin-bottom:10px"/>
-          </div>
-
-          <!-- NOTICIA -->
-          <div class="span6">
-            <div class="row">
-              
-              <div class="span2">
-                <div class="new-picture"></div>
-              </div>
-
-              <div class="span4">
-                <h4>Asesorías online</h4>
-                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh <span class="label label-info">Leer más</span> </p>
-              </div>
-
-           </div>
-          </div> <!-- /NOTICIA -->
-
-          <!-- NOTICIA -->
-          <div class="span6">
-            <div class="row">
-              
-              <div class="span2">
-                <div class="new-picture"></div>
-              </div>
-
-              <div class="span4">
-                <h4>Asesorías online</h4>
-                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh <span class="label label-info">Leer más</span> </p>
-              </div>
-
-           </div>
-          </div> <!-- /NOTICIA -->
-
-          <!-- NOTICIA -->
-          <div class="span6">
-            <div class="row">
-              
-              <div class="span2">
-                <div class="new-picture"></div>
-              </div>
-
-              <div class="span4">
-                <h4>Asesorías online</h4>
-                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh <span class="label label-info">Leer más</span> </p>
-
-              </div>
-
-           </div>
-          </div> <!-- /NOTICIA -->
-
-          <!-- NOTICIA -->
-          <div class="span6">
-            <div class="row">
-              
-              <div class="span2">
-                <div class="new-picture"></div>
-              </div>
-
-              <div class="span4">
-                <h4>Asesorías online</h4>
-                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh <span class="label label-info">Leer más</span> </p>
-
-              </div>
-
-           </div>
-          </div> <!-- /NOTICIA -->
-
-          <!-- NOTICIA -->
-          <div class="span6">
-            <div class="row">
-              
-              <div class="span2">
-                <div class="new-picture"></div>
-              </div>
-
-              <div class="span4">
-                <h4>Asesorías online</h4>
-                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh <span class="label label-info">Leer más</span> </p>
-
-              </div>
-
-           </div>
-          </div> <!-- /NOTICIA -->
-
-
-
-        </div>
-      </div> <!-- / CAJA - NOTICIAS -->
-
-      <!-- / CAJA - MEDIA -->
-       <div class="span6" style="float:right">
-        <div class="row titilium">
-
-          <div class="span6">
-            <h2 class="ulima-color">Media</h2>
-            <hr style="margin-top:0px;margin-bottom:10px"/>
-          </div>
-
-          <!-- NOTICIA -->
-          <div class="span6">
-            <iframe width="460" height="360" src="http://www.youtube.com/embed/h9sDPtiwxMo?rel=0" frameborder="0" allowfullscreen></iframe>
-          </div>
-            
-
-        </div>
-      </div> <!-- / CAJA - NOTICIAS -->
-
-     </div>
-
 
 }

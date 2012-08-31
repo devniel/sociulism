@@ -36,11 +36,16 @@
          *  CREAR MENSAJE
          */
 
-         $('<div class="span5 post">'+
-            '<div class="post-author"></div>'+
-            '<div class="post-content">' + msg.mensaje + '' + msg.id + '</div>' +
-            '<div class="cut"></div>'+
-          '</div>').prependTo($("#facultad_mensajes"));
+          $('<div class="span6 post">'+
+            '<div class="post-author-picture"><img style="height:40px;width:40px" src="/assets/img/fis_logo.png"/></div>'+
+            '<div class="post-content">'+
+              '<span class="post-author"><strong>' + msg.nombres + '</strong></span>'+
+              '<p>' + msg.contenido + '</p>'+
+              '<div class="post-footer">'+
+                '<i class="icon-time"></i>' + msg.fecha +
+              '</div>'+
+            '</div>'+
+          '</div>').prependTo($("#facultad_mensajes")).fadeIn("slow");
 
         // Limpiar Textarea
         $($("#faculty_message").find("textarea")[0]).val("");
@@ -93,9 +98,18 @@
                     
                     <ul class="nav nav-list list-courses-user">
 
-                      @for(UsuarioCurso <- usuario.getCursos()) {
-                        <li><a href="/cursos/@UsuarioCurso.getSeccion().getCurso().getId()/seccion/@UsuarioCurso.getSeccion().getId()">@UsuarioCurso.getSeccion().getCurso().getNombre() (@UsuarioCurso.getSeccion().getSeccion())</a></li>                        
-                      }
+
+                        @if(usuario.getCursos().get(0).getSeccion() != null){
+
+                        @for(UsuarioCurso <- usuario.getCursos()) {
+                            <li><a href="/cursos/@UsuarioCurso.getSeccion().getCurso().getId()/seccion/@UsuarioCurso.getSeccion().getId()">@UsuarioCurso.getSeccion().getCurso().getNombre() (@UsuarioCurso.getSeccion().getSeccion())</a></li>                        
+                          }
+                        }else{
+                          <li><div class="alert alert-block">
+                            <h5>¡No tienes cursos asignados!</h5>
+                            <span style="font-size:12px">Consulta a un administrador para que se te asigne el curso en el sistema.</span>
+                          </div></li>
+                        } 
 
                     </ul>
 
@@ -138,6 +152,7 @@
 
 
             </div>
+
             <!-- / SIDEBAR -->
             <div class="span9 content-right">
               
@@ -146,19 +161,26 @@
                *********************@
 
               <div class="row row-header">
-                <div class="span9 course-image">
-                  <h1>@usuario.getFacultad().getNombre()</h1>
+                <div class="span9 facultad-imagen">
+                  <h2>@usuario.getFacultad().getNombre()</h2>
                 </div>
               </div>
 
             
               <div class="row">
 
-                <div class="span5">
+                <div class="span6">
                   <div class="row">
-                    <div class="span5"><h3 class="ulima-color" style="font-size:15px">Comunidad</h3></div>
 
-                    <hr style="margin-top:0px;margin-bottom:10px"/>
+                    <div class="span6">
+
+                      <div class="page-header" style="margin-bottom:10px !important">
+                        <h3 class="ulima-color" style="line-height:13px !important"><i class="icon-bullhorn"></i> Avisos</h3>
+                      </div>
+
+                    </div>
+
+                    <hr/>
 
                     @*********************
                      * MENSAJES --> FACULTAD *
@@ -169,12 +191,17 @@
                         FACULTY_MESSAGE
                       **@
 
-                    <div class="span5">
+                    @if(session.get("usuario.rol") != 2) {
+
+                    <div class="span6 facultad-input-form">
                       <form id="faculty_message" method="post" action="@routes.Facultades.nuevoMensaje(usuario.getFacultad().getId().toString())">
-                        <textarea class="input-xlarge titilium smart" onfocus="autoTextArea(this)" placeholder="Compartir"></textarea>
+                        <!--<textarea class="input-xlarge titilium smart" onfocus="autoTextArea(this)" placeholder="Compartir"></textarea>-->
+                        <textarea class="span6" placeholder="Publicar aviso ..."></textarea>
                         <input type="submit" class="btn btn-success" value="Publicar"/>
                       </form>
                     </div>
+
+                    }
 
                     @**
                         LISTA DE MENSAJES
@@ -183,9 +210,15 @@
                     <div id="facultad_mensajes">
 
                     @for(mensaje <- usuario.getFacultad().getMensajes()) {
-                      <div class="span5 post">
-                        <div class="post-author">@mensaje.getEmisor().getId()</div>
-                        <div class="post-content">@mensaje.getContenido()</div>
+                      <div class="span6 post">
+                        <div class="post-author-picture"><img style="height:40px;width:40px" src="/assets/img/fis_logo.png"/></div>
+                        <div class="post-content">
+                          <span class="post-author"><strong>Facultad de Ingenieríad de Sistemas</strong></span>
+                          <p>@mensaje.getContenido()</p>
+                          <div class="post-footer">
+                            <i class="icon-time"></i> @mensaje.getFechaFormateada()
+                          </div>
+                        </div>
                       </div>
                     } 
 
@@ -194,12 +227,21 @@
                   </div>
                 </div>
 
-                <div class="span4">
+                <div class="span3">
 
-                  <div class="row content-right-ads">
-                    <div class="span4"></div>
-                    <div class="span4"></div>
-                    <div class="span4"></div>
+                  <div class="row facultad-avisos">
+
+                    <div class="span3">
+                      <div class="alert alert-info">
+                        <h6 class="label label-info" style="margin-bottom:5px !important; display:inline-block;">¡Bienvenido!</h6>
+                        <p style="font-size:11px;line-height:15px !important;text-align:justify">
+                          Este es el sistema de asesorías en línea, desarrollado por el <strong>ITLAB</strong>, para el curso de Seminario de Tesis. Actualmente se encuentra en fase alpha, por lo que aceptamos tus sugerencias a <i class="icon-envelope"></i> <a href="mailto:itlab@@ulima.edu.pe">itlab@@ulima.edu.pe</a>.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="span3"></div>
+                    <div class="span3"></div>
                   </div>
 
                 </div>

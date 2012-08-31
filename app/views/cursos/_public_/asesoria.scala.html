@@ -262,6 +262,15 @@
                       PREGUNTAS RECIBIDAS
                       ***************************@
 
+                      @if(preguntas.size() == 0){
+
+                      <div class="span9">
+                        <div class="alert alert-info">
+                          Todavía no has realizado preguntas.
+                        </div>
+                      </div>
+                      }
+
                     @for(pregunta <- preguntas){
 
                       <a href="pregunta/@pregunta.getId()">

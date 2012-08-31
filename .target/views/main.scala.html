@@ -1,4 +1,4 @@
-@(user: Usuario)(menu: Html)(content: Html)
+@(user: Usuario, scripts: Html = Html(""))(menu: Html)(content: Html)
 @import helper.twitterBootstrap._
 
 <!DOCTYPE html>
@@ -15,6 +15,7 @@
     <link rel="stylesheet" media="screen" href="@routes.Assets.at("css/fonts.css" )"/>
     <link rel="stylesheet" media="screen" href="@routes.Assets.at("css/bootstrap.css")">
     <link rel="stylesheet" media="screen" href="@routes.Assets.at("css/edul.css")"/>
+    <link rel="stylesheet" href="@routes.Assets.at("css/font-awesome.css")">
     <!--<link rel="stylesheet" media="screen" href="../assets/css/bootstrap-responsive.css">-->
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -28,10 +29,15 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+
+<!-- <li><a href="@routes.Usuarios.logout()">Salir</a></li> -->
+
   </head>
 
   <body>
 
+    <div class="cinta"></div>
+    
     <div id="wrap">
 
     <!-- 
@@ -40,11 +46,37 @@
 
     <div class="header">
       <div class="header-inner">
-        <div class="logo">EdUL
-          <br/><span class="version">alpha</span>
+
+        @if(flash.get("error") != null){
+          <div class="alert alert-error" style="
+              position: absolute;
+              top: 10px;
+              right: 100px;
+              width: 250px;
+              height: 10px;
+              z-index: 10000;
+              font-size:11px;
+              line-height:10px">
+            <button type="button" class="close" data-dismiss="alert" style="top:-5px">×</button>
+            <strong>¡Error!</strong> @flash.get("error")
+          </div>
+        }
+
+        <div class="logo clearfix">
+          <a href="/">
+            <div class="logo-icon">
+              <img src="/assets/img/ulima_logo.png"/>
+            </div>
+
+            <div class="logo-description">
+              Universidad de Lima
+              <br/><span class="version subtitulo">Seminario de Tesis</span>
+            </div>
+          </a>
+
         </div>
 
-        @if(user == null) {
+        @if(user == null && session.get("username") == null) {
 
         @*********************
          * LOGIN *
@@ -56,7 +88,7 @@
           </div>
           <div class="header-login-inner">
               <form method="post" action="@routes.Usuarios.login()">
-                <input type="text" name="codigo" placeholder="Código"/><br/>
+                <input type="text" name="username" placeholder="Código"/><br/>
                 <input type="password" name="password" placeholder="Contraseña"/><br/>
                 <input type="submit" class="btn btn-success" value="Entrar"/>
               </form>
@@ -73,10 +105,19 @@
           <div class="header-user">
             <div class="header-user-picture"></div>
             <div class="header-user-details">
-              <ul class="titilium">
-                <li class="name">Daniel Flores</li>
-                <li class="faculty">Ingeniería de Sistemas</li>
-                <li><a href="@routes.Usuarios.logout()">Salir</a></li>
+              <ul>
+
+                <li class="name dropdown">
+                  <a class="dropdown-toggle" id="drop4" role="button" data-toggle="dropdown" href="#"><i class="icon-user"></i>@session.get("usuario.nombres") <b class="caret"></b></a>
+                  <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
+                    <li><a tabindex="-1" href="/usuarios/@session.get("id")">Mi perfil</a></li>
+                    <li><a tabindex="-1" href="#">Mi tesis</a></li>
+                    <li><a tabindex="-1" href="/logout">Salir</a></li>
+                  </ul>
+                </li>
+
+                <li class="faculty"></li>
+
               </ul>
             </div>
             <div class="cut"></div>
@@ -136,6 +177,7 @@
     <script src="@routes.Assets.at("js/jquery.js")"></script>
     <script src="@routes.Assets.at("js/bootstrap-transition.js")"></script>
     <script src="@routes.Assets.at("js/bootstrap-carousel.js")"></script>
+    <script src="@routes.Assets.at("js/bootstrap.js")"></script>
     <!--<script src="@routes.Assets.at("js/bootstrap-alert.js")"></script>
     <script src="@routes.Assets.at("js/bootstrap-modal.js")"></script>
     <script src="@routes.Assets.at("js/bootstrap-dropdown.js")"></script>
@@ -146,7 +188,17 @@
     <script src="@routes.Assets.at("js/bootstrap-button.js")"></script>
     <script src="@routes.Assets.at("js/bootstrap-collapse.js")"></script>
     <script src="@routes.Assets.at("js/bootstrap-typeahead.js")"></script>-->
+    
     <script type="text/javascript">
+
+    if(window.Prototype) {
+        delete Object.prototype.toJSON;
+        delete Array.prototype.toJSON;
+        delete Hash.prototype.toJSON;
+        delete String.prototype.toJSON;
+    }
+
+
         // CUANDO EL DOCUMENTO CARGUE POR COMPLETO
     $(document).ready(function(){
 
@@ -163,8 +215,7 @@
         interval: 2000
       })
 
-      $('.dropdown-toggle').dropdown()
-
+      @scripts
 
     });
 

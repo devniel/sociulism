@@ -1,7 +1,7 @@
 alter table Carrera drop foreign key fk_Carrera_facultad_1;
 alter table Carrera add constraint fk_Carrera_facultad_1 foreign key (facultad_id) references Facultad (id) on delete restrict on update restrict;
 
-alter table Carrera drop foreign key fk_Carrera_facultad_2;
+alter table Carrera drop foreign key fk_Carrera_universidad_2;
 alter table Carrera add constraint fk_Carrera_universidad_2 foreign key (universidad_id) references Universidad (id) on delete restrict on update restrict;
 
 alter table Carrera_Curso drop foreign key fk_Carrera_Curso_carrera_3;

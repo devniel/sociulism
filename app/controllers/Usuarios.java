@@ -81,13 +81,18 @@ public class Usuarios extends Controller {
 
 		Map<String, String[]> formData = request().body().asFormUrlEncoded();
 
+		String referer = request().getHeader("referer");
+
 	    String nombres = formData.get("usuario.nombres")[0];
 	    String apellidos = formData.get("usuario.apellidos")[0];
 	    String username = formData.get("usuario.username")[0];
 	    String password = formData.get("usuario.password")[0];
 	    String email = formData.get("usuario.email")[0];
-	    String rol = formData.get("usuario.rol")[0];
-	    String privilegio = formData.get("usuario.privilegio")[0];
+
+
+	    String rol = (formData.get("usuario.rol") != null)? formData.get("usuario.rol")[0] : null;
+	    String privilegio = (formData.get("usuario.privilegio") != null)? formData.get("usuario.privilegio")[0] : null;
+
 
 	    String universidad_id = (formData.get("usuario.universidad") != null)? formData.get("usuario.universidad")[0] : null;
 	    String facultad_id = (formData.get("usuario.facultad")!= null)? formData.get("usuario.facultad")[0] : null;
@@ -105,8 +110,8 @@ public class Usuarios extends Controller {
 		usuario.setEmail(email);
 
 		// Asignar permisos
-		usuario.setRol(Integer.parseInt(rol));
-		usuario.setPrivilegio(Integer.parseInt(privilegio));
+		if(rol != null) usuario.setRol(Integer.parseInt(rol));
+		if(privilegio != null) usuario.setPrivilegio(Integer.parseInt(privilegio));
 		
 		// Asignar universidad
 		if(universidad_id != null)
@@ -133,7 +138,7 @@ public class Usuarios extends Controller {
 	    
 	    
 	    // Redireccionar a página inicial (con o sin carga de sesión)
-	    return redirect(routes.Usuarios.all());
+	    return redirect(referer);
 
 	}
 
@@ -177,6 +182,8 @@ public class Usuarios extends Controller {
 		session("id", user.getId().toString());
 		session("usuario.nombres",user.getNombres());
 		session("usuario.apellidos", user.getApellidos());
+		session("usuario.rol", user.getRol().toString());
+		session("usuario.privilegio", user.getPrivilegio().toString());
 	}
 
 	/*
@@ -237,6 +244,7 @@ public class Usuarios extends Controller {
 		catch (NullPointerException ex) 
 		{
 			ex.printStackTrace();
+			flash("error","Usuario y/o contraseña incorrectos");
 			
 			// Si captura este error, no encontró al usuario en la base de datos, intentaremos
 			// crearlo, si no se puede generar el usuario ( por una contraseña o usuario incorrecto que no logre loguearse
@@ -271,8 +279,6 @@ public class Usuarios extends Controller {
 
 
 		Usuario user = Usuario.getUserByUsername(session("username"));
-
-		System.out.println("CURSOS : " + user.getCursos().get(0).getSeccion() );
 
 		// Mostrar Intranet de acuerdo a privilegios
 
@@ -719,7 +725,28 @@ public class Usuarios extends Controller {
 	}
 
 	/*
+	 * Mostrar perfil de usuario
+	 */
+
+	public static Result showUsuario(Long id){
+		Result view = null;
+
+		System.out.println(session("id") + " == " + id.toString() + " = " + (session("id") == id.toString()));
+
+		if(id.toString().equals(session("id"))){
+			view = ok(views.html.usuarios.perfil.render(Usuario.find.ref(id),Universidad.find.all(),Facultad.find.all()));
+		}else{	
+			view = ok(views.html.usuarios._public_.perfil.render(Usuario.find.ref(id),Universidad.find.all(),Facultad.find.all()));
+		}
+
+		return view;
+	}
+
+	/*
 	 *	From https://github.com/playframework/Play20/blob/master/samples/java/forms/app/controllers/Wizard.java
 	 */
+
+
+
 
 }

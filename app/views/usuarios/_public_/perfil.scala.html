@@ -1,0 +1,115 @@
+@(usuario : Usuario, universidades : List[Universidad], facultades : List[Facultad])
+
+@import helper.twitterBootstrap._
+@import helper._
+
+@scripts = {
+
+$('#navbar').affix()
+
+$(function () {
+    $('#navTab a:first').tab('show');
+})
+
+$('#navTab a').click(function (e) {
+  e.preventDefault();
+  $(this).tab('show');
+})
+
+
+} 
+
+@main(null, scripts){
+
+  <style>
+
+    .navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle {
+      color: #FFF !important;
+    }
+
+    .navbar .nav > li > a {
+      text-shadow: none !important;
+    }
+
+    .navbar .nav li.dropdown.open > .dropdown-toggle .caret, .navbar .nav li.dropdown.active > .dropdown-toggle .caret, .navbar .nav li.dropdown.open.active > .dropdown-toggle .caret {
+      border-top-color : #FFF !important;
+      border-bottom-color: #FFF !important;
+    }
+
+  </style>
+
+  <!--<li><a href="/">Inicio</a></li>
+  <li><a href="/admin/facultades">Facultades</a></li>
+  <li class="active"><a href="/admin/usuarios">Usuarios</a></li>
+  <li><a href="/admin/cursos">Cursos</a></li> -->
+  
+}{
+
+  <style type="text/css">
+  </style>
+
+        @*********************
+         * CONTENIDO *
+         *********************@
+
+      <!-- Example row of columns -->
+      <div class="row">
+
+        <div class="span12">
+          <div class="row titilium">
+
+            <!--
+              SIDEBAR
+            -->
+            <div class="span2 pull-left">
+              <ul class="nav nav-list bs-docs-sidenav affix" data-spy="affix" data-offset-top="200" id="navTab">
+                <li class="nav-header">OPCIONES</li>
+                <li class="active"><a href="/usuarios/@usuario.getId()"><i class="icon-briefcase"></i>Perfil</a></li>
+                <!--<li><a href="/usuarios/@usuario.getId()/tesis"><i class="icon-file"></i>Tesis</a></li>-->
+              </ul>         
+            </div>
+            <!-- / SIDEBAR -->
+
+            <div class="span10 pull-right">
+
+                      <fieldset>
+                        <legend>@usuario.getNombres() @usuario.getApellidos()</legend>
+
+                        <div class="control-group">
+                          <label class="control-label" for="input01"><strong>Nombres</strong></label>
+                          <div class="controls">
+                            @usuario.getNombres
+                          </div>
+                        </div>
+
+                        <div class="control-group">
+                          <label class="control-label" for="input01"><strong>Apellidos</strong></label>
+                          <div class="controls">
+                            @usuario.getApellidos()
+                          </div>
+                        </div>
+
+                        <div class="control-group">
+                          <label class="control-label" for="input01"><strong>Nombre de usuario</strong></label>
+                          <div class="controls">
+                            @usuario.getUsername()
+                          </div>
+                        </div>
+
+
+                        <div class="control-group">
+                          <label class="control-label" for="input01"><strong>Email</strong></label>
+                          <div class="controls">
+                            @usuario.getEmail()
+                          </div>
+                        </div>
+
+                      </fieldset>
+
+            </div>
+          </div>
+        </div>
+
+     </div>
+
+}

@@ -1,0 +1,145 @@
+@(usuario : Usuario, universidades : List[Universidad], facultades : List[Facultad])
+
+@import helper.twitterBootstrap._
+@import helper._
+
+@scripts = {
+
+$('#navbar').affix()
+
+$(function () {
+    $('#navTab a:first').tab('show');
+})
+
+$('#navTab a').click(function (e) {
+  e.preventDefault();
+  $(this).tab('show');
+})
+
+
+} 
+
+@main(null, scripts){
+
+  <style>
+
+    .navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle {
+      color: #FFF !important;
+    }
+
+    .navbar .nav > li > a {
+      text-shadow: none !important;
+    }
+
+    .navbar .nav li.dropdown.open > .dropdown-toggle .caret, .navbar .nav li.dropdown.active > .dropdown-toggle .caret, .navbar .nav li.dropdown.open.active > .dropdown-toggle .caret {
+      border-top-color : #FFF !important;
+      border-bottom-color: #FFF !important;
+    }
+
+  </style>
+
+  <!--<li><a href="/">Inicio</a></li>
+  <li><a href="/admin/facultades">Facultades</a></li>
+  <li class="active"><a href="/admin/usuarios">Usuarios</a></li>
+  <li><a href="/admin/cursos">Cursos</a></li> -->
+  
+}{
+
+  <style type="text/css">
+  </style>
+
+        @*********************
+         * CONTENIDO *
+         *********************@
+
+      <!-- Example row of columns -->
+      <div class="row">
+
+        <div class="span12">
+          <div class="row titilium">
+
+            <!--
+              SIDEBAR
+            -->
+            <div class="span2 pull-left">
+              <ul class="nav nav-list bs-docs-sidenav affix" data-spy="affix" data-offset-top="200" id="navTab">
+                <li class="nav-header">Mi perfil</li>
+                <li class="active"><a href="/usuarios/@usuario.getId()"><i class="icon-briefcase"></i>Mi perfil</a></li>
+                @if(session.get("rol") == 0){
+                   <li><a href="/usuarios/@usuario.getId()/tesis"><i class="icon-file"></i>Mi tesis</a></li>
+                }
+              </ul>         
+            </div>
+            <!-- / SIDEBAR -->
+
+            <div class="span10 pull-right">
+
+
+                  @*********************
+                  * FORMULARIO *
+                  *********************@ 
+
+
+                  <!-- ACA INICIA EL FORMULARIO -->
+                    
+                    <form class="form-horizontal" method="POST" action="/admin/usuarios/@usuario.getId()/update">
+                      <fieldset>
+                        <legend>Mi información</legend>
+
+                        <div class="control-group">
+                          <label class="control-label" for="input01">Nombres</label>
+                          <div class="controls">
+                            <input type="text" class="span6" name="usuario.nombres" id="input01" value="@usuario.getNombres()">
+                          </div>
+                        </div>
+
+                        <div class="control-group">
+                          <label class="control-label" for="input01">Apellidos</label>
+                          <div class="controls">
+                            <input type="text" class="span6" name="usuario.apellidos" id="input01" value="@usuario.getApellidos()">
+                          </div>
+                        </div>
+
+                        <div class="control-group">
+                          <label class="control-label" for="input01">Nombre de usuario</label>
+                          <div class="controls">
+                            <input type="text" class="span6" name="usuario.username" id="input01" value="@usuario.getUsername()">
+                          </div>
+                        </div>
+
+                        <div class="control-group">
+                          <label class="control-label" for="input01">Contraseña</label>
+                          <div class="controls">
+                            <input type="text" class="span6" name="usuario.password" id="input01"  value="@usuario.getPassword()">
+                          </div>
+                        </div>
+
+                        <div class="control-group">
+                          <label class="control-label" for="input01">Email</label>
+                          <div class="controls">
+                            <input type="text" class="span6" name="usuario.email" id="input01" value="@usuario.getEmail()">
+                          </div>
+                        </div>
+
+                        <!--<div class="control-group">
+                          <label class="control-label" for="input01">Detalles</label>
+                          <div class="controls">
+                            <textarea class="input-xlarge titilium span6" id="textarea" placeholder="Explica detalladamente tu consulta, por favor."></textarea>
+                          </div>
+                        </div>-->
+
+                        <div class="control-group">
+                          <div class="controls">
+                            <button class="btn  btn-primary" type="submit">Actualizar</button>
+                          </div>
+                        </div>
+
+                      </fieldset>
+                    </form>
+            </div>
+          </div>
+        </div>
+
+     </div>
+
+}

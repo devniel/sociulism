@@ -36,6 +36,8 @@
 
   <body>
 
+    <div class="cinta"></div>
+    
     <div id="wrap">
 
     <!-- 
@@ -44,8 +46,34 @@
 
     <div class="header">
       <div class="header-inner">
-        <div class="logo">EdUL
-          <br/><span class="version">alpha</span>
+
+        @if(flash.get("error") != null){
+          <div class="alert alert-error" style="
+              position: absolute;
+              top: 10px;
+              right: 100px;
+              width: 250px;
+              height: 10px;
+              z-index: 10000;
+              font-size:11px;
+              line-height:10px">
+            <button type="button" class="close" data-dismiss="alert" style="top:-5px">×</button>
+            <strong>¡Error!</strong> @flash.get("error")
+          </div>
+        }
+
+        <div class="logo clearfix">
+          <a href="/">
+            <div class="logo-icon">
+              <img src="/assets/img/ulima_logo.png"/>
+            </div>
+
+            <div class="logo-description">
+              Universidad de Lima
+              <br/><span class="version subtitulo">Seminario de Tesis</span>
+            </div>
+          </a>
+
         </div>
 
         @if(user == null && session.get("username") == null) {
@@ -80,14 +108,17 @@
               <ul>
 
                 <li class="name dropdown">
-                  <a class="dropdown-toggle" id="drop4" role="button" data-toggle="dropdown" href="#">@session.get("usuario.nombres") <b class="caret"></b></a>
+                  <a class="dropdown-toggle" id="drop4" role="button" data-toggle="dropdown" href="#"><i class="icon-user"></i>@session.get("usuario.nombres") <b class="caret"></b></a>
                   <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
-                    <li><a tabindex="-1" href="#">Mi perfil</a></li>
-                    <li><a tabindex="-1" href="#">Mi tesis</a></li>
+                    <li><a tabindex="-1" href="/usuarios/@session.get("id")">Mi perfil</a></li>
+                    @if(session.get("rol") == 0){
+                      <li><a tabindex="-1" href="#">Mi tesis</a></li>
+                    }
+                    <li><a tabindex="-1" href="/logout">Salir</a></li>
                   </ul>
                 </li>
 
-                <li class="faculty">Ingeniería de Sistemas</li>
+                <li class="faculty"></li>
 
               </ul>
             </div>

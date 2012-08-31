@@ -102,7 +102,7 @@ POST 	/admin/cursos/:id/seccion/:sid/update/profesor/		controllers.Cursos.update
 
 POST 	/admin/cursos/:id/seccion/:sid/add/alumno/		controllers.Cursos.agregarAlumno(id: Long, sid: Long)
 
-##########################################################################################################################3
+##########################################################################################################################
 
 # PUBLIC - CURSOS 
 
@@ -131,3 +131,7 @@ GET 	/cursos/:cid/seccion/:sid/pregunta/:pid	 					controllers.Cursos.showPregun
 POST 	/cursos/:cid/seccion/:sid/pregunta/:pid/respuesta			controllers.Cursos.postRespuesta(cid: Long, sid: Long, pid:Long)
 
 GET 	/cursos/:cid/seccion/:sid/preguntas/new			controllers.Cursos.showNuevaPregunta(cid: Long, sid:Long)
+
+#################################################################################################################
+
+GET 	/usuarios/:id 								controllers.Usuarios.showUsuario(id:Long)

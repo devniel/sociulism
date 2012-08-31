@@ -142,6 +142,7 @@ public class Mensaje extends Model{
 	
 	public Mensaje() {
 		super();
+		this.fecha = new Date();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -253,6 +254,13 @@ public class Mensaje extends Model{
 
 	public Date getFecha() {
 		return fecha;
+	}
+
+	public String getFechaFormateada(){
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("EEEEEEE dd 'de' MMMM 'del' yyyy, 'a las' HH:mm");
+		String _fecha = "";
+		if(fecha != null) _fecha = sdf.format(fecha);
+		return _fecha;
 	}
 
 	public void setFecha(Date fecha) {
