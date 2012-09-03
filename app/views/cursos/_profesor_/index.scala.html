@@ -1,4 +1,4 @@
-@(seccion : Seccion)
+@(seccion : Seccion, usuario : Usuario)
 
 @import helper.twitterBootstrap._
 @import helper._
@@ -86,6 +86,33 @@
     </li>
 
     @*********************
+     * ASESORES *
+     *********************@  
+
+    <li>
+      <a href="#" class="nav-header"><i class="icon-user"></i>ASESORES</a>
+      <div class="list-courses">
+        <ul class="nav nav-list">
+
+          @for(asesor <- seccion.getAsesores()){
+            @if(asesor.getId() != usuario.getId()){
+              <li class="list-user">
+                <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
+                <a href="/usuarios/@asesor.getId()">@asesor.getNombres() @asesor.getApellidos()</a>
+                <div class="cut"></div>
+              </li>
+              }
+          }
+            
+
+            
+
+        </ul>
+      </div>
+    </li>
+
+
+    @*********************
      * ALUMNOS *
      *********************@  
 
@@ -110,6 +137,8 @@
         </ul>
       </div>
     </li>
+
+
   </ul>
 }
 

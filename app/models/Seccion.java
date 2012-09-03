@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -19,6 +20,10 @@ import org.springframework.context.annotation.Primary;
 
 import play.db.ebean.Model;
 import play.db.ebean.Model.Finder;
+
+import anorm.SqlRow;
+
+import com.avaje.ebean.*;
 
 @Entity
 @Table(name="Seccion")
@@ -121,6 +126,19 @@ public class Seccion extends Model {
 
 	public List<Mensaje> getPreguntas(){
 		return Mensaje.find.where().eq("seccion_id",this.getId().toString()).eq("tipo","2").findList();
+	}
+
+
+	public List<Usuario> getAsesores(){
+
+		List<com.avaje.ebean.SqlRow> asesoresConsulta = Ebean.createSqlQuery("select distinct seccion_id, asesor_id from Seccion_Usuario s join Usuario_Asesor u on s.usuario_id = u.usuario_id").findList();
+		List<Usuario> asesores = new ArrayList<Usuario>();
+
+		for(com.avaje.ebean.SqlRow asesor : asesoresConsulta){
+			asesores.add(Usuario.find.ref(Long.parseLong(asesor.getString("asesor_id"))));
+		}
+
+		return asesores;
 	}
 	
 }

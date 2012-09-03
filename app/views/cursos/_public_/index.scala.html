@@ -1,4 +1,4 @@
-@(seccion : Seccion)
+@(seccion : Seccion,usuario : Usuario)
 
 @import helper.twitterBootstrap._
 @import helper._
@@ -90,22 +90,18 @@
      *********************@  
 
     <li>
-      <a href="#" class="nav-header"><i class="icon-user"></i>ALUMNOS</a>
+      <a href="#" class="nav-header"><i class="icon-user"></i>ASESORES</a>
       <div class="list-courses">
         <ul class="nav nav-list">
-
-          @for(seccion_usuario <- seccion.getUsuarios()){
-            @if(seccion_usuario.getUsuario().getRol() == 0){
+          @if(usuario.getAsesores().get(0).getAsesor() != null){
+            @for(usuarioAsesor <- usuario.getAsesores()){
               <li class="list-user">
                 <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
-                <a href="/usuarios/@seccion_usuario.getUsuario().getId()">@seccion_usuario.getUsuario().getNombres() @seccion_usuario.getUsuario().getApellidos()</a>
+                <a href="/usuarios/@usuarioAsesor.getAsesor().getId()">@usuarioAsesor.getAsesor().getNombres() @usuarioAsesor.getAsesor().getApellidos()</a>
                 <div class="cut"></div>
               </li>
             }
           }
-            
-
-            
 
         </ul>
       </div>

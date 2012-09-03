@@ -368,7 +368,18 @@ public class Cursos extends Controller {
   }
 
   public static Result showPublicSeccion(Long id, Long sid){
-    return ok(views.html.cursos._public_.index.render(Seccion.find.ref(sid)));
+    Result view = null;
+
+    System.out.println("ROL DE USUARIO --> " + session("usuario.rol"));
+
+    if(session("usuario.rol").equals("0")){
+      view = ok(views.html.cursos._public_.index.render(Seccion.find.ref(sid) , Usuario.find.ref(Long.parseLong(session("id")))));
+    }else if (session("usuario.rol").equals("1")){
+
+      view = ok(views.html.cursos._profesor_.index.render(Seccion.find.ref(sid) , Usuario.find.ref(Long.parseLong(session("id")))));
+    }
+
+    return view;
   }
 
   /*
