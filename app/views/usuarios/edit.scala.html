@@ -5,6 +5,7 @@
 
 @scripts = {
 
+/*
 $('#navbar').affix()
 
 $(function () {
@@ -14,7 +15,7 @@ $(function () {
 $('#navTab a').click(function (e) {
   e.preventDefault();
   $(this).tab('show');
-})
+})*/
 
 
 } 
@@ -45,9 +46,6 @@ $('#navTab a').click(function (e) {
   
 }{
 
-  <style type="text/css">
-  </style>
-
         @*********************
          * CONTENIDO *
          *********************@
@@ -62,10 +60,13 @@ $('#navTab a').click(function (e) {
               SIDEBAR
             -->
             <div class="span3 pull-left">
-              <ul class="nav nav-list bs-docs-sidenav affix" data-spy="affix" data-offset-top="200" id="navTab">
+              <ul class="nav nav-list" id="navTab">
                 <li class="nav-header">ACCIONES</li>
-                <li class="active"><a href="/admin/usuarios"><i class="icon-th-list"></i>Listar usuarios</a></li>
+                <li><a href="/admin/usuarios"><i class="icon-th-list"></i>Listar usuarios</a></li>
                 <li><a href="/admin/usuarios/create"><i class="icon-plus"></i>Crear usuario</a></li>
+                <li class="nav-header">@usuario.getNombres()</li>
+                <li class="active"><a href="/admin/usuarios/@usuario.getId()/edit"><i class="icon-info-sign"></i>Editar datos</a></li>
+                <li><a href="/admin/usuarios/@usuario.getId()/asesores"><i class="icon-book"></i>Asesores de usuario</a></li>
               </ul>         
             </div>
             <!-- / SIDEBAR -->
@@ -75,7 +76,7 @@ $('#navTab a').click(function (e) {
 
                   @*********************
                   * FORMULARIO *
-                  *********************@ 
+                  *********************@
 
 
                   <!-- ACA INICIA EL FORMULARIO -->

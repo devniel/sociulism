@@ -22,40 +22,20 @@ public class Application extends Controller {
   
   public static Result index() {
 
-	/*Universidad universidad = new Universidad();
-	universidad.setNombre("UNIVERSIDAD DE LIMA");
-	universidad.save();
+	Usuario usuario = Usuario.find.ref(Long.parseLong("3"));
+	System.out.println("NOMBRES -->" + usuario.getNombres());
+	/*
+	Usuario asesor = Usuario.find.ref(Long.parseLong("4"));
 
-	// Creando facultad
-	Facultad facultad = new Facultad();
-	facultad.setNombre("FACULTAD DE INGENIERÍA DE SISTEMAS");
-	facultad.setUniversidad(universidad);
-	facultad.save();
+	UsuarioHasAsesor usuarioHasAsesor = new UsuarioHasAsesor();
+	usuarioHasAsesor.setUsuario(usuario);
+	usuarioHasAsesor.setAsesor(asesor);
+	usuarioHasAsesor.save();
 
-	Carrera carrera = new Carrera();
-	carrera.setNombre("INGENIERÍA DE SISTEMAS");
-	carrera.setFacultad(facultad);
-	carrera.setUniversidad(universidad);
-	carrera.save();
-
-	Usuario usuario = new Usuario();
-	usuario.setPassword("DFYAPL");
-	usuario.setUsername("20082219");
-	usuario.setNombres("Daniel Mauricio");
-	usuario.setFacultad(facultad);
-	usuario.setUniversidad(universidad);
-	usuario.setCarrera(carrera);
-	
-	try
-	{
-		Usuario.create(usuario);
-
-	}catch (Exception ex){
-		// TODO Auto-generated catch block
-		ex.printStackTrace();
-	}
-
+	usuario.getAsesores().add(usuarioHasAsesor);
 	usuario.save();*/
+
+	System.out.println("ASESORES : " + usuario.getAsesores().size());
 
     return Usuarios.index();
     

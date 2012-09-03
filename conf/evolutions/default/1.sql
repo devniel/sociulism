@@ -106,6 +106,11 @@ create table Usuario (
   constraint pk_Usuario primary key (id))
 ;
 
+create table Usuario_Asesor (
+  usuario_id                bigint,
+  asesor_id                 bigint)
+;
+
 alter table Carrera add constraint fk_Carrera_facultad_1 foreign key (facultad_id) references Facultad (id) on delete restrict on update restrict;
 create index ix_Carrera_facultad_1 on Carrera (facultad_id);
 alter table Carrera add constraint fk_Carrera_universidad_2 foreign key (universidad_id) references Universidad (id) on delete restrict on update restrict;
@@ -154,6 +159,10 @@ alter table Usuario add constraint fk_Usuario_carrera_23 foreign key (carrera_id
 create index ix_Usuario_carrera_23 on Usuario (carrera_id);
 alter table Usuario add constraint fk_Usuario_facultad_24 foreign key (facultad_id) references Facultad (id) on delete restrict on update restrict;
 create index ix_Usuario_facultad_24 on Usuario (facultad_id);
+alter table Usuario_Asesor add constraint fk_Usuario_Asesor_usuario_25 foreign key (usuario_id) references Usuario (id) on delete restrict on update restrict;
+create index ix_Usuario_Asesor_usuario_25 on Usuario_Asesor (usuario_id);
+alter table Usuario_Asesor add constraint fk_Usuario_Asesor_asesor_26 foreign key (asesor_id) references Usuario (id) on delete restrict on update restrict;
+create index ix_Usuario_Asesor_asesor_26 on Usuario_Asesor (asesor_id);
 
 
 
@@ -184,6 +193,8 @@ drop table Seccion_Usuario;
 drop table Universidad;
 
 drop table Usuario;
+
+drop table Usuario_Asesor;
 
 SET FOREIGN_KEY_CHECKS=1;
 

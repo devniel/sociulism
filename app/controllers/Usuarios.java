@@ -281,6 +281,7 @@ public class Usuarios extends Controller {
 		if(user.getPrivilegio() == 2)
 		{	
 			Edul edul = new Edul();
+		
 			view = ok(views.html.admin.index.render(Usuario.find.all(),edul));
 		}
 		else
@@ -735,6 +736,40 @@ public class Usuarios extends Controller {
 		}
 
 		return view;
+	}
+
+	/*
+	 * ADMIN : Mostrar vista de asesores de usaurio 
+	 */
+
+	public static Result asesoresDeUsuario(Long id){
+		return ok(views.html.usuarios._admin_.asesoresDeUsuario.render(Usuario.find.ref(id)));
+	}
+
+
+	/*
+	 *	Agregar asesor a usuario
+	 */
+
+	public static Result postUsuarioAsesor(Long id){
+		Map<String, String[]> formData = request().body().asFormUrlEncoded();
+
+	    String asesor_id = formData.get("usuario.asesor")[0];
+		Usuario asesor = Usuario.find.ref(Long.parseLong(asesor_id));
+		Usuario usuario = Usuario.find.ref(id);
+
+		UsuarioHasAsesor usuarioHasAsesor = new UsuarioHasAsesor();
+		usuarioHasAsesor.setUsuario(usuario);
+		usuarioHasAsesor.setAsesor(asesor);
+		usuarioHasAsesor.save();
+
+		usuario.getAsesores().add(usuarioHasAsesor);
+		usuario.save();
+
+		String referer = request().getHeader("referer");
+
+		return redirect(referer);
+
 	}
 
 	/*

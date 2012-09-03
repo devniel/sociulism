@@ -114,5 +114,13 @@ public class Seccion extends Model {
 	public void setMensajes(List<Mensaje> mensajes) {
 		this.mensajes = mensajes;
 	}
+
+	/*
+	 *	Obtener preguntas realizadas en sección
+	 */
+
+	public List<Mensaje> getPreguntas(){
+		return Mensaje.find.where().eq("seccion_id",this.getId().toString()).eq("tipo","2").findList();
+	}
 	
 }

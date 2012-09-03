@@ -80,6 +80,16 @@ public class Usuario extends Model{
 	@OneToMany(cascade = {CascadeType.ALL})
 	@JoinColumn(name="emisor_id")
 	public List<Mensaje> mensajesEnviados;
+
+
+	/*
+	 * Asesores del usuario
+	 */
+	
+	@OneToMany(cascade = {CascadeType.ALL}, mappedBy="usuario")
+	public List<UsuarioHasAsesor> asesores;
+
+
 	
 	/*
 	 * Obtener todos los usuarios
@@ -256,8 +266,14 @@ public class Usuario extends Model{
 	public void setApellidos(String apellidos) {
 		this.apellidos = apellidos;
 	}
-	
-	
+
+	public List<UsuarioHasAsesor> getAsesores() {
+		return asesores;
+	}
+
+	public void setAsesores(List<UsuarioHasAsesor> asesores) {
+		this.asesores = asesores;
+	}	
 	
 	
 }

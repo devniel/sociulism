@@ -1,4 +1,4 @@
-@(usuarios: List[Usuario], edul : Edul)
+@(usuarios: List[Usuario], edul : models.Edul)
 @import helper.twitterBootstrap._
 @import helper._
 
@@ -189,16 +189,27 @@
       google.load("visualization", "1", {packages:["corechart"]});
       google.setOnLoadCallback(drawChart);
 
+
+
       function drawChart()
       {
 
-        var data = google.visualization.arrayToDataTable([
-          ['Semana', 'Preguntas', 'Alumnos preguntando'],
-          ['1',  0,      0],
-          ['2',  12,      20],
-          ['3',  123,       21],
-          ['4',  32,      100]
-        ]);
+        var chartTimeLine = new google.visualization.DataTable(); 
+        chartTimeLine.addColumn('date', 'Días'); 
+        chartTimeLine.addColumn('number','Preguntas'); 
+
+        chartTimeLine.addRows([ 
+          @for(pregunta <- edul.getPreguntasPorDia()){
+            [new Date(@pregunta.getString("año"),@pregunta.getString("mes") - 1,@pregunta.getString("día")),@pregunta.getString("count(*)")],
+          }
+        ]) 
+      
+      /*var myOptions = { 
+      axis_index:0, 
+      start_val:mondays[0], 
+      end_val:mondays[mondays.length-1], 
+      opt_step:mondays.length/2 
+      } */
 
         var options = {
           fontSize : 12,
@@ -207,23 +218,29 @@
             left : 30,
             top:20
           },
+          animation : {
+            duration: 5
+          },
           hAxis : {
-            title : "Semanas"
+            title : "Días"
           }
         };
 
-        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
+         var chartLine = new google.visualization.LineChart(document.getElementById("chart_div")); 
+        chartLine.draw(chartTimeLine, options); 
+
+
+        //var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        //chart.draw(data, options);
 
         // PIE CHART
         
         data = google.visualization.arrayToDataTable([
           ['Sección', 'Preguntas'],
-          ['901',     11],
-          ['902',      2],
-          ['903',  2],
-          ['904', 2],
-          ['905',    7]
+          @for(seccion <- edul.getSecciones()){
+            ['@seccion.getSeccion()',  @seccion.getPreguntas().size()]
+          }
+          
         ]);
 
         options = {
@@ -256,21 +273,21 @@
                     <div class="well estado clearfix">
                       <ul class="clearfix">
                         <li class="clearfix">
-                          <div class="estado-icono"><i class="icon-camera-retro"></i></div>
+                          <div class="estado-icono"><i class="icon-group"></i></div>
                           <div class="estado-info"><a href="#"><span class="cantidad">@usuarios.size()</span> Estudiantes</a></div>
                         </li>
                         <li class="clearfix">
                           <div class="estado-icono"><i class="icon-briefcase"></i></div>
-                          <div class="estado-info"><a href="#"><span class="cantidad">13</span> Profesores</a></div>
+                          <div class="estado-info"><a href="#"><span class="cantidad">@edul.getProfesores().size()</span> Profesores</a></div>
                         </li>
                         <li class="clearfix">
                           <div class="estado-icono"><i class="icon-question-sign"></i></div>
-                          <div class="estado-info"><a href="#"><span class="cantidad">27</span> Preguntas</a></div>
+                          <div class="estado-info"><a href="#"><span class="cantidad">@edul.getPreguntas().size()</span> Preguntas</a></div>
                         </li>
-                        <li class="last clearfix">
+                        <!--<li class="last clearfix">
                           <div class="estado-icono"><i class="icon-paper-clip"></i></div>
                           <div class="estado-info"><a href="#"><span class="cantidad">74</span> Archivos</a></div>
-                        </li>
+                        </li>-->
                       </ul>
                     </div>
                 </div>
