@@ -1,4 +1,4 @@
-@(universidades : List[models.Universidad], facultades : List[models.Facultad], carreras : List[Carrera], usuarios : List[Usuario])
+@(usuarios : List[Usuario])
 
 @import helper.twitterBootstrap._
 @import helper._
@@ -32,13 +32,31 @@
 @sidebar = {
   <ul class="nav nav-list bs-docs-sidenav affix" data-spy="affix" data-offset-top="200" id="navTab">
     <li class="nav-header">ACCIONES</li>
-    <li class="active"><a href="/admin/usuarios"><i class="icon-th-list"></i>Listar usuarios</a></li>
+    <li><a href="/admin/usuarios"><i class="icon-th-list"></i>Listar usuarios</a></li>
     <li><a href="/admin/usuarios/create"><i class="icon-plus"></i>Crear usuario</a></li>
 
     <li class="nav-header">MOSTRAR</li>
-    <li><a href="/admin/usuarios?tipo=0"><i class="icon-user"></i>Estudiantes</a></li>
-    <li><a href="/admin/usuarios?tipo=1"><i class="icon-briefcase"></i>Profesores</a></li>
-    <li><a href="/admin/usuarios?tipo=2"><i class="icon-eye-open"></i>Administradores</a></li>
+
+    @if(usuarios.get(0).getRol() == 0){
+      <li class="active"><a href="/admin/usuarios/?tipo=0"><i class="icon-user"></i>Estudiantes</a></li>
+      <li><a href="/admin/usuarios/?tipo=1"><i class="icon-briefcase"></i>Profesores</a></li>
+      <li><a href="/admin/usuarios/?tipo=2"><i class="icon-eye-open"></i>Administradores</a></li>
+    }
+
+    @if(usuarios.get(0).getRol() == 1){
+      <li><a href="/admin/usuarios/?tipo=0"><i class="icon-user"></i>Estudiantes</a></li>
+      <li class="active"><a href="/admin/usuarios/?tipo=1"><i class="icon-briefcase"></i>Profesores</a></li>
+      <li><a href="/admin/usuarios/?tipo=2"><i class="icon-eye-open"></i>Administradores</a></li>
+    }
+
+    @if(usuarios.get(0).getRol() == 2){
+      <li><a href="/admin/usuarios/?tipo=0"><i class="icon-user"></i>Estudiantes</a></li>
+      <li><a href="/admin/usuarios/?tipo=1"><i class="icon-briefcase"></i>Profesores</a></li>
+      <li class="active"><a href="/admin/usuarios/?tipo=2"><i class="icon-eye-open"></i>Administradores</a></li>
+    }
+
+    
+
   </ul>
 }
 
@@ -55,7 +73,7 @@
         <th>Nombres</th>
         <th>Apellidos</th>
         <th>Usuario</th>
-        <th>Rol</th>
+        <th>Email</th>
         <th></th>
       </tr>
     </thead>
@@ -67,19 +85,7 @@
           <td>@usuario.getNombres()</td>
           <td>@usuario.getApellidos()</td>
           <td>@usuario.getUsername()</td>
-
-          @if(usuario.getRol() == 0){
-            <td><i class="icon-user"></i> Alumno</td>
-          }
-
-          @if(usuario.getRol() == 1){
-            <td><i class="icon-briefcase"></i> Profesor</td>
-          }
-
-          @if(usuario.getRol() == 2){
-            <td><i class="icon-eye-open"></i> Administrador</td>
-          }
-          
+          <td>@usuario.getEmail()</td>        
           <td>
             <a class="btn btn-small pull-right" href="/admin/usuarios/@usuario.getId()/delete" ><i class="icon-trash"></i></a>
             <a class="btn btn-small pull-right" href="/admin/usuarios/@usuario.getId()/edit" style="margin-right:5px"><i class="icon-edit"></i></a>

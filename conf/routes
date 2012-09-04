@@ -48,7 +48,13 @@ POST 	/cursos/new									controllers.Cursos.create()
 
 # ADMIN - USUARIOS
 
+# Mostrar todos los usuarios
+
 GET 	/admin/usuarios								controllers.Usuarios.all()
+
+# Mostrar usuarios por tipo , para la vista filtrada de usuarios en ADMIN
+
+GET 	/admin/usuarios/							controllers.Usuarios.showUsuariosPorTipo(tipo : Integer)
 
 GET 	/admin/usuarios/:id/edit					controllers.Usuarios.edit(id: Long)
 
@@ -62,7 +68,9 @@ GET 	/admin/usuarios/:id/delete					controllers.Usuarios.delete(id: Long)
 
 GET 	/admin/usuarios/:id/asesores				controllers.Usuarios.asesoresDeUsuario(id: Long)
 
-POST 	/usuario/:id/asesores/new				controllers.Usuarios.postUsuarioAsesor(id: Long)
+POST 	/usuario/:id/asesores/new					controllers.Usuarios.postUsuarioAsesor(id: Long)
+
+
 
 # ADMIN - FACULTADES
 

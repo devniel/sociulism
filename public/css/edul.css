@@ -684,8 +684,18 @@ li.list-user img.list-user-picture {
 
 /* ASESORIAS */
 
+/********************************************
+
+  QUESTION
+
+*********************************************/
+
 .question {
+  line-height:normal !important;
   margin-bottom:10px;
+  padding: 10px 0px;
+  background:#f4f4f4;
+  box-shadow:1px 1px 1px rgba(0,0,0,0.2);
 }
 
 .question-state {
@@ -701,9 +711,51 @@ li.list-user img.list-user-picture {
 }
 
 .question-title {
-  font-size:15px;
+  width:100%;
+  height:20px;
+  font-size:17px;
   font-weight:bold;
   margin-bottom:2px;
+  margin-top:10px;
+}
+
+.question-date{
+  float:left;
+  padding:2px 10px;
+  color:#CCC;
+  font-size:15px;
+  font-weight:bold;
+}
+
+.question i {
+  font-size:14px !important;
+}
+
+.question-author{
+  float:left;
+  padding:2px 10px;
+  color:#CCC;
+  font-size:15px;
+  font-weight:bold;
+}
+
+.question:hover{
+  cursor:pointer;
+  background:#EFEFEF;
+  box-shadow:1px 1px 1px rgba(0,0,0,0.4);
+}
+
+.question:hover .question-title {
+  color:#333;
+}
+
+.question:hover .question-author,
+.question:hover .question-date {
+  color:#999;
+}
+
+.question .row {
+
 }
 
 /* chat */
@@ -764,3 +816,76 @@ html,body {
 .messages {
 
 }
+
+
+/********************************************
+  
+  SUGERENCIAS
+
+  *******************************************/
+
+.sugerencias ul{
+  list-style:none;
+  padding:0 !important;
+}
+
+.controls {
+  position:relative !important;
+}
+
+.input-prepend{
+  position: relative !important;
+}
+
+.suggestions {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  border:1px solid #CCC;
+  background: #FFF;
+  width:458px !important;
+  position:absolute;
+  top:28px;
+  left:0;
+  z-index: 10000 !important;
+}
+
+.suggestions > li > a{
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+  cursor:pointer;
+  display:block;
+}
+
+.suggestion_metadata {
+  display:none;
+}
+
+/********************************************
+  
+  RECEPTORES - MENSAJES
+
+  *******************************************/
+
+.receptor_id {
+  display:none;
+}
+
+.receptores {
+  margin-left:0px !important;
+  margin-top:5px !important;
+}
+
+.receptores ul{
+  padding:0px !important;
+  margin-left:0px !important;
+  list-style:none !important;
+}
+
+.receptores ul li i {
+  margin-right:5px;
+}
+
+input.with-icon {
+  width :422px !important;
+}
+

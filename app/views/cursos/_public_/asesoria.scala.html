@@ -142,79 +142,6 @@
 
 @navbar = {
 
-<style type="text/css">
-      .sugerencias ul{
-        list-style:none;
-        padding:0 !important;
-      }
-
-      .controls {
-        position:relative !important;
-      }
-
-      .input-prepend{
-        position: relative !important;
-      }
-
-      .suggestions {
-        padding-left: 0px !important;
-        padding-right: 0px !important;
-        border:1px solid #CCC;
-        background: #FFF;
-        width:458px !important;
-        position:absolute;
-        top:28px;
-        left:0;
-        z-index: 10000 !important;
-      }
-
-      .suggestions > li > a{
-        margin-right: 0px !important;
-        margin-left: 0px !important;
-        cursor:pointer;
-        display:block;
-      }
-
-      .suggestion_metadata {
-        display:none;
-      }
-
-      .receptor_id {
-        display:none;
-      }
-
-      .receptores {
-        margin-left:0px !important;
-        margin-top:5px !important;
-      }
-
-      .receptores ul{
-        padding:0px !important;
-        margin-left:0px !important;
-        list-style:none !important;
-      }
-
-      .receptores ul li i {
-        margin-right:5px;
-      }
-
-      input.with-icon {
-        width :422px !important;
-      }
-
-      .question:hover {
-        background: #CCC;
-        cursor:pointer;
-      }
-
-      .question .row {
-        line-height : 62px;
-      }
-
-
-    </style>
-
-
   <li><a href="/">Inicio</a></li>
   <li><a href="/cursos/@seccion.getCurso().getId()/seccion/@seccion.getId()">@seccion.getCurso().getNombre() | @seccion.getSeccion()
   </a></li>
@@ -294,6 +221,8 @@
 
                           <div class="span8">
                             <div class="question-title">@pregunta.getTitulo()</div>
+                            <div class="question-author"><i class="icon-user"></i> @pregunta.getEmisor().getNombres()</div>
+                            <div class="question-date"><i class="icon-time"></i> @pregunta.getFechaFormateada()</div>
                             <!--<div class="question-content">@pregunta.getContenido()</div>-->
                           </div>
 

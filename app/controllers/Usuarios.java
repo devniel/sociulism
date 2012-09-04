@@ -773,9 +773,18 @@ public class Usuarios extends Controller {
 	}
 
 	/*
-	 *	From https://github.com/playframework/Play20/blob/master/samples/java/forms/app/controllers/Wizard.java
+	 *	Mostrar tabla de usuarios filtrados por tipo
 	 */
 
+	public static Result showUsuariosPorTipo(Integer id){
+		List<Usuario> usuarios = Usuario.find.where().eq("rol",id.toString()).findList();
+		Result view = ok(views.html.usuarios._admin_.showUsuariosPorTipo.render(usuarios));
+		return view;
+	}
+
+	/*
+	 *	From https://github.com/playframework/Play20/blob/master/samples/java/forms/app/controllers/Wizard.java
+	 */
 
 
 
