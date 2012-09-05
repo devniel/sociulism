@@ -215,7 +215,12 @@
 
       $('.carousel').carousel({
         interval: 2000
-      })
+      });
+
+
+      $("a[href='#']").click(function(e){
+        e.preventDefault();
+      });
 
       @scripts
 

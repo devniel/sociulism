@@ -786,6 +786,14 @@ public class Usuarios extends Controller {
 	 *	From https://github.com/playframework/Play20/blob/master/samples/java/forms/app/controllers/Wizard.java
 	 */
 
+	/*
+	 * Mostrar horario de profesor
+	 */
+
+	public static Result showSchedule(Long id){
+		return ok(views.html.usuarios._profesor_.showSchedule.render());
+	}
+
 
 
 }

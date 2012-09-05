@@ -60,6 +60,11 @@
 
 @main(usuario, scripts){
   <li class="active"><a href="/">Inicio</a></li>
+
+  @if(session.get("usuario.rol") == "1"){
+    <li><a href="/usuarios/@session.get("id")/horario">Horario</a></li>
+  }
+
 }{
 
     @*********************

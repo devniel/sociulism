@@ -132,7 +132,19 @@
 
       return false;
 
-  })
+  });
+
+  $(".list-user").click(function(e){
+    var id = $(this).attr("data-user");
+
+    $(".question").show();
+
+    $(".question[data-user!='" + id + "']").toggle();
+    e.preventDefault();
+
+  });
+
+  $("#blabla").tooltip();
 
 }
 
@@ -162,13 +174,13 @@
      *********************@  
 
     <li>
-      <a href="#" class="nav-header"><i class="icon-user"></i>ALUMNOS</a>
+      <a href="#" id="blabla" class="nav-header" rel="tooltip" title="Selecciona un estudiante para filtrar las preguntas" ><i class="icon-user"></i>ALUMNOS</a>
       <div class="list-courses">
         <ul class="nav nav-list">
 
           @for(seccion_usuario <- seccion.getUsuarios()){
             @if(seccion_usuario.getUsuario().getRol() == 0){
-              <li class="list-user">
+              <li class="list-user" data-user="@seccion_usuario.getUsuario().getId()">
                 <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
                 <a href="#">@seccion_usuario.getUsuario().getNombres() @seccion_usuario.getUsuario().getApellidos()</a>
                 <div class="cut"></div>
@@ -215,7 +227,7 @@
                       @for(pregunta <- preguntas){
                         <a href="pregunta/@pregunta.getId()">
                         <!-- PREGUNTA -->
-                        <div class="span9 question">
+                        <div class="span9 question" data-user="@pregunta.getEmisor().getId()">
                           <div class="row">
                             <div class="span1">
                               <div class="question-state"></div>

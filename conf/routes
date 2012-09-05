@@ -147,3 +147,7 @@ GET 	/cursos/:cid/seccion/:sid/preguntas/new			controllers.Cursos.showNuevaPregu
 #################################################################################################################
 
 GET 	/usuarios/:id 								controllers.Usuarios.showUsuario(id:Long)
+
+# Mostrar horario de profesor
+
+GET 	/usuarios/:id/horario						controllers.Usuarios.showSchedule(id: Long)

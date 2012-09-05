@@ -140,5 +140,6 @@ public class Seccion extends Model {
 
 		return asesores;
 	}
+
 	
 }
