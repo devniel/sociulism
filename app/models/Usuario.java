@@ -276,6 +276,25 @@ public class Usuario extends Model{
 	}
 
 	/*
+	 * Obtener la lista de personas asesoradas por el usuario
+	 */
+	
+	public List<Usuario> getAsesorados(){
+
+		List<UsuarioHasAsesor> usuario_asesores = UsuarioHasAsesor.find.where().eq("asesor_id",this.Id.toString()).findList();
+
+		List<Usuario> asesorados = new ArrayList<>();
+		
+	
+		for (UsuarioHasAsesor usuario_asesor : usuario_asesores) {
+			asesorados.add(usuario_asesor.getUsuario());
+		}
+		
+		return asesorados;
+
+	}
+
+	/*
 	 * Función para obtener nombre simple del usuario
 	 */	
 

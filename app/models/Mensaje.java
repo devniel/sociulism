@@ -172,6 +172,24 @@ public class Mensaje extends Model{
 		return receptores;
 	}
 
+	/*
+	 * Obtener el id de receptores en formato de texto : "1,2,3,4"
+	 */
+
+	public String getStringReceptores(){
+		String receptores = "";
+
+		List<MensajeHasReceptor> mensaje_receptores = this.getReceptores();
+		int i = 1;
+		for(MensajeHasReceptor mensaje_receptor : mensaje_receptores){
+			if(i % 2 == 0) receptores += ",";
+			receptores += mensaje_receptor.getReceptor().getId().toString();
+			i++;
+		}
+
+		return receptores;
+	}
+
 	public void setReceptores(List<MensajeHasReceptor> receptores) {
 		this.receptores = receptores;
 	}

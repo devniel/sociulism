@@ -31,60 +31,6 @@
 
 @sidebar = {
   <ul class="nav nav-list">
-    <li class="nav-header">
-      PERSONAS
-    </li>
-    <li>
-      <!-- 
-        PERSONAS
-      -->
-      <a href="#" class="nav-header"><i class="icon-user"></i> PROFESORES</a>
-      <ul class="nav nav-list">
-
-        @*********************
-         * PROFESORES *
-         *********************@      
-
-       
-          <li class="list-user">
-            <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
-            <a href="#">Rocío Checca</a>
-            <div class="cut"></div>
-          </li>
-        
-
-
-        <!-- <li class="list-user">
-          <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
-          <a href="#">Freddy Cahuas</a>
-          <div class="cut"></div>
-        </li>
-
-        <li class="list-user">
-          <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/369309_1270467084_942844184_q.jpg"/>
-          <a href="#">Freddy Cahuas</a>
-          <div class="cut"></div>
-        </li>
-        <li class="list-user">
-          <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/48815_1032202210_1657296_q.jpg"/>
-          <a href="#">Freddy Cahuas</a>
-          <div class="cut"></div>
-        </li>
-        <li class="list-user">
-          <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/161585_1104992034_168476089_q.jpg"/>
-          <a href="#">Freddy Cahuas</a>
-          <div class="cut"></div>
-        </li>
-        <li class="list-user">
-          <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/211528_100002280642888_4125957_q.jpg"/>
-          <a href="#">Freddy Cahuas</a>
-          <div class="cut"></div>
-        </li> -->
-
-      </ul>
-      <!-- / PERSONAS -->
-    </li>
-
     @*********************
      * ASESORES *
      *********************@  
@@ -94,11 +40,25 @@
       <div class="list-courses">
         <ul class="nav nav-list">
 
+          @***************************************
+            Mensaje para indicar que no existen
+            asesores asignados al curso
+          ****************************************@
+
+          @if(seccion.getAsesores().size() == 0){
+            <li>
+              <div class="alert alert-block">
+                <h5>¡No existen asesores asignados al curso!</h5>
+                <span style="font-size:12px">Consulta a un administrador para que se asignen los asesores al curso, por favor.</span>
+              </div>
+            </li>
+          }
+
           @for(asesor <- seccion.getAsesores()){
             @if(asesor.getId() != usuario.getId()){
               <li class="list-user">
                 <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
-                <a href="/usuarios/@asesor.getId()">@asesor.getNombres() @asesor.getApellidos()</a>
+                <a href="/usuarios/@asesor.getId()">@asesor.getNombreSimple()</a>
                 <div class="cut"></div>
               </li>
               }
@@ -116,7 +76,7 @@
      * ALUMNOS *
      *********************@  
 
-    <li>
+    <!--<li>
       <a href="#" class="nav-header"><i class="icon-user"></i>ALUMNOS</a>
       <div class="list-courses">
         <ul class="nav nav-list">
@@ -136,7 +96,7 @@
 
         </ul>
       </div>
-    </li>
+    </li>-->
 
 
   </ul>
