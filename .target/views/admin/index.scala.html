@@ -178,7 +178,7 @@
 
   <li class="active"><a href="/"><i class="icon-home"></i> Inicio</a></li>
   <!--<li><a href="/admin/facultades">Facultades</a></li>-->
-  <li><a href="/admin/usuarios"><i class="icon-user"></i> Alumnos</a></li>
+  <li><a href="/admin/usuarios"><i class="icon-user"></i> Usuarios</a></li>
   <li><a href="/admin/cursos"><i class="icon-book"></i> Cursos</a></li>
 }{
 
@@ -238,7 +238,7 @@
         data = google.visualization.arrayToDataTable([
           ['Sección', 'Preguntas'],
           @for(seccion <- edul.getSecciones()){
-            ['@seccion.getSeccion()',  @seccion.getPreguntas().size()]
+            ['@seccion.getSeccion()',  @seccion.getPreguntas().size()],
           }
           
         ]);
@@ -274,11 +274,11 @@
                       <ul class="clearfix">
                         <li class="clearfix">
                           <div class="estado-icono"><i class="icon-group"></i></div>
-                          <div class="estado-info"><a href="#"><span class="cantidad">@usuarios.size()</span> Estudiantes</a></div>
+                          <div class="estado-info"><a href="/admin/usuarios/?tipo=0"><span class="cantidad">@edul.getAlumnos().size()</span> Estudiantes</a></div>
                         </li>
                         <li class="clearfix">
                           <div class="estado-icono"><i class="icon-briefcase"></i></div>
-                          <div class="estado-info"><a href="#"><span class="cantidad">@edul.getProfesores().size()</span> Profesores</a></div>
+                          <div class="estado-info"><a href="/admin/usuarios/?tipo=1"><span class="cantidad">@edul.getProfesores().size()</span> Profesores</a></div>
                         </li>
                         <li class="clearfix">
                           <div class="estado-icono"><i class="icon-question-sign"></i></div>

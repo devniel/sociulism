@@ -131,7 +131,7 @@ public class Seccion extends Model {
 
 	public List<Usuario> getAsesores(){
 
-		List<com.avaje.ebean.SqlRow> asesoresConsulta = Ebean.createSqlQuery("select distinct seccion_id, asesor_id from Seccion_Usuario s join Usuario_Asesor u on s.usuario_id = u.usuario_id").findList();
+		List<com.avaje.ebean.SqlRow> asesoresConsulta = Ebean.createSqlQuery("select distinct seccion_id, asesor_id from Seccion_Usuario s join Usuario_Asesor u on s.usuario_id = u.usuario_id where s.seccion_id = '" + this.getId().toString() + "'").findList();
 		List<Usuario> asesores = new ArrayList<Usuario>();
 
 		for(com.avaje.ebean.SqlRow asesor : asesoresConsulta){
@@ -140,6 +140,32 @@ public class Seccion extends Model {
 
 		return asesores;
 	}
+
+	/*
+	 *	Obtener todos los alumnos de la sección
+	 */
+
+	public List<Usuario> getAlumnos(){
+
+		/* 
+		select usuario_id, seccion_id
+		from seccion_usuario su
+		left join usuario u
+		on su.usuario_id = u.id
+		where rol = 0
+		and su.seccion_id = 'xxx';
+		*/
+
+		List<com.avaje.ebean.SqlRow> alumnosConsulta = Ebean.createSqlQuery("select usuario_id, seccion_id from seccion_usuario su left join usuario u on su.usuario_id = u.id where rol = 0 and su.seccion_id = '" + this.getId().toString() + "'").findList();
+		List<Usuario> alumnos = new ArrayList<Usuario>();
+
+		for(com.avaje.ebean.SqlRow alumno_consulta : alumnosConsulta){
+			alumnos.add(Usuario.find.ref(Long.parseLong(alumno_consulta.getString("usuario_id"))));
+		}
+
+		return alumnos;
+	}
+
 
 	
 }

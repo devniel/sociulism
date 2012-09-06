@@ -132,7 +132,27 @@
 
       return false;
 
-  })
+  });
+
+  /*
+   * Filtrado por asesores
+   */
+
+  $(".list-user").click(function(e){
+    var id = $(this).attr("data-user");
+
+    $(".question").show();
+
+    if($(".question[data-user='" + id + "']").length == 0){
+      $(".question").hide();
+      $(".alert-filter").show();
+    }else{
+      $(".alert-filter").hide();
+      $(".question[data-user!='" + id + "']").toggle();
+    }
+    e.preventDefault();
+
+  });
 
 }
 
@@ -157,6 +177,29 @@
     <li class="nav-header">ACCIONES</li>
     <li class="active"><a href="/cursos/@seccion.getCurso().getId()/seccion/@seccion.getId()/preguntas"><i class="icon-th-list"></i>Mis preguntas</a></li>
     <li ><a href="/cursos/@seccion.getCurso().getId()/seccion/@seccion.getId()/preguntas/new"><i class="icon-question-sign"></i>Nueva pregunta</a></li>
+
+    @*************************
+     * FILTRADO POR ASESORES *
+     *************************@  
+
+    <li>
+      <a href="#" class="nav-header"><i class="icon-user"></i>FILTRAR POR ASESOR</a>
+      <div class="list-courses">
+        <ul class="nav nav-list">
+          @if(Usuario.find.ref(Long.parseLong(session.get("id"))).getAsesores().get(0).getAsesor() != null){
+            @for(usuarioAsesor <- Usuario.find.ref(Long.parseLong(session.get("id"))).getAsesores()){
+              <li class="list-user" data-user="@usuarioAsesor.getAsesor().getId()">
+                <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
+                <a href="/usuarios/@usuarioAsesor.getAsesor().getId()">@usuarioAsesor.getAsesor().getNombreSimple()</a>
+                <div class="cut"></div>
+              </li>
+            }
+          }
+
+        </ul>
+      </div>
+    </li>
+
   </ul>
 }
 
@@ -177,13 +220,17 @@
                 <div class="span9">
                   <div class="row">
 
-                    
 
-                    <div class="span9">
-                      <h3 class="ulima-color" style="font-size:15px">Preguntas</h3>
-                      <hr style="margin-top:0px;margin-bottom:10px"/>
+                    @*******************************
+                      MENSAJE DE ALERTA CUANDO NO EXISTEN PREGUNTAS REALIZADAS
+                      A DETERMINADO ASESOR
+                    ***********************************@
+
+                    <div class="span9 alert-filter" style="display:none">
+                      <div class="alert alert-info">
+                        No existen preguntas realizadas a este asesor.
+                      </div>
                     </div>
-
 
                     @****************************
                       PREGUNTAS RECIBIDAS
@@ -202,7 +249,7 @@
 
                       <a href="pregunta/@pregunta.getId()">
                       <!-- PREGUNTA -->
-                      <div class="span9 question">
+                      <div class="span9 question" data-user="@pregunta.getReceptores().get(0).getReceptor().getId()">
                         <div class="row">
                           <div class="span1">
                             <div class="question-state"></div>
@@ -222,7 +269,24 @@
                           <div class="span8">
                             <div class="question-title">@pregunta.getTitulo()</div>
                             <div class="question-author"><i class="icon-user"></i> @pregunta.getEmisor().getNombres()</div>
-                            <div class="question-date"><i class="icon-time"></i> @pregunta.getFechaFormateada()</div>
+                            <div class="question-date"><i class="icon-circle-arrow-right"></i> 
+
+                              @if(pregunta.getReceptores().size() == 1){
+                                @for(pregunta_receptor <- pregunta.getReceptores()){
+                                  @pregunta_receptor.getReceptor().getNombres()
+                                }
+                              }else{
+                                @for((pregunta_receptor,i) <- pregunta.getReceptores().zipWithIndex){
+                                     @pregunta_receptor.getReceptor().getNombres()
+                                  @if(i % 2 == 0){
+                                    ,
+                                  }                                 
+                                }
+                              }
+                              
+                            </div>
+                            <div class="question-receptor"><i class="icon-time"></i> @pregunta.getFechaFormateada()</div>
+                            
                             <!--<div class="question-content">@pregunta.getContenido()</div>-->
                           </div>
 

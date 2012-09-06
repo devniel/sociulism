@@ -1,0 +1,130 @@
+@()
+
+@import helper.twitterBootstrap._
+@import helper._
+
+@scripts = {
+
+$('#navbar').affix()
+
+$(function () {
+    $('#navTab a:first').tab('show');
+})
+
+$('#navTab a').click(function (e) {
+  e.preventDefault();
+  $(this).tab('show');
+})
+
+
+} 
+
+@main(null, scripts){
+
+  <style>
+
+    .navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle {
+      color: #FFF !important;
+    }
+
+    .navbar .nav > li > a {
+      text-shadow: none !important;
+    }
+
+    .navbar .nav li.dropdown.open > .dropdown-toggle .caret, .navbar .nav li.dropdown.active > .dropdown-toggle .caret, .navbar .nav li.dropdown.open.active > .dropdown-toggle .caret {
+      border-top-color : #FFF !important;
+      border-bottom-color: #FFF !important;
+    }
+
+  </style>
+
+  <!--<li><a href="/">Inicio</a></li>
+  <li><a href="/admin/facultades">Facultades</a></li>
+  <li class="active"><a href="/admin/usuarios">Usuarios</a></li>
+  <li><a href="/admin/cursos">Cursos</a></li>-->
+  
+}{
+
+  <style type="text/css">
+  </style>
+
+        @*********************
+         * CONTENIDO *
+         *********************@
+
+      <!-- Example row of columns -->
+      <div class="row">
+
+        <div class="span12">
+          <div class="row titilium">
+
+            <!--
+              SIDEBAR
+            -->
+            <div class="span2 pull-left">
+              <ul class="nav nav-list bs-docs-sidenav affix" data-spy="affix" data-offset-top="200" id="navTab">
+                <li class="nav-header">Mi perfil</li>
+                <li><a href="/usuarios/@session.get("id")"><i class="icon-briefcase"></i>Mi perfil</a></li>
+                <li class="active"><a href="/usuarios/@session.get("id")/horario"><i class="icon-table"></i>Mi horario</a></li>
+                @if(session.get("rol") == 0){
+                   <li><a href="/usuarios/@session.get("id")/tesis"><i class="icon-file"></i>Mi tesis</a></li>
+                }
+              </ul>         
+            </div>
+            <!-- / SIDEBAR -->
+
+            <div class="span10 pull-right">
+
+              <!--
+                HORARIO
+              -->
+
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Hora</th>
+                    <th>Lunes</th>
+                    <th>Martes</th>
+                    <th>Miércoles</th>
+                    <th>Jueves</th>
+                    <th>Viernes</th>
+                  </tr>
+                </thead>
+
+
+                <tbody>
+                  @{
+                    var sh = 7;
+                  }
+                  
+                  @************************
+                  @for(i<- 0 until 14){
+                          <tr>
+                          @for(j<=0 until 6){
+                                  @if(j == 0){
+                                          @(var hour = sh + "-" + (sh + 1))
+                                          <th class='hour' contenteditable='false'><span>@hour</span></th>
+                                  } else {
+                                          @(var day = j)
+                                          <td data-shour='@sh' data-ehour='@($sh + 1)' data-day='@day'></td>
+                                  }
+                          }
+                          @(sh = sh + 1)
+                          </tr>
+                  }
+                  ************************@
+
+
+
+                </tbody>
+              </table>
+
+            </div>
+
+
+          </div>
+        </div>
+
+     </div>
+
+}

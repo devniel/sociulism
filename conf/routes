@@ -68,6 +68,10 @@ GET 	/admin/usuarios/:id/delete					controllers.Usuarios.delete(id: Long)
 
 GET 	/admin/usuarios/:id/asesores				controllers.Usuarios.asesoresDeUsuario(id: Long)
 
+# Retorna la lista de asesores de Usuario
+
+GET 	/usuarios/:id/asesores						controllers.Usuarios.JSONasesoresDeUsuario(id: Long)
+
 POST 	/usuario/:id/asesores/new					controllers.Usuarios.postUsuarioAsesor(id: Long)
 
 

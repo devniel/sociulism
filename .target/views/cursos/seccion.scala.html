@@ -172,10 +172,10 @@ $("input[name='seccion.alumno']").keyup(function(e){
   ***************************************@
 
 @navbar = {
-  <li><a href="/">Inicio</a></li>
+  <li><a href="/"><i class="icon-home"></i> Inicio</a></li>
   <!--<li><a href="/admin/facultades">Facultades</a></li>-->
-  <li><a href="/admin/usuarios">Usuarios</a></li>
-  <li  class="active"><a href="/admin/cursos">Cursos</a></li>
+  <li><a href="/admin/usuarios"><i class="icon-user"></i> Usuarios</a></li>
+  <li  class="active"><a href="/admin/cursos"><i class="icon-book"></i> Cursos</a></li>
 }
 
 @****************************************
@@ -374,22 +374,24 @@ $("input[name='seccion.alumno']").keyup(function(e){
               <table class="table table-hover">
                 <thead>
                   <tr>
-                    <th>#</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
+                    <th>ID</th>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Usuario</th>
                   </tr>
                 </thead>
                 <tbody>
             
                 @for(alumno <- seccion.getUsuarios()){
                   @if(alumno.getUsuario() != null){
-                    <tr>
-                      <td>@alumno.getUsuario().getId()</td>
-                      <td>@alumno.getUsuario().getNombres()</td>
-                      <td>@alumno.getUsuario().getApellidos()</td>
-                      <td>@alumno.getUsuario().getUsername()</td>
-                    </tr>
+                    @if(alumno.getUsuario().getRol() == 0){
+                      <tr>
+                        <td>@alumno.getUsuario().getId()</td>
+                        <td>@alumno.getUsuario().getNombres()</td>
+                        <td>@alumno.getUsuario().getApellidos()</td>
+                        <td>@alumno.getUsuario().getUsername()</td>
+                      </tr>
+                    }
                   }
                 }
 

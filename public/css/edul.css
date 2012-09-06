@@ -731,7 +731,7 @@ li.list-user img.list-user-picture {
   font-size:14px !important;
 }
 
-.question-author{
+.question-author, .question-receptor{
   float:left;
   padding:2px 10px;
   color:#CCC;
@@ -835,6 +835,7 @@ html,body {
 
 .input-prepend{
   position: relative !important;
+  font-size: inherit !important;
 }
 
 .suggestions {

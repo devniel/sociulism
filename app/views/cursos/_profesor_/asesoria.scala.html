@@ -134,6 +134,10 @@
 
   });
 
+  /*
+   *  Función de filtrado de usuarios
+   */
+
   $(".list-user").click(function(e){
     var id = $(this).attr("data-user");
 
@@ -165,35 +169,85 @@
 
 @sidebar = {
   <ul class="nav nav-list">
-    <li class="nav-header">
-      PERSONAS
-    </li>
 
     @*********************
      * ALUMNOS *
-     *********************@  
+     *********************@
+
+     <li class="nav-header">ACCIONES</li>
+     <li class="active">
+        <a href="/cursos/@seccion.getCurso().getId()/seccion/@seccion.getId()/preguntas"><i class="icon-th-list"></i>Preguntas internas</a>
+     </li>
+     <li>
+        <a href="/cursos/@seccion.getCurso().getId()/seccion/@seccion.getId()/preguntas"><i class="icon-share"></i>Preguntas externas <span class="badge badge-important">2</span></a>
+     </li>
+
+
+    @**************************************
+      FILTRADO POR ALUMNO
+      *************************************@
 
     <li>
-      <a href="#" id="blabla" class="nav-header" rel="tooltip" title="Selecciona un estudiante para filtrar las preguntas" ><i class="icon-user"></i>ALUMNOS</a>
+      <a href="#" id="blabla" class="nav-header"><i class="icon-filter"></i> Filtrar por ALUMNO</a>
+
       <div class="list-courses">
         <ul class="nav nav-list">
+
+          @if(seccion.getAlumnos().size() == 0){
+            <li><div class="alert alert-block">
+              <h5>¡No existen alumnos en el curso!</h5>
+              <span style="font-size:12px">Consulta a un administrador para que se asignen los alumnos al curso, por favor.</span>
+            </div></li>
+          }
+
 
           @for(seccion_usuario <- seccion.getUsuarios()){
             @if(seccion_usuario.getUsuario().getRol() == 0){
               <li class="list-user" data-user="@seccion_usuario.getUsuario().getId()">
                 <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
-                <a href="#">@seccion_usuario.getUsuario().getNombres() @seccion_usuario.getUsuario().getApellidos()</a>
+                <a href="#">@seccion_usuario.getUsuario().getNombreSimple()</a>
                 <div class="cut"></div>
               </li>
             }
           }
-            
-
-            
 
         </ul>
       </div>
     </li>
+
+
+    @*************************
+     * FILTRADO POR ASESORES *
+     *************************@  
+
+    <li>
+      <a href="#" class="nav-header"><i class="icon-user"></i>FILTRAR POR ASESOR</a>
+      <div class="list-courses">
+        <ul class="nav nav-list">
+
+          @if(seccion.getAsesores().size() == 0){
+            <li>
+              <div class="alert alert-block">
+                <h5>¡No existen asesores asignados al curso!</h5>
+                <span style="font-size:12px">Consulta a un administrador para que se asignen los asesores al curso, por favor.</span>
+              </div>
+            </li>
+          }
+
+          @for(asesor <- seccion.getAsesores()){
+              <li class="list-user" data-user="@asesor.getId()">
+                <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
+                <a href="#">@asesor.getNombreSimple()</a>
+                <div class="cut"></div>
+              </li>
+              }
+        </ul>
+      </div>
+    </li>
+
+
+
+
   </ul>
 }
 
@@ -203,11 +257,6 @@
 
 @mainbar = {
 
-              <div class="page-header">
-                <h1>Preguntas</h1>
-              </div>
-
-
               <div class="row">
 
                 <!-- BOX 1 -->
@@ -215,16 +264,19 @@
                   <div class="row">
 
                     
-                    @if(preguntas.size() == 0){
+                    @if(seccion.getPreguntas().size() == 0){
+                    <div class="span9">
                       <div class="alert alert-info">
-                        Todavía no se realizan preguntas.
+                        Los alumnos de la sección todavía no realizan preguntas.
                       </div>
+                    </div>
                     }else{
+                    
                       @****************************
                         PREGUNTAS RECIBIDAS
                         ***************************@
 
-                      @for(pregunta <- preguntas){
+                      @for(pregunta <- seccion.getPreguntas()){
                         <a href="pregunta/@pregunta.getId()">
                         <!-- PREGUNTA -->
                         <div class="span9 question" data-user="@pregunta.getEmisor().getId()">
@@ -246,7 +298,32 @@
                             <div class="span8">
                               <div class="question-title">@pregunta.getTitulo()</div>
                               <div class="question-author"><i class="icon-user"></i> @pregunta.getEmisor().getNombres()</div>
-                              <div class="question-date"><i class="icon-time"></i> @pregunta.getFechaFormateada()</div>
+                               <div class="question-date"><i class="icon-circle-arrow-right"></i> 
+
+                              @if(pregunta.getReceptores().size() == 1){
+                                @for(pregunta_receptor <- pregunta.getReceptores()){
+                                  @pregunta_receptor.getReceptor().getNombres()
+                                }
+                              }else{
+                                @for((pregunta_receptor,i) <- pregunta.getReceptores().zipWithIndex){
+                                     @pregunta_receptor.getReceptor().getNombres()
+                                  @if(i % 2 == 0){
+                                    ,
+                                  }                                 
+                                }
+                              }
+                              
+                            </div>
+
+                            <div class="question-date"><i class="icon-time"></i> @pregunta.getFechaFormateada()</div>
+
+
+
+
+
+
+
+
                               <!--<div class="question-content">@pregunta.getContenido()</div>-->
                             </div>
 

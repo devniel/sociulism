@@ -99,7 +99,7 @@ public class Mensaje extends Model{
 	 */
 
 	@OneToMany(cascade = {CascadeType.ALL})
-	private MensajeHasReceptor receptores;
+	private List<MensajeHasReceptor> receptores;
 	
 	/*
 	 * SECCIÓN (CURSO) a donde se envía el mensaje - chat - NULL
@@ -168,11 +168,11 @@ public class Mensaje extends Model{
 		this.mensaje = mensaje;
 	}
 
-	public MensajeHasReceptor getReceptores() {
+	public List<MensajeHasReceptor> getReceptores() {
 		return receptores;
 	}
 
-	public void setReceptores(MensajeHasReceptor receptores) {
+	public void setReceptores(List<MensajeHasReceptor> receptores) {
 		this.receptores = receptores;
 	}
 

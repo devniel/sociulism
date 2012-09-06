@@ -60,11 +60,16 @@
 
 @main(usuario, scripts){
   <li class="active"><a href="/">Inicio</a></li>
+
+  @if(session.get("usuario.rol") == "1"){
+    <li><a href="/usuarios/@session.get("id")/horario">Horario</a></li>
+  }
+
 }{
 
-        @*********************
-         * CONTENIDO *
-         *********************@ 
+    @*********************
+     * CONTENIDO *
+     *********************@ 
 
       <!-- Example row of columns -->
       <div class="row">
@@ -170,17 +175,11 @@
               <div class="row">
 
                 <div class="span6">
-                  <div class="row">
-
-                    <div class="span6">
 
                       <div class="page-header" style="margin-bottom:10px !important">
                         <h3 class="ulima-color" style="line-height:13px !important"><i class="icon-bullhorn"></i> Notificaciones</h3>
                       </div>
 
-                    </div>
-
-                    <hr/>
 
                     @*********************
                      * MENSAJES --> FACULTAD *
@@ -212,22 +211,26 @@
                       **@
                     <div id="facultad_mensajes">
 
-                    @for(mensaje <- usuario.getFacultad().getMensajes()) {
-                      <div class="span6 post">
-                        <div class="post-author-picture"><img style="height:40px;width:40px" src="/assets/img/fis_logo.png"/></div>
-                        <div class="post-content">
-                          <span class="post-author"><strong>Facultad de Ingenieríad de Sistemas</strong></span>
-                          <p>@mensaje.getContenido()</p>
-                          <div class="post-footer">
-                            <i class="icon-time"></i> @mensaje.getFechaFormateada()
+                    @if(usuario.getFacultad().getMensajes().size() == 0){
+                      <div class="alert alert-info">
+                        Todavía no existen notificaciones de facultad.
+                      </div>
+                    }else{
+                      @for(mensaje <- usuario.getFacultad().getMensajes()) {
+                        <div class="span6 post">
+                          <div class="post-author-picture"><img style="height:40px;width:40px" src="/assets/img/fis_logo.png"/></div>
+                          <div class="post-content">
+                            <span class="post-author"><strong>Facultad de Ingenieríad de Sistemas</strong></span>
+                            <p>@mensaje.getContenido()</p>
+                            <div class="post-footer">
+                              <i class="icon-time"></i> @mensaje.getFechaFormateada()
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    } 
-
+                      } 
+                    }
                     </div>
 
-                  </div>
                 </div>
 
                 <div class="span3">

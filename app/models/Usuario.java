@@ -273,7 +273,24 @@ public class Usuario extends Model{
 
 	public void setAsesores(List<UsuarioHasAsesor> asesores) {
 		this.asesores = asesores;
-	}	
+	}
+
+	/*
+	 * Función para obtener nombre simple del usuario
+	 */	
+
+	public String getNombreSimple(){
+		String nombres = this.getNombres();
+		String apellidos = this.getApellidos();
+
+		String nombre = nombres.split(" ")[0];
+		String apellido = apellidos.split(" ")[0];
+
+		String nombreSimple = nombre + " " + apellido;
+
+		return nombreSimple;
+
+	}
 	
 	
 }

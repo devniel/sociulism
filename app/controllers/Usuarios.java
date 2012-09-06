@@ -624,26 +624,26 @@ public class Usuarios extends Controller {
 	 */
 	public static Result getProfesores(){
        
-    List<Usuario> usuarios_profesores = Usuario.find.where()
-        .eq("rol", "1")
-        .findList();
-    
-    JSONArray profesores = new JSONArray();
-    
-    for(Usuario profesor : usuarios_profesores){
-    	JSONObject json = new JSONObject();
-        try {
-			json.put("nombres", profesor.getNombres());
-			json.put("apellidos", profesor.getApellidos());
-			json.put("id",profesor.getId());
-        } catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        profesores.put(json);
-    }
+	    List<Usuario> usuarios_profesores = Usuario.find.where()
+	        .eq("rol", "1")
+	        .findList();
+	    
+	    JSONArray profesores = new JSONArray();
+	    
+	    for(Usuario profesor : usuarios_profesores){
+	    	JSONObject json = new JSONObject();
+	        try {
+				json.put("nombres", profesor.getNombres());
+				json.put("apellidos", profesor.getApellidos());
+				json.put("id",profesor.getId());
+	        } catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        profesores.put(json);
+	    }
 
-	  return ok(profesores.toString());
+		  return ok(profesores.toString());
   }
 
 
@@ -744,6 +744,34 @@ public class Usuarios extends Controller {
 
 	public static Result asesoresDeUsuario(Long id){
 		return ok(views.html.usuarios._admin_.asesoresDeUsuario.render(Usuario.find.ref(id)));
+	}
+
+	/*
+	 * PUBLIC : Mostrar vista de asesores de usaurio 
+	 */
+
+	public static Result JSONasesoresDeUsuario(Long id){
+
+		Usuario usuario = Usuario.find.ref(id);
+		List<UsuarioHasAsesor> usuario_asesores = usuario.getAsesores();
+   
+	    JSONArray json_asesores = new JSONArray();
+	    
+	    for(UsuarioHasAsesor usuario_asesor : usuario_asesores){
+	    	JSONObject json = new JSONObject();
+	        try {
+				json.put("nombres", usuario_asesor.getAsesor().getNombres());
+				json.put("apellidos", usuario_asesor.getAsesor().getApellidos());
+				json.put("id",usuario_asesor.getAsesor().getId());
+	        } catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        json_asesores.put(json);
+	    }
+
+		return ok(json_asesores.toString());
+
 	}
 
 
