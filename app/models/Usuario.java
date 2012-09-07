@@ -9,6 +9,7 @@ import org.json.*;
 
 import com.avaje.ebean.*;
 import com.avaje.ebean.validation.NotNull;
+import play.db.ebean.Model.Finder;
 
 
 @Entity
@@ -294,6 +295,25 @@ public class Usuario extends Model{
 
 	}
 
+	/**
+	 * Retorna la lista de usuarios asesorados y pertenecientes
+	 * a una determinada sección.
+	 *
+	 * @param  seccion_id	el id de la sección con la cual se filtrarán los resultados
+	 * @return				Lista de usuarios asesorados
+	 */
+
+	/*public List<Usuario> getAsesoradosPorSeccion(Long seccion_id){
+
+		List<Usuario> asesorados_totales = this.getAsesorados();
+		List<Usuario> asesorados = new ArrayList<>();
+
+		for(Usuario asesorado : asesorados_totales){
+
+		}
+
+	}*/
+
 	/*
 	 * Función para obtener nombre simple del usuario
 	 */	
@@ -310,6 +330,55 @@ public class Usuario extends Model{
 		return nombreSimple;
 
 	}
+
+	/**
+	 * Retorna la lista de usuarios asesorados y pertenecientes
+	 * a una determinada sección.
+	 *
+	 * @param  seccion_id	el id de la sección con la cual se filtrarán los resultados
+	 * @return				Lista de usuarios asesorados
+	 */
+
+	public Boolean isEnSeccion(Long id){
+		Seccion seccion = Seccion.find.ref(id);
+
+		List<SeccionHasUsuario> seccion_usuarios = seccion.getUsuarios();
+
+		Boolean exists = false;
+
+		for(SeccionHasUsuario seccion_usuario : seccion_usuarios){
+			if(seccion_usuario.getUsuario().getId() == this.getId()){
+				exists = true;
+				break;
+			}
+		}
+
+		return exists;
+
+	}
+
+	/**
+	*	Obtener preguntas recibidas
+	*/
 	
+	public List<Mensaje> getPreguntasRecibidas() {
+
+
+		List<MensajeHasReceptor> mensajes = this.getMensajeRecibidos();
+		List<Mensaje> preguntas = new ArrayList<>();
+
+		System.out.println("THIS IS SPARTA !!!");
+		
+		for(int i =0;i<mensajes.size();i++){
+			// SOLO QUEREMOS PROBARLO
+			System.out.println(mensajes.get(i).getMensaje().getTitulo());
+		}
+
+
+		System.out.println("TOTAL PREGUNTAS : " + preguntas.size());
+
+		return preguntas;
+	}
+
 	
 }

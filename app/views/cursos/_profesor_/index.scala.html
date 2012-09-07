@@ -54,11 +54,15 @@
             </li>
           }
 
+          @***************************************
+            Lista de asesores del curso
+          ****************************************@
+
           @for(asesor <- seccion.getAsesores()){
             @if(asesor.getId() != usuario.getId()){
               <li class="list-user">
                 <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
-                <a href="/usuarios/@asesor.getId()">@asesor.getNombreSimple()</a>
+                <a href="/cursos/@seccion.getCurso().getId()/seccion/@seccion.getId()/asesor/@asesor.getId()">@asesor.getNombreSimple()</a>
                 <div class="cut"></div>
               </li>
               }

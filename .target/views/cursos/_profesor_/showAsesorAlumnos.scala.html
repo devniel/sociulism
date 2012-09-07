@@ -1,0 +1,285 @@
+@(asesor: Usuario, seccion : Seccion)
+
+@import helper.twitterBootstrap._
+@import helper._
+
+
+@****************************************
+  SCRIPTS
+  ***********************************@
+
+@scripts = {
+
+  /*
+   *  Al cliquear sobre cualquier área fuera de las sugerencias, estas se eliminan.
+   */ 
+
+  $("body").click(function(e) {
+   if(e.target.className !== 'suggestions' || e.target.className !== 'suggestion'){
+      $(".suggestions").remove();
+    }
+  });
+
+  /*
+   *  Al seleccionar una sugerencia
+   */
+
+  $(".input-prepend").on("click",".suggestions .suggestion",function(e){
+
+    var nombre = $(e.target).text();
+    var id = $($(e.target).parent()).find(".receptor_id").text();
+
+    $("<li><i class='icon-user'></i><span class='receptor_id'>" + id + "</span>" +  nombre + "</li>").appendTo($(".receptores ul"));
+
+    $("input[name='mensaje.receptor']").val("");
+
+  });
+
+  /*
+   * Sugerencias de profesores del curso a ser receptores
+   */
+
+  $("input[name='mensaje.receptor']").keyup(function(e){
+
+    $(".suggestions").remove();
+
+    $.ajax({
+        type: "GET",
+        url: "/curso/@seccion.getCurso().getId()/seccion/profesores/all",
+        contentType : "application/json;charset=utf-8",
+        dataType : "json",
+      }).done(function( msg ) {
+
+        console.log("PROFESORES : " ,msg);
+
+        var lista = msg;
+
+        var value = $(e.target).val();
+        var m = new RegExp(value,"g");
+        var sugerencias = "";
+
+        for(var i in lista){
+          if(lista[i].nombres.match(m) != null){
+
+            var exists= false;
+
+            for(var j=0;j<$(".receptores ul li").length;j++){
+              if(lista[i].id == $($(".receptores ul li")[j]).find(".receptor_id").text()){
+                exists = true;
+                break;
+              }
+            }
+
+            if(!exists)
+              sugerencias += '<li><span class="suggestion_metadata receptor_id">' + lista[i].id + '</span><a class="suggestion">' + lista[i].nombres + '</a></li>';
+          }      
+        }
+
+        if(sugerencias != ""){
+          var lista_sugerencias = $("<ul class='nav nav-list span6 suggestions'>" + sugerencias + "</ul>");
+          lista_sugerencias.insertAfter($(e.target));
+        }
+    });
+
+  });
+  
+  /*
+   * Formulario de envío de consulta
+   */
+
+  $("#form-consulta").submit(function(e){
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    var mensaje = {
+      emisor : @session.get("id"),
+      titulo : null,
+      contenido : null,
+      receptores : [],
+      curso : @seccion.getCurso().getId(),
+      seccion : @seccion.getId()
+    }
+
+    // Título
+
+    mensaje.titulo = $("#form-consulta input[name='mensaje.titulo']").val();
+
+    // Contenido
+
+    mensaje.contenido = $("#form-consulta textarea[name='mensaje.contenido']").val();
+
+    // Receptores
+    var lista_receptores = $(".receptores ul li");
+
+    for(var i=0;i<lista_receptores.length;i++){
+      // Agregar receptor
+      mensaje.receptores.push($($(lista_receptores[i]).find(".receptor_id")).text());
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "/curso/@seccion.getCurso().getId()/seccion/@seccion.getId()/asesoria/new",
+        contentType : "application/json;charset=utf-8",
+        dataType : "json",
+        data: JSON.stringify({
+          mensaje: mensaje
+        })
+      }).done(function(msg ) {
+
+
+      });
+
+      return false;
+
+  });
+
+  $("#blabla").tooltip();
+
+}
+
+@****************************************
+  NAVBAR
+  ***************************************@
+
+@navbar = {
+  <li><a href="/">Inicio</a></li>
+  <li class="active"><a href="/cursos/@seccion.getCurso().getId()/seccion/@seccion.getId()">@seccion.getCurso().getNombre() | @seccion.getSeccion()
+  </a></li>
+  <li><a href="/cursos/@seccion.getCurso().getId()/seccion/@seccion.getId()/preguntas">Asesoría</a></li>
+}
+
+@****************************************
+  SIDEBAR
+  ***********************************@
+
+@sidebar = {
+  <ul class="nav nav-list">
+
+    @*************************
+     * ASESORES *
+     *************************@  
+
+    <li>
+      <a href="#" class="nav-header"><i class="icon-user"></i>ASESORES</a>
+      <div class="list-courses">
+        <ul class="nav nav-list">
+
+          @if(seccion.getAsesores().size() == 0){
+            <li>
+              <div class="alert alert-block">
+                <h5>¡No existen asesores asignados al curso!</h5>
+                <span style="font-size:12px">Consulta a un administrador para que se asignen los asesores al curso, por favor.</span>
+              </div>
+            </li>
+          }
+
+          @for(asesor_seccion <- seccion.getAsesores()){
+            @if(asesor_seccion.getId().toString() != session.get("id")){
+              <li class="list-user 
+              @if(asesor_seccion.getId() == asesor.getId()){
+                active
+              }">
+                <img class="list-user-picture" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/275746_1200589147_4305319_q.jpg"/>
+                <a href="/cursos/@seccion.getCurso().getId()/seccion/@seccion.getId()/asesor/@asesor_seccion.getId()">@asesor_seccion.getNombreSimple()</a>
+                <div class="cut"></div>
+              </li>
+            }
+          }
+        </ul>
+      </div>
+    </li>
+
+
+
+
+  </ul>
+}
+
+@****************************************
+  MAINBAR
+  ***********************************@
+
+@mainbar = {
+
+<style type="text/css">
+  
+  .div-header {
+    height:auto;
+    background:#FFF;
+    border:1px solid #CCC;
+    margin-bottom:15px;
+  }
+
+  .div-header h4 {
+    padding-left: 20px;
+  }
+
+  .list {
+    padding:0px;
+    list-style:none;
+  }
+
+</style>
+
+              <div class="row">
+
+                <!-- BOX 1 -->
+                <div class="span9">
+                  <div class="row">
+
+                    <div class="span9 div-header">
+                      <h4>Alumnos asesorando</h4>
+                    </div>
+
+                    <ul class="list">
+                      @for(asesorado <- asesor.getAsesorados()){
+                        @if(asesorado.isEnSeccion(seccion.getId())){
+                          <li><i class="icon-user"></i> @asesorado.getNombreSimple()</li>
+                          <li><i class="icon-user"></i> Marcelo Arakaki</li>
+                          <li><i class="icon-user"></i> Juan Rulfo</li>
+
+                        }
+                      }
+                    </ul>
+
+
+                    <div class="span9 div-header">
+                      <h4>Preguntas</h4>
+                    </div>
+
+                    <div class="span9 alert-filter" style="display:none">
+                      <div class="alert alert-info">
+                        Los alumnos de la sección todavía no realizan preguntas.
+                      </div>
+                    </div>
+
+                    @if(seccion.getPreguntas().size() == 0){
+                      <div class="span9">
+                        <div class="alert alert-info">
+                          Los alumnos de la sección todavía no realizan preguntas.
+                        </div>
+                      </div>
+                    }else{
+                    
+                      @****************************
+                        PREGUNTAS RECIBIDAS
+                        ***************************@
+
+                      @asesor.getMensajeRecibidos()
+
+                  }
+
+
+
+
+
+
+                  </div>
+                </div>
+            </div> <!-- /BOX 1 -->  
+}
+
+
+
+@user_layout(null,scripts,navbar,sidebar,mainbar)

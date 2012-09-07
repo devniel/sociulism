@@ -60,6 +60,9 @@
 
 @main(usuario, scripts){
   <li class="active"><a href="/">Inicio</a></li>
+  <li><a href="/usuarios/@session.get("id")">Mi perfil</a></li>
+  <li><a href="/usuarios/@session.get("id")">Asesoría</a></li>
+
 
   @if(session.get("usuario.rol") == "1"){
     <li><a href="/usuarios/@session.get("id")/horario">Horario</a></li>
@@ -119,6 +122,35 @@
                     </ul>
 
                   </li>
+
+                  @*********************
+                   * ASESORANDO A : *
+                   *********************@ 
+
+                  @if(usuario.getRol() == 1){
+                    <li>
+
+                      <a href="#" class="nav-header"><i class="icon-pencil"></i> Asesorando a :</a>
+                      
+                      <ul class="nav nav-list list-courses-user">
+
+                          @if(usuario.getAsesorados().size() != 0){
+
+                            @for(asesorado <- usuario.getAsesorados()){
+                              <li><a href="/usuarios/usuario">@asesorado.getNombreSimple()</a></li>  
+                            }
+
+                          }else{
+                            <li><div class="alert alert-block">
+                              <h5>¡No tienes alumnos asignados!</h5>
+                              <span style="font-size:12px">Consulta a un administrador para que se te asigne un alumno en el sistema.</span>
+                            </div></li>
+                          } 
+
+                      </ul>
+
+                    </li>
+                  }
 
                   <!--<li>
 

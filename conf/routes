@@ -140,6 +140,11 @@ POST	/cursos/:cid/seccion/:sid/asesoria/new		controllers.Cursos.postPregunta(cid
 
 GET 	/curso/:id/profesores/all					controllers.Cursos.getProfesorDelCurso(id: String)
 
+
+# ASESORES DEL CURSO - SECCION
+
+GET 	/cursos/:cid/seccion/:sid/asesor/:aid		controllers.Cursos.showAsesorAlumnos(cid : Long, sid: Long, aid: Long)
+
 # CURSO - PREGUNTAS
 
 GET 	/cursos/:cid/seccion/:sid/pregunta/:pid	 					controllers.Cursos.showPregunta(cid: Long, sid: Long, pid: Long)

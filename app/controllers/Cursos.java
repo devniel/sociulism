@@ -486,4 +486,22 @@ public class Cursos extends Controller {
 
   }
 
+  /**
+   * Mostrar el asesor del curso y a qué alumnos
+   *  de la sección determinada asesora
+   *
+   * @param  cid    el id del curso
+   * @param  sid    el id de la sección
+   * @param  aid    el id del asesor
+   * @return        Vista determinada
+   */
+
+  public static Result showAsesorAlumnos(Long cid, Long sid, Long aid){
+    Usuario asesor = Usuario.find.ref(aid);
+    Seccion seccion = Seccion.find.ref(sid);
+
+    return ok(views.html.cursos._profesor_.showAsesorAlumnos.render(asesor, seccion)); 
+
+  }
+
 }
